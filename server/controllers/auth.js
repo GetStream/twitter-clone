@@ -15,7 +15,7 @@ const signup = async (req, res) => {
 
         const userId = crypto.randomBytes(16).toString('hex');
         
-        // const feedClient = connect(api_key, api_secret, app_id, { location: 'eu-west' });
+        const feedClient = connect(api_key, api_secret, app_id, { location: 'eu-west' });
         const chatClient = StreamChat.getInstance(api_key, api_secret);//, location = "eu-west");
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,10 +28,10 @@ const signup = async (req, res) => {
             // image: user.photoURL,
           });
 
-        // const feedResult = await feedClient.user(userId).getOrCreate({
-        //       name: fullName
-        //   });
-        // const feedToken = feedClient.createUserToken(userId);
+        const feedResult = await feedClient.user(userId).getOrCreate({
+              name: fullName
+          });
+        const feedToken = feedClient.createUserToken(userId);
         const chatToken = chatClient.createToken(userId);
 
         res.status(200).json({ chatToken, fullName, username, userId, hashedPassword, phoneNumber });
@@ -52,10 +52,11 @@ const login = async (req, res) => {
         const { users } = await chatClient.queryUsers({ username: { $eq: username } });
         if(!users.length) return res.status(400).json({ message: 'User not found' });
 
-        const feedResult = await feedClient.user(username).get()
+        const feedResult = await feedClient.user(users[0].id).get()
         const chatToken = await chatClient.createToken(username);
         const feedToken = await feedClient.createUserToken(username);
 
+        // TODO: We need storage and a proper password check.
         const success = true;//await bcrypt.compare(password, users[0].hashedPassword);
 
         if(success) {
@@ -66,7 +67,7 @@ const login = async (req, res) => {
     } catch (error) {
         console.log(error);
 
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 };
 
