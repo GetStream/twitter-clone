@@ -1,10 +1,28 @@
 import Foundation
 
+import TwitterCloneKeychain
+
+private enum AuthKeychainKey: String {
+    case feedToken
+    case chatToken
+    case username
+    case userId
+}
+
 public struct AuthUser: Decodable {
     public let feedToken: String
     public let chatToken: String
     public let username: String
     public let userId: String
+    
+    public func persist() {
+        KeyChainHelper.shared.setString(feedToken, forKey: AuthKeychainKey.feedToken.rawValue, requireUserpresence: false)
+        KeyChainHelper.shared.setString(chatToken, forKey: AuthKeychainKey.chatToken.rawValue, requireUserpresence: false)
+        KeyChainHelper.shared.setString(username, forKey: AuthKeychainKey.username.rawValue, requireUserpresence: false)
+        KeyChainHelper.shared.setString(userId, forKey: AuthKeychainKey.userId.rawValue, requireUserpresence: false)
+    }
+    
+    // TODO need an interface to load all things back for use.
 }
 
 private struct LoginCredential: Encodable {
