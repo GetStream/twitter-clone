@@ -33,6 +33,4 @@ const login = async (req, res) => {
     }
 };
 
-// "$2b$10$Z2LS.rJyA7u9kKAdtr3zQ.QCOaiYKiLpgisCDrzOBjjh6lInQGZQS"
-// "$2b$10$Z2LS.rJyA7u9kKAdtr3zQ.QCOaiYKiLpgisCDrzOBjjh6lInQGZQS"
 module.exports = { signup, login };
