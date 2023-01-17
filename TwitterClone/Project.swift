@@ -19,15 +19,25 @@ let settingsName = "TwitterCloneSettings"
 let spacesName = "TwitterCloneSpaces"
 let timelineName = "TwitterCloneTimeline"
 
-let messagesTarget = Project.makeFrameworkTargets(name: messagesName, platform: .iOS, dependencies: [])
-let profileTarget = Project.makeFrameworkTargets(name: profileName, platform: .iOS, dependencies: [])
-let searchTarget = Project.makeFrameworkTargets(name: searchName, platform: .iOS, dependencies: [])
+let messagesTarget = Project.makeFrameworkTargets(name: messagesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+let profileTarget = Project.makeFrameworkTargets(name: profileName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+let searchTarget = Project.makeFrameworkTargets(name: searchName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 let settingsTarget = Project.makeFrameworkTargets(name: settingsName, platform: .iOS, dependencies: [])
-let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [])
-let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [])
+let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 
 let kitTarget = Project.makeFrameworkTargets(name: kitName, platform: .iOS, dependencies: [.package(product: "StreamChat")])
-let uiTarget = Project.makeFrameworkTargets(name: uiName, platform: .iOS, dependencies: [.package(product: "StreamChatSwiftUI"), .target(name: kitName)])
+let uiTarget = Project.makeFrameworkTargets(name: uiName,
+                                            platform: .iOS,
+                                            dependencies: [
+                                                .package(product: "StreamChatSwiftUI"),
+                                                .target(name: kitName),
+                                                .target(name: messagesName),
+                                                .target(name: profileName),
+                                                .target(name: searchName),
+                                                .target(name: settingsName),
+                                                .target(name: spacesName),
+                                                .target(name: timelineName)])
 
 let authorizationTarget = Project.makeFrameworkTargets(name: authorizationName, platform: .iOS, dependencies: [.target(name: keychainName)])
 let keychainHelperTarget = Project.makeFrameworkTargets(name: keychainName, platform: .iOS, dependencies: [])
