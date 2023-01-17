@@ -1,6 +1,9 @@
 import SwiftUI
-import TwitterCloneUI
+
 import StreamChatSwiftUI
+
+import TwitterCloneUI
+import TwitterCloneAuth
 
 @main
 struct TwitterCloneApp: App {
