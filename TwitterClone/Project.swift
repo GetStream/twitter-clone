@@ -47,7 +47,7 @@ let keychainHelperTarget = Project.makeFrameworkTargets(name: keychainName, plat
 let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [.package(url: "https://github.com/GetStream/stream-chat-swiftui.git", .upToNextMajor(from: "4.0.0"))],
-                          dependencies: [],
+                          dependencies: [.package(product: "StreamChatSwiftUI")],
                           additionalTargets: kitTarget + uiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget)
 
 

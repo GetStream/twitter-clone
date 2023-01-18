@@ -1,6 +1,4 @@
 import Foundation
-import StreamChat
-
 
 public final class TwitterCloneSearch {
     public static func hello() {
