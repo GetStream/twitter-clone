@@ -18,13 +18,16 @@ let searchName = "TwitterCloneSearch"
 let settingsName = "TwitterCloneSettings"
 let spacesName = "TwitterCloneSpaces"
 let timelineName = "TwitterCloneTimeline"
+let feedsName = "TwitterCloneFeeds"
 
 let messagesTarget = Project.makeFrameworkTargets(name: messagesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 let profileTarget = Project.makeFrameworkTargets(name: profileName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 let searchTarget = Project.makeFrameworkTargets(name: searchName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 let settingsTarget = Project.makeFrameworkTargets(name: settingsName, platform: .iOS, dependencies: [])
-let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [.target(name: authorizationName), .target(name: feedsName)])
 let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+
+let feedsTarget = Project.makeFrameworkTargets(name: feedsName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 
 let kitTarget = Project.makeFrameworkTargets(name: kitName, platform: .iOS, dependencies: [.external(name: "StreamChat")])
 let uiTarget = Project.makeFrameworkTargets(name: uiName,
@@ -48,6 +51,6 @@ let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
                           dependencies: [.external(name: "StreamChatSwiftUI")],
-                          additionalTargets: kitTarget + uiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget)
+                          additionalTargets: kitTarget + uiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget)
 
 
