@@ -26,11 +26,11 @@ let settingsTarget = Project.makeFrameworkTargets(name: settingsName, platform: 
 let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 
-let kitTarget = Project.makeFrameworkTargets(name: kitName, platform: .iOS, dependencies: [.package(product: "StreamChat")])
+let kitTarget = Project.makeFrameworkTargets(name: kitName, platform: .iOS, dependencies: [.external(name: "StreamChat")])
 let uiTarget = Project.makeFrameworkTargets(name: uiName,
                                             platform: .iOS,
                                             dependencies: [
-                                                .package(product: "StreamChatSwiftUI"),
+                                                .external(name: "StreamChatSwiftUI"),
                                                 .target(name: kitName),
                                                 .target(name: messagesName),
                                                 .target(name: profileName),
@@ -46,8 +46,8 @@ let keychainHelperTarget = Project.makeFrameworkTargets(name: keychainName, plat
 // Creates our project using a helper function defined in ProjectDescriptionHelpers
 let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
-                          packages: [.package(url: "https://github.com/GetStream/stream-chat-swiftui.git", .upToNextMajor(from: "4.0.0"))],
-                          dependencies: [.package(product: "StreamChatSwiftUI")],
+                          packages: [],
+                          dependencies: [.external(name: "StreamChatSwiftUI")],
                           additionalTargets: kitTarget + uiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget)
 
 
