@@ -30,17 +30,40 @@ public struct PagingModel: Encodable {
     let offset: Int
 }
 
+private extension URL {
+    mutating func appendApiKey() {
+        append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
+    }
+    
+    func appendingApiKey() -> URL {
+        return appending(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
+    }
+}
+
 public class FeedsClient {
     let baseUrl: URL
     
     let auth = TwitterCloneAuth()
     
+    private func userURL() -> URL {
+        var newURL = baseUrl.appending(component: "user")
+        newURL.appendApiKey()
+        return newURL
+    }
+    
+    private func userURL(userId: String) -> URL {
+        var newURL = baseUrl.appending(component: "user")
+        newURL.append(component: userId)
+        newURL.appendApiKey()
+        return newURL
+    }
+    
     private func userFeedURL(userId: String)-> URL {
         
         var newURL = baseUrl.appending(component: "feed/user")
         newURL.append(path: userId)
-        newURL.append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
-        
+        newURL.appendApiKey()
+
         return newURL
     }
     
@@ -49,8 +72,8 @@ public class FeedsClient {
         var newURL = baseUrl.appending(component: "feed/timeline")
         newURL.append(path: userId)
         newURL.append(path: "follows")
-        newURL.append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
-        
+        newURL.appendApiKey()
+
         return newURL
     }
     
@@ -60,8 +83,8 @@ public class FeedsClient {
         newURL.append(path: userId)
         newURL.append(path: "unfollow")
         newURL.append(path: target)
-        newURL.append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
-        
+        newURL.appendApiKey()
+
         return newURL
     }
     
@@ -71,8 +94,8 @@ public class FeedsClient {
         var newURL = baseUrl.appending(component: "feed/user")
         newURL.append(path: userId)
         newURL.append(path: "followers")
-        newURL.append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
-        
+        newURL.appendApiKey()
+
         return newURL
     }
     
@@ -83,6 +106,73 @@ public class FeedsClient {
     
     private init(urlString: String) {
         baseUrl = URL(string: urlString)!
+    }
+    
+    public func user() async throws -> FeedUser {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let authUser = try auth.storedAuthUser()
+
+        let userId = authUser.userId
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: userURL(userId: userId))
+        request.httpMethod = "GET"
+
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await session.data(for: request)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+        
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedUser.self, from: data)
+    }
+    
+    public func updateUser(_ user: FeedUser) async throws {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let authUser = try auth.storedAuthUser()
+
+        let userId = authUser.userId
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: userURL(userId: userId))
+        request.httpMethod = "PUT"
+        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(user)
+
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (_, response) = try await session.data(for: request)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+    }
+    
+    public func createUser(_ user: FeedUser) async throws {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let authUser = try auth.storedAuthUser()
+
+        let userId = authUser.userId
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: userURL())
+        request.httpMethod = "POST"
+        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(user)
+
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (_, response) = try await session.data(for: request)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
     
     public func follow(feedId: String, target: String, activityCopyLimit: Int) async throws {
