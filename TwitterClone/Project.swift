@@ -8,6 +8,7 @@ import MyPlugin
 let localHelper = LocalHelper(name: "MyPlugin")
 
 let kitName = "TwitterCloneKit"
+let networkKitName = "TwitterCloneNetworkKit"
 let uiName = "TwitterCloneUI"
 let authorizationName = "TwitterCloneAuth"
 let keychainName = "TwitterCloneKeychain"
@@ -27,9 +28,10 @@ let settingsTarget = Project.makeFrameworkTargets(name: settingsName, platform: 
 let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [.target(name: authorizationName), .target(name: feedsName)])
 let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 
-let feedsTarget = Project.makeFrameworkTargets(name: feedsName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+let feedsTarget = Project.makeFrameworkTargets(name: feedsName, platform: .iOS, dependencies: [.target(name: authorizationName), .target(name: networkKitName)])
 
 let kitTarget = Project.makeFrameworkTargets(name: kitName, platform: .iOS, dependencies: [.external(name: "StreamChat")])
+let networkKitTarget = Project.makeFrameworkTargets(name: networkKitName, platform: .iOS, dependencies: [])
 let uiTarget = Project.makeFrameworkTargets(name: uiName,
                                             platform: .iOS,
                                             dependencies: [
@@ -42,7 +44,7 @@ let uiTarget = Project.makeFrameworkTargets(name: uiName,
                                                 .target(name: spacesName),
                                                 .target(name: timelineName)])
 
-let authorizationTarget = Project.makeFrameworkTargets(name: authorizationName, platform: .iOS, dependencies: [.target(name: keychainName)])
+let authorizationTarget = Project.makeFrameworkTargets(name: authorizationName, platform: .iOS, dependencies: [.target(name: keychainName), .target(name: networkKitName)])
 let keychainHelperTarget = Project.makeFrameworkTargets(name: keychainName, platform: .iOS, dependencies: [])
 
 
@@ -51,6 +53,6 @@ let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
                           dependencies: [.external(name: "StreamChatSwiftUI")],
-                          additionalTargets: kitTarget + uiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget)
+                          additionalTargets: kitTarget + uiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget + networkKitTarget)
 
 
