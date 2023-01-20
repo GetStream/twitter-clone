@@ -9,7 +9,7 @@ import TwitterCloneAuth
 struct TwitterCloneApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeTimelineView()
         }
     }
 }
