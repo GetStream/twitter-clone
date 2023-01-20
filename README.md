@@ -1,10 +1,5 @@
 # Node backend
-The `server` directory contains a small Node backend that is required to run this app.
-
-Take your terminal into the `server` directory and run:
-```shell
-npm start
-```
+Please run the Node sample backend from this Git repository: [GetStream/stream-node-simple-integration-sample](https://github.com/getstream/stream-node-simple-integration-sample/)
 
 # iOS Frontend
 
