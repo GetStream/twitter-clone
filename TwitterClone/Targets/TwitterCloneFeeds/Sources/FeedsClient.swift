@@ -28,6 +28,15 @@ private struct UnfollowParamModel: Encodable {
 public struct PagingModel: Encodable {
     let limit: Int
     let offset: Int
+    
+    func appendingPagingModel(to url: URL) -> URL {
+        return url.appending(queryItems:
+            [
+                URLQueryItem(name: "limit", value: "\(limit)"),
+                URLQueryItem(name: "offset", value: "\(offset)"),
+            ])
+    }
+
 }
 
 private extension URL {
@@ -158,7 +167,6 @@ public class FeedsClient {
         
         let authUser = try auth.storedAuthUser()
 
-        let userId = authUser.userId
         let feedToken = authUser.feedToken
         var request = URLRequest(url: userURL())
         request.httpMethod = "POST"
@@ -227,10 +235,11 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: feedFollowersURL(userId: userId))
+        var url = feedFollowersURL(userId: userId)
+        url = pagingModel?.appendingPagingModel(to: url) ?? url
+                
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
-        //TODO add paging modeltorequest
         
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
@@ -254,11 +263,13 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: timelineFeedFollowsURL(userId: userId))
+        
+        var url = timelineFeedFollowsURL(userId: userId)
+        url = pagingModel?.appendingPagingModel(to: url) ?? url
+        
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        //TODO add paging modeltorequest
-
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")

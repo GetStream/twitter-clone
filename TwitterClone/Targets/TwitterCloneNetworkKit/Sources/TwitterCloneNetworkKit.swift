@@ -1,5 +1,4 @@
 import Foundation
-import StreamChat
 
 public enum StatusCodeError: Error {
 case badResponse
