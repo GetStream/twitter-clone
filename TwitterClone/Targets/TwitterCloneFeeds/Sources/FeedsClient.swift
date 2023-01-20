@@ -228,7 +228,7 @@ public class FeedsClient {
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
     
-    public func followers(feedId: String, pagingModel: PagingModel? = nil) async throws {
+    public func followers(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
         
         let authUser = try auth.storedAuthUser()
@@ -246,17 +246,15 @@ public class FeedsClient {
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-        
-        //TODO parse data:
-//        {"results":[{"feed_id":"timeline:6240378a0cb3a15b1ca56a4dfe4a3f07","target_id":"user:47b2d8af2716fee6303a1a036309d892","created_at":"2023-01-19T15:06:39.173830389Z","updated_at":"2023-01-19T15:06:39.173830389Z"}],"duration":"2.46ms"}
-        
+                
         let statusCode = (response as? HTTPURLResponse)?.statusCode
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedFollowers.self, from: data).followers
     }
     
-    public func following(feedId: String, pagingModel: PagingModel? = nil) async throws {
+    public func following(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
         
         let authUser = try auth.storedAuthUser()
@@ -276,12 +274,11 @@ public class FeedsClient {
 
         let (data, response) = try await session.data(for: request)
         
-        //TODO Parse data
-        //{"results":[{"feed_id":"timeline:6240378a0cb3a15b1ca56a4dfe4a3f07","target_id":"user:47b2d8af2716fee6303a1a036309d892","created_at":"2023-01-19T15:06:39.173830389Z","updated_at":"2023-01-19T15:06:39.173830389Z"}],"duration":"1.90ms"}
-        
         let statusCode = (response as? HTTPURLResponse)?.statusCode
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+        
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedFollowers.self, from: data).followers
     }
     
     public func getActivities() async throws -> [PostActivity] {
