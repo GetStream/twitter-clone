@@ -142,6 +142,8 @@ final class SwiftKeyChainStore {
 
         query[kSecAttrAccount as String] = key
         if requireUserpresence {
+            let context = LAContext()
+            context.localizedReason = authenticationPrompt
             query[kSecUseAuthenticationContext as String] = LAContext()
         }
 
@@ -190,8 +192,6 @@ final class SwiftKeyChainStore {
             query[kSecAttrAccessGroup as String] = accessGroup
         }
         #endif
-
-        query[kSecUseOperationPrompt as String] = authenticationPrompt
 
         return query
     }
