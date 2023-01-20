@@ -23,6 +23,13 @@ public struct AuthUser: Decodable {
         KeyChainHelper.shared.setString(userId, forKey: AuthKeychainKey.userId.rawValue, requireUserpresence: false)
     }
     
+    public func logout() {
+        KeyChainHelper.shared.removeKey(feedToken)
+        KeyChainHelper.shared.removeKey(chatToken)
+        KeyChainHelper.shared.removeKey(username)
+        KeyChainHelper.shared.removeKey(userId)
+    }
+    
     // TODO need an interface to load all things back for use.
 }
 
