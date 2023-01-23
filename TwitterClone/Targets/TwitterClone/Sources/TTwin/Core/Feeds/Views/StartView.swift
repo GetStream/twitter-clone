@@ -10,6 +10,7 @@ import TwitterCloneAuth
 
 struct StartView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
+    @State private var isPresented = false
     
     var body: some View {
         VStack {
@@ -62,10 +63,11 @@ struct StartView: View {
             HStack {
                 Text("Have an account already?")
                 Button("Login") {
-                    LogIn()
+                    self.isPresented.toggle()
                 }
                 .buttonStyle(.automatic)
                 .tint(Color(.systemBlue))
+                .fullScreenCover(isPresented: $isPresented, content: LogIn.init)
             }
         }.padding()
     }
