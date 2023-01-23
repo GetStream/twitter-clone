@@ -4,8 +4,10 @@
 //
 
 import SwiftUI
+import TwitterCloneAuth
 
 struct HomeTimelineView: View {
+    @EnvironmentObject var auth: TwitterCloneAuth
     
     var body: some View {
         NavigationStack {

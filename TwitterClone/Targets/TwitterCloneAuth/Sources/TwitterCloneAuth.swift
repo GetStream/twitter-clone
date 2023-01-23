@@ -42,14 +42,18 @@ public enum AuthError: Error {
     case noStoredAuthUser
 }
 
-public final class TwitterCloneAuth {
+public final class TwitterCloneAuth: ObservableObject {
     let signupUrl: URL
     let loginUrl: URL
+    
+    @Published
+    public private(set) var authUser: AuthUser?
     
     public init() {
         // TODO: Make baseUrl dynamic
         signupUrl = URL(string: "http://localhost:8080/auth/signup")!
         loginUrl = URL(string: "http://localhost:8080/auth/login")!
+        authUser = try? storedAuthUser()
     }
     
     public var feedToken: String? {

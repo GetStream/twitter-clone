@@ -7,9 +7,17 @@ import TwitterCloneAuth
 
 @main
 struct TwitterCloneApp: App {
+    
+    @StateObject
+    var auth = TwitterCloneAuth()
+    
     var body: some Scene {
         WindowGroup {
-            HomeTimelineView()
+            if auth.authUser != nil {
+                HomeTimelineView().environmentObject(auth)
+            } else {
+                StartView().environmentObject(auth)
+            }
         }
     }
 }

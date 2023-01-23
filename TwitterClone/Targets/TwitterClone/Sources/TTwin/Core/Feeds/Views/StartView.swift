@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import TwitterCloneAuth
 
 struct StartView: View {
+    @EnvironmentObject var auth: TwitterCloneAuth
+    
     var body: some View {
         VStack {
             // TwitterClone Logo
