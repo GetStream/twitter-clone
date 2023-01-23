@@ -56,22 +56,6 @@ public final class TwitterCloneAuth: ObservableObject {
         authUser = try? storedAuthUser()
     }
     
-    public var feedToken: String? {
-        return KeyChainHelper.shared.string(forKey: AuthKeychainKey.feedToken.rawValue, requireUserpresence: false)
-    }
-    
-    public var chatToken: String? {
-        return KeyChainHelper.shared.string(forKey: AuthKeychainKey.chatToken.rawValue, requireUserpresence: false)
-    }
-    
-    public var username: String? {
-        return KeyChainHelper.shared.string(forKey: AuthKeychainKey.username.rawValue, requireUserpresence: false)
-    }
-    
-    public var userId: String? {
-        return KeyChainHelper.shared.string(forKey: AuthKeychainKey.userId.rawValue, requireUserpresence: false)
-    }
-    
     public func storedAuthUser() throws-> AuthUser {
         
         guard let feedToken = KeyChainHelper.shared.string(forKey: AuthKeychainKey.feedToken.rawValue, requireUserpresence: false) else { throw AuthError.noStoredAuthUser }
