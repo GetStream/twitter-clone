@@ -30,6 +30,7 @@ struct NewlyTweetedButton: View {
             Text("Tweeted")
         }
         .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        .foregroundColor(.white)
         .background(.streamBlue)
         .cornerRadius(8)
         .offset(y: buttonPosition)

@@ -16,7 +16,7 @@ struct TTwinLogo: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 26)
-                    .offset(x: 8)
+                    .offset(x: 6)
                     .blendMode(.plusDarker)
             )
     }

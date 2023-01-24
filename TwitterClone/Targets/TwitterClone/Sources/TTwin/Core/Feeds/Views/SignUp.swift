@@ -1,15 +1,14 @@
 //
-//  LogIn.swift
-//  TTwin
+//  SignUp.swift
+//  TwitterClone
 //
-//  Created by amos.gyamfi@getstream.io on 14.1.2023.
-//
+//  MARK: Create a new account
 
 import SwiftUI
 import TwitterCloneUI
 import TwitterCloneAuth
 
-struct LogIn: View {
+struct SignUp: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @Environment(\.presentationMode) var presentationMode
     
@@ -21,25 +20,25 @@ struct LogIn: View {
             VStack {
                 Form {
                     Section {
-                        TextField("Your username", text: $username)
+                        TextField("Username", text: $username)
                         //.textFieldStyle(.roundedBorder)
                             .textContentType(.username)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .keyboardType(.emailAddress)
-                        SecureField("Your password", text: $password)
+                        SecureField("Password", text: $password)
                         //.textFieldStyle(.roundedBorder)
                             .textContentType(.password)
                     } header: {
-                        Text("Please enter your login credentials")
+                        Text("Create your account")
                     }
                 }
                 .frame(height: 148)
                 .cornerRadius(16)
                 
-                AsyncButton("Log In") {
+                AsyncButton("Sign up") {
                     do {
-                        try await auth.login(username: username, password: password)
+                        try await auth.signup(username: username, password: password)
                         presentationMode.wrappedValue.dismiss()
                     } catch {
                         print(error)
@@ -52,7 +51,7 @@ struct LogIn: View {
             }
             .padding(16)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Log in")
+            .navigationTitle("Sign up")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
@@ -71,8 +70,8 @@ struct LogIn: View {
     }
 }
 
-struct LogIn_Previews: PreviewProvider {
+struct SignUp_Previews: PreviewProvider {
     static var previews: some View {
-        LogIn()
+        SignUp()
     }
 }

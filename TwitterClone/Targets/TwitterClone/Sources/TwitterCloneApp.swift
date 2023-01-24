@@ -18,6 +18,12 @@ struct TwitterCloneApp: App {
             } else {
                 StartView().environmentObject(auth)
             }
+            
+            
+            // MARK: For previewing
+            //LogIn()
+            //StartView()
+            //MyProfile()
         }
     }
 }
