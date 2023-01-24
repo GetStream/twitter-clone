@@ -11,10 +11,6 @@ case noStatus
 }
 
 public final class TwitterCloneNetworkKit {
-    public static func hello() {
-        print("Hello, from your Kit framework")
-    }
-    
     /// Checks the status code for errors
     /// - Parameter statusCode: The response status code to check. If it does not throw it is an acceptable status.
     static public func checkStatusCode(statusCode: Int?) throws {

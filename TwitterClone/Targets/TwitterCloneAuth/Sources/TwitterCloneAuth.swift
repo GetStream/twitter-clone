@@ -22,15 +22,6 @@ public struct AuthUser: Decodable {
         KeyChainHelper.shared.setString(username, forKey: AuthKeychainKey.username.rawValue, requireUserpresence: false)
         KeyChainHelper.shared.setString(userId, forKey: AuthKeychainKey.userId.rawValue, requireUserpresence: false)
     }
-    
-    public func logout() {
-        KeyChainHelper.shared.removeKey(feedToken)
-        KeyChainHelper.shared.removeKey(chatToken)
-        KeyChainHelper.shared.removeKey(username)
-        KeyChainHelper.shared.removeKey(userId)
-    }
-    
-    // TODO need an interface to load all things back for use.
 }
 
 private struct LoginCredential: Encodable {
@@ -49,8 +40,17 @@ public final class TwitterCloneAuth: ObservableObject {
     @Published
     public private(set) var authUser: AuthUser?
     
+    public func logout() {
+        KeyChainHelper.shared.removeKey(AuthKeychainKey.feedToken.rawValue)
+        KeyChainHelper.shared.removeKey(AuthKeychainKey.chatToken.rawValue)
+        KeyChainHelper.shared.removeKey(AuthKeychainKey.username.rawValue)
+        KeyChainHelper.shared.removeKey(AuthKeychainKey.userId.rawValue)
+        authUser = nil
+    }
+    
     public init() {
         // TODO: Make baseUrl dynamic
+        
         signupUrl = URL(string: "http://localhost:8080/auth/signup")!
         loginUrl = URL(string: "http://localhost:8080/auth/login")!
         authUser = try? storedAuthUser()
@@ -66,7 +66,7 @@ public final class TwitterCloneAuth: ObservableObject {
         return AuthUser(feedToken: feedToken, chatToken: chatToken, username: username, userId: userId)
     }
     
-    public func signup(username: String, password: String) async throws -> AuthUser {
+    public func signup(username: String, password: String) async throws {
         let credential = LoginCredential(username: username, password: password)
         
         var loginRequest = URLRequest(url: signupUrl)
@@ -79,10 +79,14 @@ public final class TwitterCloneAuth: ObservableObject {
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
-        return try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
+        let authUser = try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
+        authUser.persist()
+        DispatchQueue.main.async { [weak self] in
+            self?.authUser = authUser
+        }
     }
     
-    public func login(username: String, password: String) async throws -> AuthUser {
+    public func login(username: String, password: String) async throws {
         let credential = LoginCredential(username: username, password: password)
         let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(credential)
         
@@ -96,6 +100,10 @@ public final class TwitterCloneAuth: ObservableObject {
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
-        return try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
+        let authUser = try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
+        authUser.persist()
+        DispatchQueue.main.async { [weak self] in
+            self?.authUser = authUser
+        }
     }
 }
