@@ -26,7 +26,7 @@ let profileTarget = Project.makeFrameworkTargets(name: profileName, platform: .i
 let searchTarget = Project.makeFrameworkTargets(name: searchName, platform: .iOS, dependencies: [.target(name: authorizationName)])
 let settingsTarget = Project.makeFrameworkTargets(name: settingsName, platform: .iOS, dependencies: [])
 let timelineTarget = Project.makeFrameworkTargets(name: timelineName, platform: .iOS, dependencies: [.target(name: authorizationName), .target(name: feedsName)])
-let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [.target(name: authorizationName)])
+let spacesTarget = Project.makeFrameworkTargets(name: spacesName, platform: .iOS, dependencies: [.target(name: authorizationName), .external(name: "HMSSDK")])
 
 let feedsTarget = Project.makeFrameworkTargets(name: feedsName, platform: .iOS, dependencies: [.target(name: authorizationName), .target(name: networkKitName)])
 
