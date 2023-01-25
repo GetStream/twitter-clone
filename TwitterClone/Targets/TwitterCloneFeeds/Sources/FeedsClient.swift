@@ -261,4 +261,96 @@ public class FeedsClient: ObservableObject {
         
         return try TwitterCloneNetworkKit.jsonDecoder.decode(PostActivityResponse.self, from: data)
     }
+    
+    public func uploadImage(fileName: String, mimeType: String, imageData: Data) async throws -> URL {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let authUser = try auth.storedAuthUser()
+
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: urlFactory.url(forPath: .images))
+        request.httpMethod = "POST"
+        
+        var multipart = MultipartRequest()
+        multipart.add(key: "file", fileName: fileName, fileMimeType: mimeType, fileData: imageData)
+        
+        request.setValue(multipart.httpContentTypeHeadeValue, forHTTPHeaderField: "Content-Type")
+        request.httpBody = multipart.httpBody
+        
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await session.data(for: request)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+        
+        let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
+        return URL(string: fileUrl)! //TODO: check response
+    }
+    
+    public func deleteImage(cdnUrl: String) async throws {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let authUser = try auth.storedAuthUser()
+
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: urlFactory.url(forPath: .images))
+        request.httpMethod = "DELETE"
+        request.httpBody = cdnUrl.data(using: .utf8)
+
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (_, response) = try await session.data(for: request)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+    }
+    
+    public func processImage(cdnUrl: String, resize: CdnImageResizeStrategy? = nil, crop: CdnImageCropStrategy? = nil, width: Int? = nil, height: Int? = nil) async throws -> URL {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let authUser = try auth.storedAuthUser()
+
+        let feedToken = authUser.feedToken
+        var url = urlFactory.url(forPath: .images)
+        
+        let queryItems = [
+            resize.map{ URLQueryItem(name: "resize", value:$0.rawValue) },
+            crop.map{ URLQueryItem(name: "crop", value:$0.rawValue) },
+            width.map{ URLQueryItem(name: "w", value: "\($0)") },
+            height.map{ URLQueryItem(name: "h", value: "\($0)") },
+            URLQueryItem(name: "url", value: cdnUrl),
+        ].compactMap {$0}
+        
+        url.append(queryItems:queryItems)
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await session.data(for: request)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+
+        let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
+        return URL(string: fileUrl)! //TODO: check response
+    }
+}
+
+public enum CdnImageResizeStrategy: String {
+    case crop, scale, fill
+}
+public enum CdnImageCropStrategy: String {
+    case top, bottom, left, right, center
 }
