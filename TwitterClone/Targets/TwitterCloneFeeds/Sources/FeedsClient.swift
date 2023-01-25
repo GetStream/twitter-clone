@@ -7,14 +7,9 @@
 //
 
 import Foundation
+import SwiftUI
 import TwitterCloneAuth
 import TwitterCloneNetworkKit
-
-enum Region: String {
-    case usEast = "https://us-east-api.stream-io-api.com/api/v1.0/"
-    case euWest = "https://eu-west-api.stream-io-api.com/api/v1.0/"
-    case singapore = "https://singapore-api.stream-io-api.com/api/v1.0/"
-}
 
 private struct FollowParamModel: Encodable {
     let target: String
@@ -39,82 +34,19 @@ public struct PagingModel: Encodable {
 
 }
 
-private extension URL {
-    mutating func appendApiKey() {
-        append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
-    }
+public class FeedsClient: ObservableObject {
+    @EnvironmentObject var auth: TwitterCloneAuth
     
-    func appendingApiKey() -> URL {
-        return appending(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
-    }
-}
-
-public class FeedsClient {
-    let baseUrl: URL
+    @Published private ( set ) public var activities: [PostActivity] = []
     
-    let auth = TwitterCloneAuth()
+    private let urlFactory: URLFactory
     
-    private func userURL() -> URL {
-        var newURL = baseUrl.appending(component: "user")
-        newURL.appendApiKey()
-        return newURL
-    }
-    
-    private func userURL(userId: String) -> URL {
-        var newURL = baseUrl.appending(component: "user")
-        newURL.append(component: userId)
-        newURL.appendApiKey()
-        return newURL
-    }
-    
-    private func userFeedURL(userId: String)-> URL {
-        
-        var newURL = baseUrl.appending(component: "feed/user")
-        newURL.append(path: userId)
-        newURL.appendApiKey()
-
-        return newURL
-    }
-    
-    private func timelineFeedFollowsURL(userId: String)-> URL {
-        
-        var newURL = baseUrl.appending(component: "feed/timeline")
-        newURL.append(path: userId)
-        newURL.append(path: "follows")
-        newURL.appendApiKey()
-
-        return newURL
-    }
-    
-    private func timelineFeedUnfollowURL(userId: String, target: String)-> URL {
-        
-        var newURL = baseUrl.appending(component: "feed/timeline")
-        newURL.append(path: userId)
-        newURL.append(path: "unfollow")
-        newURL.append(path: target)
-        newURL.appendApiKey()
-
-        return newURL
-    }
-    
-    
-    private func feedFollowersURL(userId: String)-> URL {
-        
-        var newURL = baseUrl.appending(component: "feed/user")
-        newURL.append(path: userId)
-        newURL.append(path: "followers")
-        newURL.appendApiKey()
-
-        return newURL
-    }
-    
-    
-    static func productionClient(region: Region) -> FeedsClient {
+    static public func productionClient(region: Region) -> FeedsClient {
         return FeedsClient(urlString: region.rawValue)
     }
     
     private init(urlString: String) {
-        baseUrl = URL(string: urlString)!
+        urlFactory = URLFactory(baseUrl: URL(string: urlString)!)
     }
     
     public func user() async throws -> FeedUser {
@@ -124,7 +56,8 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: userURL(userId: userId))
+        
+        var request = URLRequest(url: urlFactory.url(forPath: .user(userId: userId)))
         request.httpMethod = "GET"
 
         // Headers
@@ -147,7 +80,7 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: userURL(userId: userId))
+        var request = URLRequest(url: urlFactory.url(forPath: .user(userId: userId)))
         request.httpMethod = "PUT"
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(user)
 
@@ -168,7 +101,7 @@ public class FeedsClient {
         let authUser = try auth.storedAuthUser()
 
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: userURL())
+        var request = URLRequest(url: urlFactory.url(forPath: .user(userId: nil)))
         request.httpMethod = "POST"
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(user)
 
@@ -190,7 +123,7 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: timelineFeedFollowsURL(userId: userId))
+        var request = URLRequest(url: urlFactory.url(forPath: .follow(userId: userId)))
         request.httpMethod = "POST"
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(FollowParamModel(target: target, activity_copy_limit: activityCopyLimit))
         
@@ -212,7 +145,7 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: timelineFeedUnfollowURL(userId: userId, target: target))
+        var request = URLRequest(url: urlFactory.url(forPath: .unfollow(userId: userId, target: target)))
         request.httpMethod = "DELETE"
         
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(UnfollowParamModel(keep_history:keepHistory))
@@ -235,7 +168,7 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var url = feedFollowersURL(userId: userId)
+        var url = urlFactory.url(forPath: .followers(userId: userId))
         url = pagingModel?.appendingPagingModel(to: url) ?? url
                 
         var request = URLRequest(url: url)
@@ -261,8 +194,7 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        
-        var url = timelineFeedFollowsURL(userId: userId)
+        var url = urlFactory.url(forPath: .follows(userId: userId))
         url = pagingModel?.appendingPagingModel(to: url) ?? url
         
         var request = URLRequest(url: url)
@@ -281,14 +213,15 @@ public class FeedsClient {
         return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedFollowers.self, from: data).followers
     }
     
-    public func getActivities() async throws -> [PostActivity] {
+    //TODO: paging
+    public func getActivities() async throws {
         let session = TwitterCloneNetworkKit.restSession
         
         let authUser = try auth.storedAuthUser()
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: userFeedURL(userId: userId))
+        var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
         request.httpMethod = "GET"
 
         // Headers
@@ -301,7 +234,9 @@ public class FeedsClient {
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
-        return try TwitterCloneNetworkKit.jsonDecoder.decode([PostActivity].self, from: data)
+        let activities = try TwitterCloneNetworkKit.jsonDecoder.decode([PostActivity].self, from: data)
+        
+        self.activities = activities
     }
     
     public func addActivity() async throws -> PostActivityResponse {
@@ -311,7 +246,7 @@ public class FeedsClient {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: userFeedURL(userId: userId))
+        var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
         request.httpMethod = "POST"
         
         // Headers
