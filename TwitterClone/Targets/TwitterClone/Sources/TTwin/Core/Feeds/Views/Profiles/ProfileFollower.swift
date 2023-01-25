@@ -5,13 +5,13 @@
 
 import SwiftUI
 
-struct MyProfile: View { @State private var selection = 0
+struct ProfileFollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
     
     var body: some View {
         NavigationStack {
             VStack {
-                MyProfileInfoAndTweets()
+                FollowerProfileInfoAndTweets()
                 TabBarView()
                     .frame(height: 68)
             } // All views
@@ -45,9 +45,9 @@ struct MyProfile: View { @State private var selection = 0
     }
 }
 
-struct MyProfile_Previews: PreviewProvider {
+struct ProfileFollower_Previews: PreviewProvider {
     static var previews: some View {
-        MyProfile()
+        ProfileFollower()
             .preferredColorScheme(.dark)
     }
 }

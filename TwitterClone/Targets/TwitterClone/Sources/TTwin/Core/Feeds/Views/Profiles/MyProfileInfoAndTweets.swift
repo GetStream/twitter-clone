@@ -6,7 +6,7 @@
 import SwiftUI
 import TwitterCloneUI
 
-struct ProfileInfoAndTweets: View {
+struct MyProfileInfoAndTweets: View {
     @State private var selection = 0
     
     var body: some View {
@@ -27,6 +27,7 @@ struct ProfileInfoAndTweets: View {
                     }
                     .buttonStyle(.borderedProminent)
                 }
+                
                 ProfileInfoView(myProfile: MyProfileData)
                 
                 Picker("For You and Following picker", selection: $selection) {
@@ -51,9 +52,9 @@ struct ProfileInfoAndTweets: View {
     }
 }
 
-struct ProfileInfoAndTweets_Previews: PreviewProvider {
+struct MyProfileInfoAndTweets_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileInfoAndTweets()
+        MyProfileInfoAndTweets()
             .preferredColorScheme(.dark)
     }
 }

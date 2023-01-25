@@ -5,13 +5,13 @@
 
 import SwiftUI
 
-struct MyProfile: View { @State private var selection = 0
+struct ProfileUnfollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
     
     var body: some View {
         NavigationStack {
             VStack {
-                MyProfileInfoAndTweets()
+                UnfollowerProfileInfoAndTweets()
                 TabBarView()
                     .frame(height: 68)
             } // All views
@@ -23,11 +23,11 @@ struct MyProfile: View { @State private var selection = 0
             .toolbar{
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                            // Destination
-                            HomeTimelineView()
-                        } label: { // A label to show on the screen
-                            Image(systemName: "chevron.backward.circle.fill")
-                        }
+                        // Destination
+                        HomeTimelineView()
+                    } label: { // A label to show on the screen
+                        Image(systemName: "chevron.backward.circle.fill")
+                    }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -36,7 +36,7 @@ struct MyProfile: View { @State private var selection = 0
                         self.isShowingSearch.toggle()
                     } label: {
                         Image(systemName: "magnifyingglass.circle.fill")
-                            
+                        
                     }.sheet(isPresented: $isShowingSearch, content: SearchView.init)
                 }
             }
@@ -45,9 +45,9 @@ struct MyProfile: View { @State private var selection = 0
     }
 }
 
-struct MyProfile_Previews: PreviewProvider {
+struct ProfileUnfollower_Previews: PreviewProvider {
     static var previews: some View {
-        MyProfile()
+        ProfileUnfollower()
             .preferredColorScheme(.dark)
     }
 }

@@ -29,6 +29,13 @@ struct TwitterCloneApp: App {
             //LogIn()
             //StartView()
             //MyProfile()
+            //OthersProfile()
+            //ProfileInfoView(myProfile: MyProfileData)
+            //MyProfileInfoAndTweets()
+            //UnFollowerProfileInfoAndTweets()
+            //ProfileFollower()
+            //ProfileUnfollower()
         }
     }
 }
+

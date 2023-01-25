@@ -6,8 +6,8 @@
 import SwiftUI
 
 struct TabBarView: View {
-    
     @State private var selectedFeeds = 0
+    @State private var isSearchShowing = false
     
     var body: some View {
         TabView {
@@ -23,26 +23,31 @@ struct TabBarView: View {
                 Text("Home")
             }
             
-            SearchView()
+            Text("")
                 .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
+                    Button {
+                        self.isSearchShowing.toggle()
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                        Text("Search")
+                    }
                 }
+                .sheet(isPresented: $isSearchShowing, content: SearchView.init)
             
-            AudioSpacesView()
+            Text("")
                 .tabItem {
                     Image(systemName: "waveform.and.mic")
                     Text("Spaces")
                 }
             
-            NotificationsView()
+            Text("")
                 .tabItem {
                     Image(systemName: "bell")
                     Text("Notifications")
                 }
                 .badge(10)
             
-            ChatsView()
+            Text("")
                 .tabItem {
                     Image(systemName: "text.bubble")
                     Text("Chats")
