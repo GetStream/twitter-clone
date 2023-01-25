@@ -2,17 +2,20 @@
 //  ForYouFeedsView.swift
 //  TTwin
 
+import TwitterCloneFeeds
+
 import SwiftUI
 
 struct ForYouFeedsView: View {
     
-    var forYouTweets: [ForYouTweetsStructure] = []
+    
+    var forYouTweets: [PostActivity] = []
     
     var body: some View {
         List(forYouTweets) {
             item in
             HStack(alignment: .top) {
-                AsyncImage(url: URL(string: "\(item.userProfilePhoto)")) { loading in
+                AsyncImage(url: URL(string: "\(item.userProfilePhoto ?? "https://picsum.photos/id/219/200")")) { loading in
                     if let image = loading.image {
                         image
                             .resizable()
@@ -41,7 +44,7 @@ struct ForYouFeedsView: View {
                             .lineLimit(1)
                             .layoutPriority(1)
                         
-                        Text("* \(item.tweetSentAt)")
+                        Text("* \(item.tweetSentAt ?? "???")")
                             .font(.subheadline)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
@@ -49,21 +52,21 @@ struct ForYouFeedsView: View {
                         Spacer()
                         
                         Image(systemName:
-                                "\(item.actionsMenuIcon)")
+                                "\(item.actionsMenuIcon ?? "heart")")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     }
                     
                     HStack(alignment: .bottom) {
-                        Text("\(item.tweetSummary)")
+                        Text("\(item.tweetSummary ?? "???")")
                             .layoutPriority(2)
-                        Text("\(item.hashTag)")
+                        Text("\(item.hashTag ?? "???")")
                             .foregroundColor(.streamGreen)
                             .layoutPriority(3)
                         
                     }.font(.subheadline)
                     
-                    AsyncImage(url: URL(string: "\(item.tweetPhoto)")) { loading in
+                    AsyncImage(url: URL(string: "\(item.tweetPhoto ?? "heart")")) { loading in
                         if let image = loading.image {
                             image
                                 .resizable()
@@ -80,15 +83,15 @@ struct ForYouFeedsView: View {
                     .accessibilityAddTraits(.isButton)
                     
                     HStack{
-                        Image(systemName: "\(item.commentIcon)")
-                        Text("\(item.numberOfComments)")
+                        Image(systemName: "\(item.commentIcon ?? "heart")")
+                        Text("\(item.numberOfComments ?? "x")")
                         Spacer()
-                        Image(systemName: "\(item.retweetIcon)")
+                        Image(systemName: "\(item.retweetIcon ?? "heart")")
                         Spacer()
-                        Image(systemName: "\(item.likeIcon)")
-                        Text("\(item.numberOfLikes)")
+                        Image(systemName: "\(item.likeIcon ?? "heart")")
+                        Text("\(item.numberOfLikes ?? "heart")")
                         Spacer()
-                        Image(systemName: "\(item.shareTweetIcon)")
+                        Image(systemName: "\(item.shareTweetIcon ?? "heart")")
                     }
                     .font(.subheadline)
                     .foregroundColor(.secondary)

@@ -4,6 +4,7 @@ import StreamChatSwiftUI
 
 import TwitterCloneUI
 import TwitterCloneAuth
+import TwitterCloneFeeds
 
 @main
 struct TwitterCloneApp: App {
@@ -11,10 +12,13 @@ struct TwitterCloneApp: App {
     @StateObject
     var auth = TwitterCloneAuth()
     
+    @StateObject
+    var feedClient = FeedsClient.productionClient(region: .euWest)
+    
     var body: some Scene {
         WindowGroup {
             if auth.authUser != nil {
-                HomeTimelineView().environmentObject(auth)
+                HomeTimelineView().environmentObject(feedClient)
             } else {
                 StartView().environmentObject(auth)
             }

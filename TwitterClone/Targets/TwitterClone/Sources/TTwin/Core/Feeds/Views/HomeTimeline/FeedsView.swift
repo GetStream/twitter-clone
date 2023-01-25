@@ -1,6 +1,10 @@
 import SwiftUI
 
+import TwitterCloneFeeds
+
 struct FeedsView: View {
+    @EnvironmentObject var feedClient: FeedsClient
+    
     @State private var selection = 0
     
     var body: some View {
@@ -14,7 +18,7 @@ struct FeedsView: View {
             
             // MARK: Display the content under each picker
             if selection == 0 {
-                ForYouFeedsView(forYouTweets: ForYouTweetData)
+                ForYouFeedsView(forYouTweets: feedClient.activities)
             } else {
                 FollowingFeedsView(followingTweets: FollowingTweetData)
             }

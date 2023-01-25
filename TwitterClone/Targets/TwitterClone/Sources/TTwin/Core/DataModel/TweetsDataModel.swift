@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import TwitterCloneFeeds
 
 // Data structure
 struct ForYouTweetsStructure: Identifiable {
@@ -55,7 +56,10 @@ struct MyProfileStructure: Identifiable {
     var dateJoined: String
 }
 
-let ForYouTweetData = [
+// TODO add sample data
+let ForYouTweetData = [PostActivity]()
+
+let ForYouTweetDataOld = [
     ForYouTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/219/200",
         userName: "Happy Thoughts",

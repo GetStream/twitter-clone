@@ -5,9 +5,11 @@
 
 import SwiftUI
 import TwitterCloneAuth
+import TwitterCloneFeeds
 
 struct HomeTimelineView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
+    @EnvironmentObject var feedsClient: FeedsClient
     
     var body: some View {
         NavigationStack {
