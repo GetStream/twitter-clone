@@ -13,7 +13,7 @@ extension Project {
                                      dependencies: dependencies + additionalTargets.compactMap { $0.name.hasSuffix("Tests") ? nil : TargetDependency.target(name: $0.name) })
         targets += additionalTargets
         return Project(name: name,
-                       organizationName: "tuist.io",
+                       organizationName: "Stream.io Inc.",
                        packages: packages,
                        targets: targets)
     }
@@ -25,7 +25,7 @@ extension Project {
         let sources = Target(name: name,
                 platform: platform,
                 product: .framework,
-                bundleId: "io.tuist.\(name)",
+                bundleId: "io.getstream.\(name)",
                 infoPlist: .default,
                 sources: ["Targets/\(name)/Sources/**"],
                 resources: [],
@@ -33,7 +33,7 @@ extension Project {
         let tests = Target(name: "\(name)Tests",
                 platform: platform,
                 product: .unitTests,
-                bundleId: "io.tuist.\(name)Tests",
+                bundleId: "io.getstream.\(name)Tests",
                 infoPlist: .default,
                 sources: ["Targets/\(name)/Tests/**"],
                 resources: [],
@@ -55,7 +55,7 @@ extension Project {
             name: name,
             platform: platform,
             product: .app,
-            bundleId: "io.tuist.\(name)",
+            bundleId: "io.getstream.\(name)",
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/Sources/**"],
             resources: ["Targets/\(name)/Resources/**"],
@@ -66,7 +66,7 @@ extension Project {
             name: "\(name)Tests",
             platform: platform,
             product: .unitTests,
-            bundleId: "io.tuist.\(name)Tests",
+            bundleId: "io.getstream.\(name)Tests",
             infoPlist: .default,
             sources: ["Targets/\(name)/Tests/**"],
             dependencies: [

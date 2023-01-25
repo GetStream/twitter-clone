@@ -1,9 +1,9 @@
 //
-//  FeedsClientURL.swift
+//  URLFactory.swift
 //  TwitterCloneFeeds
 //
 //  Created by Jeroen Leenarts on 25/01/2023.
-//  Copyright © 2023 tuist.io. All rights reserved.
+//  Copyright © 2023 Stream.io Inc.  All rights reserved.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import SwiftUI
 
 import TwitterCloneAuth
 
-internal enum FeedsClientURL {
+internal enum FeedsURL {
     case images
     case followers(userId: String)
     case follows(userId: String)
@@ -38,7 +38,7 @@ internal class URLFactory {
         self.baseUrl = baseUrl
     }
     
-    internal func url(forPath: FeedsClientURL) -> URL {
+    internal func url(forPath: FeedsURL) -> URL {
         var newURL = baseUrl
         
         switch forPath {
@@ -48,10 +48,6 @@ internal class URLFactory {
             newURL.append(component: "feed/user")
            newURL.append(path: userId)
            newURL.append(path: "followers")
-        case .follows(let userId):
-            newURL.append(component: "feed/timeline")
-           newURL.append(path: userId)
-           newURL.append(path: "follows")
         case .user(let userId):
             newURL.append(component: "user")
             if let userId {
@@ -63,6 +59,10 @@ internal class URLFactory {
         case .timelineFeed(let userId):
             newURL.append(component: "feed/timeline")
             newURL.append(path: userId)
+        case .follows(let userId):
+            newURL.append(component: "feed/timeline")
+           newURL.append(path: userId)
+           newURL.append(path: "follows")
         case .follow(userId: let userId):
             newURL.append(component: "feed/timeline")
             newURL.append(path: userId)
@@ -70,7 +70,7 @@ internal class URLFactory {
         case .unfollow(userId: let userId, target: let target):
             newURL.append(component: "feed/timeline")
             newURL.append(path: userId)
-            newURL.append(path: "unfollow")
+            newURL.append(path: "follows")
             newURL.append(path: target)
         }
         newURL.appendApiKey()

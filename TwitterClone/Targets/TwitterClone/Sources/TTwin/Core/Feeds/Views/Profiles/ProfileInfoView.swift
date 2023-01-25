@@ -3,7 +3,7 @@
 //  TwitterClone
 //
 //  Created by amos.gyamfi@getstream.io on 19.1.2023.
-//  Copyright © 2023 tuist.io. All rights reserved.
+//  Copyright © 2023 Stream.io Inc.  All rights reserved.
 //
 
 import SwiftUI
