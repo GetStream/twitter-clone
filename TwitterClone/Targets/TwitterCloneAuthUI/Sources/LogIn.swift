@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+
 import TwitterCloneUI
 import TwitterCloneAuth
 
-struct LogIn: View {
+public struct LogIn: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @Environment(\.presentationMode) var presentationMode
     
     @State private var username = ""
     @State private var password = ""
     
-    var body: some View {
+    public var body: some View {
         NavigationStack{
             VStack {
                 Form {
@@ -46,7 +47,7 @@ struct LogIn: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.streamBlue)
+//                .tint(.streamBlue)
                 .disabled(username.isEmpty || password.isEmpty)
                 Spacer()
             }

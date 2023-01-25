@@ -5,8 +5,11 @@
 
 import SwiftUI
 
-struct TTwinLogo: View {
-    var body: some View {
+public struct TTwinLogo: View {
+    
+    public init() {}
+    
+    public var body: some View {
         Image("twitterLogo")
             .resizable()
             .scaledToFit()

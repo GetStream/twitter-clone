@@ -4,6 +4,7 @@ import StreamChatSwiftUI
 
 import TwitterCloneUI
 import TwitterCloneAuth
+import TwitterCloneAuthUI
 import TwitterCloneFeeds
 
 @main

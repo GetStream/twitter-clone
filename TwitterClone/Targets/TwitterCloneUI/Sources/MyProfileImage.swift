@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct MyProfileImage: View {
-    var body: some View {
+public struct MyProfileImage: View {
+    public init (){}
+    
+    public var body: some View {
         AsyncImage(url: URL(string: "https://picsum.photos/id/64/200")) { loading in
             if let image = loading.image {
                 image

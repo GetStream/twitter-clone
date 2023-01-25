@@ -1,5 +1,4 @@
 import SwiftUI
-import StreamChatSwiftUI
 
 
 public struct ContentView: View {

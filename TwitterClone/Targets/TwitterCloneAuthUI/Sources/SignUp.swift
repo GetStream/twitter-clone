@@ -8,14 +8,14 @@ import SwiftUI
 import TwitterCloneUI
 import TwitterCloneAuth
 
-struct SignUp: View {
+public struct SignUp: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @Environment(\.presentationMode) var presentationMode
     
     @State private var username = ""
     @State private var password = ""
     
-    var body: some View {
+    public var body: some View {
         NavigationStack{
             VStack {
                 Form {

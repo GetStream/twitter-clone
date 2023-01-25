@@ -2,7 +2,7 @@
 import Foundation
 import SwiftUI
 
-extension ShapeStyle where Self == Color {
+public extension ShapeStyle where Self == Color {
     static var streamBlue: Color {
         Color(red: 0.00, green: 0.37, blue: 1.00)
     }

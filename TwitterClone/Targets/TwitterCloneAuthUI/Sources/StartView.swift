@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import TwitterCloneUI
 import TwitterCloneAuth
 
-struct StartView: View {
+public struct StartView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @State private var isPresented = false
     @State private var isShown = false
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         NavigationStack {
             VStack {
                 Text("See what's happening in the world right now.")

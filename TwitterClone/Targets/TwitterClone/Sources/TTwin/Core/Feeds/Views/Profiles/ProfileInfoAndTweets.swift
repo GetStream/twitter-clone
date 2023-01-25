@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import TwitterCloneUI
 
 struct ProfileInfoAndTweets: View {
     @State private var selection = 0
