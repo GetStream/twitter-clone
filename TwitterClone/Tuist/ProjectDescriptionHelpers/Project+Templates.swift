@@ -7,7 +7,7 @@ import ProjectDescription
 
 extension Project {
     /// Helper function to create the Project for this ExampleApp
-    public static func app(name: String, platform: Platform, packages: [Package], dependencies: [TargetDependency], additionalTargets: [Target]) -> Project {
+    public static func app(name: String, platform: Platform, packages: [Package], dependencies: [TargetDependency], additionalTargets: [Target], additionalFiles: [FileElement]) -> Project {
         var targets = makeAppTargets(name: name,
                                      platform: platform,
                                      dependencies: dependencies + additionalTargets.compactMap { $0.name.hasSuffix("Tests") ? nil : TargetDependency.target(name: $0.name) })
@@ -15,7 +15,8 @@ extension Project {
         return Project(name: name,
                        organizationName: "Stream.io Inc.",
                        packages: packages,
-                       targets: targets)
+                       targets: targets,
+        additionalFiles: additionalFiles)
     }
 
     // MARK: - Private
