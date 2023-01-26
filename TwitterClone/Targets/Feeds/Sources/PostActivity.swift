@@ -18,7 +18,13 @@ protocol Activity {
     var id: String { get set }
 }
 
-public struct PostActivity: Activity, Codable, Identifiable {
+public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
+    enum CodingKeys: CodingKey {
+        case id
+        case actor
+        case object
+        case verb
+    }
     public var actor: String
     /// The verb of the activity.
     public var verb: String
@@ -28,8 +34,8 @@ public struct PostActivity: Activity, Codable, Identifiable {
     public var id: String
     
     //TODO: needs to come from somewhere:
-    public var userName: String
-    public var userHandle: String
+    public var userName: String?
+    public var userHandle: String?
     public var tweetSentAt: String?
     public var tweetSummary: String?
     public var hashTag: String?
@@ -50,6 +56,15 @@ public struct PostActivity: Activity, Codable, Identifiable {
         try container.encode("SU:" + self.actor, forKey: .actor)
         try container.encode(self.verb, forKey: .verb)
         try container.encode(self.object, forKey: .object)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        actor = try container.decode(String.self, forKey: .actor)
+        verb = try container.decode(String.self, forKey: .verb)
+        object = try container.decode(String.self, forKey: .object)
+        id = try container.decode(String.self, forKey: .id)
+        
     }
 }
 

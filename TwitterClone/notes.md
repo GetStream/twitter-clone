@@ -1,5 +1,12 @@
 ```
 {
+	"feedToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWE2NmM0MjEzMzJlM2JmMzdiYWQ2ZWRiMDYyZWY4OTYifQ.3u7tBgtXq4TeO15sRSsQwlorFim0BQGKJlw3JP2cxJo",
+	"chatToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWE2NmM0MjEzMzJlM2JmMzdiYWQ2ZWRiMDYyZWY4OTYifQ.3u7tBgtXq4TeO15sRSsQwlorFim0BQGKJlw3JP2cxJo",
+	"username":"jeroen",
+	"userId":"aa66c421332e3bf37bad6edb062ef896"
+}
+
+{
 	"feedToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI0MDM3OGEwY2IzYTE1YjFjYTU2YTRkZmU0YTNmMDcifQ.HDYaC3qqnAiLjBzwSXtRFPLjmlkPO-tJo0ecxcGAMew",
 	"chatToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjI0MDM3OGEwY2IzYTE1YjFjYTU2YTRkZmU0YTNmMDcifQ.HDYaC3qqnAiLjBzwSXtRFPLjmlkPO-tJo0ecxcGAMew",
 	"username":"jeroen",

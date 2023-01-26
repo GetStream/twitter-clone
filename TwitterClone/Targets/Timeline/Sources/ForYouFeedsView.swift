@@ -7,15 +7,12 @@ import Feeds
 import SwiftUI
 
 public struct ForYouFeedsView: View {
+    @EnvironmentObject var feedClient: FeedsClient
     
-    public init(forYouTweets: [PostActivity]){
-        self.forYouTweets = forYouTweets
-    }
-    
-    var forYouTweets: [PostActivity]
+    public init() {}
     
     public var body: some View {
-        List(forYouTweets) {
+        List(feedClient.activities) {
             item in
             HStack(alignment: .top) {
                 AsyncImage(url: URL(string: "\(item.userProfilePhoto ?? "https://picsum.photos/id/219/200")")) { loading in
@@ -36,12 +33,12 @@ public struct ForYouFeedsView: View {
                 
                 VStack(alignment: .leading) {
                     HStack(alignment: .top) {
-                        Text("\(item.userName)")
+                        Text("\(item.actor)")
                             .fontWeight(.bold)
                             .lineLimit(1)
                             .layoutPriority(1)
                         
-                        Text("\(item.userHandle)")
+                        Text("\(item.actor)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .lineLimit(1)
@@ -102,12 +99,22 @@ public struct ForYouFeedsView: View {
             }
         } //LIST STYLES
         .listStyle(.plain)
+        .onAppear {
+            Task {
+                // TODO: switch between the right feeds depending on context
+                do {
+                    try await feedClient.getActivities()
+                } catch {
+                    print(error)
+                }
+            }
+        }
     }
 }
 
 struct ForYouFeedsView_Previews: PreviewProvider {
     static var previews: some View {
-        ForYouFeedsView(forYouTweets: ForYouTweetData)
+        ForYouFeedsView()
             .preferredColorScheme(.dark)
     }
 }

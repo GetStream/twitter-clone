@@ -18,7 +18,7 @@ struct FeedsView: View {
             
             // MARK: Display the content under each picker
             if selection == 0 {
-                ForYouFeedsView(forYouTweets: feedClient.activities)
+                ForYouFeedsView()
             } else {
                 FollowingFeedsView(followingTweets: FollowingTweetData)
             }

@@ -51,9 +51,11 @@ public final class TwitterCloneAuth: ObservableObject {
     public init() {
         // TODO: Make baseUrl dynamic
         
+        
         signupUrl = URL(string: "http://localhost:8080/auth/signup")!
         loginUrl = URL(string: "http://localhost:8080/auth/login")!
         authUser = try? storedAuthUser()
+//        logout()
     }
     
     public func storedAuthUser() throws-> AuthUser {

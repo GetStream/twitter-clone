@@ -30,22 +30,4 @@ public struct FeedFollower: Decodable {
         updatedAt  = try container.decode(Date.self, forKey: .updatedAt)
 
     }
-}
-
-struct FeedFollowers: Decodable {
-    
-    enum CodingKeys: String, CodingKey {
-        case results
-    }
-    
-    let followers: [FeedFollower]
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        followers = try container.decode([FeedFollower].self, forKey: .results)
-    }
-}
-
-
-//{"results":[{"feed_id":"timeline:6240378a0cb3a15b1ca56a4dfe4a3f07","target_id":"user:47b2d8af2716fee6303a1a036309d892","created_at":"2023-01-19T15:06:39.173830389Z","updated_at":"2023-01-19T15:06:39.173830389Z"}],"duration":"2.46ms"}
-      
+}      

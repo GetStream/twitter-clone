@@ -9,8 +9,6 @@
 import Foundation
 import SwiftUI
 
-import Auth
-
 internal enum FeedsURL {
     case images
     case followers(userId: String)
@@ -31,9 +29,7 @@ public enum Region: String {
 
 internal class URLFactory {
     let baseUrl: URL
-    
-    @EnvironmentObject var auth: TwitterCloneAuth
-    
+        
     internal init(baseUrl: URL) {
         self.baseUrl = baseUrl
     }

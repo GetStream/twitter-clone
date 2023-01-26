@@ -40,7 +40,7 @@ struct MyProfileInfoAndTweets: View {
                 
                 // MARK: Display the content under each picker
                 if selection == 0 { // My own tweets
-                    ForYouFeedsView(forYouTweets: ForYouTweetData)
+                    ForYouFeedsView()
                         .frame(height: UIScreen.main.bounds.height)
                 } else { // Tweets I have liked
                     FollowingFeedsView(followingTweets: FollowingTweetData)

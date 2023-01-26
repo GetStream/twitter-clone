@@ -10,6 +10,14 @@ import Foundation
 import SwiftUI
 import Auth
 import NetworkKit
+import os.log
+
+internal extension OSLog {
+    private static var subsystem = Bundle.main.bundleIdentifier!
+
+    /// Logs the view cycles like viewDidLoad.
+    static let clientLog = OSLog(subsystem: subsystem, category: "client")
+}
 
 private struct FollowParamModel: Encodable {
     let target: String
@@ -35,18 +43,19 @@ public struct PagingModel: Encodable {
 }
 
 public class FeedsClient: ObservableObject {
-    @EnvironmentObject var auth: TwitterCloneAuth
+    private ( set ) public var auth: TwitterCloneAuth
     
     @Published private ( set ) public var activities: [PostActivity] = []
     
     private let urlFactory: URLFactory
     
-    static public func productionClient(region: Region) -> FeedsClient {
-        return FeedsClient(urlString: region.rawValue)
+    static public func productionClient(region: Region, auth: TwitterCloneAuth) -> FeedsClient {
+        return FeedsClient(urlString: region.rawValue, auth: auth)
     }
     
-    private init(urlString: String) {
+    private init(urlString: String, auth: TwitterCloneAuth) {
         urlFactory = URLFactory(baseUrl: URL(string: urlString)!)
+        self.auth = auth
     }
     
     public func user() async throws -> FeedUser {
@@ -184,7 +193,7 @@ public class FeedsClient: ObservableObject {
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
-        return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedFollowers.self, from: data).followers
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[FeedFollower]>.self, from: data).results
     }
     
     public func following(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
@@ -210,7 +219,7 @@ public class FeedsClient: ObservableObject {
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
-        return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedFollowers.self, from: data).followers
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[FeedFollower]>.self, from: data).results
     }
     
     //TODO: paging
@@ -221,7 +230,7 @@ public class FeedsClient: ObservableObject {
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
+        var request = URLRequest(url: urlFactory.url(forPath: .timelineFeed(userId: userId)))
         request.httpMethod = "GET"
 
         // Headers
@@ -233,10 +242,16 @@ public class FeedsClient: ObservableObject {
         let statusCode = (response as? HTTPURLResponse)?.statusCode
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+
+        if OSLog.clientLog.isEnabled(type: .debug) {
+            os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
         
-        let activities = try TwitterCloneNetworkKit.jsonDecoder.decode([PostActivity].self, from: data)
+        let activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[PostActivity]>.self, from: data).results
         
-        self.activities = activities
+        DispatchQueue.main.async { [weak self] in
+            self?.activities = activities
+        }
     }
     
     public func addActivity(_ activity: PostActivity) async throws -> PostActivityResponse {
