@@ -8,10 +8,12 @@
 
 import SwiftUI
 
-struct NewlyTweetedButton: View {
+public struct NewlyTweetedButton: View {
     @State private var buttonPosition = 0.0
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         
         HStack {
             Image(systemName: "arrow.up")

@@ -7,33 +7,36 @@ import MyPlugin
 // Local plugin loaded
 let localHelper = LocalHelper(name: "MyPlugin")
 
-let kitName = "TwitterCloneKit"
-let networkKitName = "TwitterCloneNetworkKit"
+let networkKitName = "NetworkKit"
 let uiName = "TwitterCloneUI"
-let authName = "TwitterCloneAuth"
-let authUiName = "TwitterCloneAuthUI"
-let keychainName = "TwitterCloneKeychain"
+let authName = "Auth"
+let authUiName = "AuthUI"
+let keychainName = "Keychain"
 
-let messagesName = "TwitterCloneMessages"
-let profileName = "TwitterCloneProfile"
-let searchName = "TwitterCloneSearch"
-let settingsName = "TwitterCloneSettings"
-let spacesName = "TwitterCloneSpaces"
-let timelineName = "TwitterCloneTimeline"
-let feedsName = "TwitterCloneFeeds"
+let messagesName = "Messages"
+let profileName = "Profile"
+let searchName = "Search"
+let settingsName = "Settings"
+let spacesName = "Spaces"
+let timelineName = "Timeline"
+let feedsName = "Feeds"
 
 let messagesTarget =
     Project.makeFrameworkTargets(name: messagesName,
                                  platform: .iOS,
                                  dependencies:
                                     [
-                                        .target(name: authName)
+                                        .external(name: "StreamChatSwiftUI"),
+                                        .target(name: authName),
+                                        .target(name: uiName)
                                     ])
 let profileTarget =
     Project.makeFrameworkTargets(name: profileName,
                                  platform: .iOS,
                                  dependencies: [
-                                    .target(name: authName)
+                                    .target(name: authName),
+                                    .target(name: timelineName),
+                                    .target(name: uiName)
                                  ])
 let searchTarget =
     Project.makeFrameworkTargets(name: searchName,
@@ -44,18 +47,23 @@ let searchTarget =
 let settingsTarget =
     Project.makeFrameworkTargets(name: settingsName,
                                  platform: .iOS,
-                                 dependencies: [])
+                                 dependencies: [
+                                        .target(name: uiName)
+                                 ])
 let timelineTarget =
     Project.makeFrameworkTargets(name: timelineName,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
-                                    .target(name: feedsName)
+                                    .target(name: feedsName),
+                                    .target(name: searchName),
+                                    .target(name: uiName)
                                  ])
 let spacesTarget =
     Project.makeFrameworkTargets(name: spacesName,
                                  platform: .iOS,
                                  dependencies: [
+                                    .target(name: uiName),
                                     .target(name: authName),
                                     .external(name: "HMSSDK")
                                  ])
@@ -63,14 +71,9 @@ let feedsTarget =
     Project.makeFrameworkTargets(name: feedsName,
                                  platform: .iOS,
                                  dependencies: [
+                                    .target(name: uiName),
                                     .target(name: authName),
                                     .target(name: networkKitName)
-                                 ])
-let kitTarget =
-    Project.makeFrameworkTargets(name: kitName,
-                                 platform: .iOS,
-                                 dependencies: [
-                                    .external(name: "StreamChat")
                                  ])
 let networkKitTarget =
     Project.makeFrameworkTargets(name: networkKitName,
@@ -105,4 +108,4 @@ let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
                           dependencies: [.external(name: "StreamChatSwiftUI")],
-                          additionalTargets: kitTarget + uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget + networkKitTarget, additionalFiles: ["graph.png", "../README.md"])
+                          additionalTargets: uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget + networkKitTarget, additionalFiles: ["graph.png", "../README.md"])

@@ -10,12 +10,12 @@ public struct TTwinLogo: View {
     public init() {}
     
     public var body: some View {
-        Image("twitterLogo")
+        TwitterCloneUIAsset.twitterLogo.swiftUIImage
             .resizable()
             .scaledToFit()
             .frame(width: 32, height: 26)
             .overlay(
-                Image("twitterLogo")
+                TwitterCloneUIAsset.twitterLogo.swiftUIImage
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 26)

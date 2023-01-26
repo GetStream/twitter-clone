@@ -3,9 +3,10 @@ import SwiftUI
 import StreamChatSwiftUI
 
 import TwitterCloneUI
-import TwitterCloneAuth
-import TwitterCloneAuthUI
-import TwitterCloneFeeds
+import Timeline
+import Auth
+import AuthUI
+import Feeds
 
 @main
 struct TwitterCloneApp: App {
