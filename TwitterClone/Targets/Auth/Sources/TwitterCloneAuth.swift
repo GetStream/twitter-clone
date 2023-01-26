@@ -1,7 +1,15 @@
 import Foundation
+import os.log
 
 import Keychain
 import NetworkKit
+
+internal extension OSLog {
+    private static var subsystem = Bundle.main.bundleIdentifier!
+
+    /// Logs the view cycles like viewDidLoad.
+    static let clientLog = OSLog(subsystem: subsystem, category: "auth")
+}
 
 private enum AuthKeychainKey: String {
     case feedToken
@@ -17,6 +25,7 @@ public struct AuthUser: Decodable {
     public let userId: String
     
     public func persist() {
+        os_log("Persist user credentials")
         KeyChainHelper.shared.setString(feedToken, forKey: AuthKeychainKey.feedToken.rawValue, requireUserpresence: false)
         KeyChainHelper.shared.setString(chatToken, forKey: AuthKeychainKey.chatToken.rawValue, requireUserpresence: false)
         KeyChainHelper.shared.setString(username, forKey: AuthKeychainKey.username.rawValue, requireUserpresence: false)
@@ -31,6 +40,7 @@ private struct LoginCredential: Encodable {
 
 public enum AuthError: Error {
     case noStoredAuthUser
+    case noLoadedAuthUser
 }
 
 public final class TwitterCloneAuth: ObservableObject {
@@ -41,6 +51,7 @@ public final class TwitterCloneAuth: ObservableObject {
     public private(set) var authUser: AuthUser?
     
     public func logout() {
+        os_log("Logout triggered")
         KeyChainHelper.shared.removeKey(AuthKeychainKey.feedToken.rawValue)
         KeyChainHelper.shared.removeKey(AuthKeychainKey.chatToken.rawValue)
         KeyChainHelper.shared.removeKey(AuthKeychainKey.username.rawValue)
@@ -50,16 +61,19 @@ public final class TwitterCloneAuth: ObservableObject {
     
     public init() {
         // TODO: Make baseUrl dynamic
-        
-        
+        os_log("Init auth")
         signupUrl = URL(string: "http://localhost:8080/auth/signup")!
         loginUrl = URL(string: "http://localhost:8080/auth/login")!
-        authUser = try? storedAuthUser()
+        do {
+            authUser = try storedAuthUser()
+        } catch {
+            os_log(.error, "Load credentials from keychain failed: {public}@", error.localizedDescription)
+        }
 //        logout()
     }
     
     public func storedAuthUser() throws-> AuthUser {
-        
+        os_log("Load credentials from keychain")
         guard let feedToken = KeyChainHelper.shared.string(forKey: AuthKeychainKey.feedToken.rawValue, requireUserpresence: false) else { throw AuthError.noStoredAuthUser }
         guard let chatToken = KeyChainHelper.shared.string(forKey: AuthKeychainKey.chatToken.rawValue, requireUserpresence: false) else { throw AuthError.noStoredAuthUser }
         guard let username = KeyChainHelper.shared.string(forKey: AuthKeychainKey.username.rawValue, requireUserpresence: false) else { throw AuthError.noStoredAuthUser }
@@ -69,6 +83,7 @@ public final class TwitterCloneAuth: ObservableObject {
     }
     
     public func signup(username: String, password: String) async throws {
+        os_log("User signup @", username)
         let credential = LoginCredential(username: username, password: password)
         
         var loginRequest = URLRequest(url: signupUrl)
@@ -89,6 +104,7 @@ public final class TwitterCloneAuth: ObservableObject {
     }
     
     public func login(username: String, password: String) async throws {
+        os_log("User login @", username)
         let credential = LoginCredential(username: username, password: password)
         let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(credential)
         

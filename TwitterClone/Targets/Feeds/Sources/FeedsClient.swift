@@ -61,7 +61,9 @@ public class FeedsClient: ObservableObject {
     public func user() async throws -> FeedUser {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -85,7 +87,9 @@ public class FeedsClient: ObservableObject {
     public func updateUser(_ user: FeedUser) async throws {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -107,7 +111,9 @@ public class FeedsClient: ObservableObject {
     public func createUser(_ user: FeedUser) async throws {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .user(userId: nil)))
@@ -128,7 +134,9 @@ public class FeedsClient: ObservableObject {
     public func follow(feedId: String, target: String, activityCopyLimit: Int) async throws {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -150,7 +158,9 @@ public class FeedsClient: ObservableObject {
     public func unfollow(feedId: String, target: String, keepHistory: Bool) async throws {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -173,7 +183,9 @@ public class FeedsClient: ObservableObject {
     public func followers(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -199,7 +211,9 @@ public class FeedsClient: ObservableObject {
     public func following(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -226,7 +240,9 @@ public class FeedsClient: ObservableObject {
     public func getActivities() async throws {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -257,7 +273,9 @@ public class FeedsClient: ObservableObject {
     public func addActivity(_ activity: PostActivity) async throws -> PostActivityResponse {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
@@ -280,7 +298,9 @@ public class FeedsClient: ObservableObject {
     public func uploadImage(fileName: String, mimeType: String, imageData: Data) async throws -> URL {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .images))
@@ -309,7 +329,9 @@ public class FeedsClient: ObservableObject {
     public func deleteImage(cdnUrl: String) async throws {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .images))
@@ -330,7 +352,9 @@ public class FeedsClient: ObservableObject {
     public func processImage(cdnUrl: String, resize: CdnImageResizeStrategy? = nil, crop: CdnImageCropStrategy? = nil, width: Int? = nil, height: Int? = nil) async throws -> URL {
         let session = TwitterCloneNetworkKit.restSession
         
-        let authUser = try auth.storedAuthUser()
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
 
         let feedToken = authUser.feedToken
         var url = urlFactory.url(forPath: .images)
