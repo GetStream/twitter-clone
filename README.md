@@ -17,6 +17,14 @@ Run:
 curl -Ls https://install.tuist.io | bash
 ```
 
+## Fetching external dependencies
+
+When you get freshly cloned this repository or dependencies have been updated. Run:
+
+```shell
+tuist fetch
+```
+
 ## Generate and open project files
 To generate the Xcode project files and open the project in Xcode, run:
 ```shell
@@ -28,4 +36,9 @@ We work towards a µFramework based packaging system.
 
 ![](TwitterClone/graph.png)
 
+To generate a fresh graph, in case you updated the project's package structure or dependencies. Run:
+
+```shell
+tuist graph --skip-test-targets
+```
 
