@@ -19,6 +19,14 @@ protocol Activity {
 }
 
 public struct EnrichedPostActivity: Decodable, Identifiable {
+    static let dateComponentsFormatter: DateComponentsFormatter = {
+        let form = DateComponentsFormatter()
+        form.maximumUnitCount = 2
+        form.unitsStyle = .abbreviated
+        form.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+        return form
+    }()
+    
     enum CodingKeys: CodingKey {
         case id
         case actor
@@ -38,7 +46,11 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
     public var numberOfLikes: String?
     public var numberOfComments: String?
 
-    public var time: String
+    public var time: Date
+    
+    public var postAge: String {
+        return EnrichedPostActivity.dateComponentsFormatter.string(from: time, to: Date()) ?? "-"
+    }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -46,7 +58,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         verb = try container.decode(String.self, forKey: .verb)
         object = try container.decode(String.self, forKey: .object)
         id = try container.decode(String.self, forKey: .id)
-        time = try container.decode(String.self, forKey: .time)
+        time = try container.decode(Date.self, forKey: .time)
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
     }
 }

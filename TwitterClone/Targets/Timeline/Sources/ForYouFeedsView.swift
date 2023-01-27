@@ -47,7 +47,7 @@ public struct ForYouFeedsView: View {
                             .lineLimit(1)
                             .layoutPriority(1)
                         
-                        Text("* " + item.time)
+                        Text("* " + item.postAge)
                             .font(.subheadline)
                             .lineLimit(1)
                             .foregroundColor(.secondary)

@@ -13,8 +13,8 @@ public struct FeedUser: Refable, Codable {
     public let firstname: String
     public let lastname: String
     public let username: String
-    public let createdAt: String
-    public let updatedAt: String
+    public let createdAt: Date
+    public let updatedAt: Date
     public let profilePicture: String?
     
     public var fullname: String {
@@ -35,8 +35,8 @@ public struct FeedUser: Refable, Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.userId = try container.decode(String.self, forKey: .userId)
-        self.createdAt = try container.decode(String.self, forKey: .created_at)
-        self.updatedAt = try container.decode(String.self, forKey: .updated_at)
+        self.createdAt = try container.decode(Date.self, forKey: .created_at)
+        self.updatedAt = try container.decode(Date.self, forKey: .updated_at)
         
         let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
         self.firstname = try dataContainer.decode(String.self, forKey: .firstname)

@@ -38,7 +38,9 @@ public final class TwitterCloneNetworkKit {
     }
     
     static public var jsonDecoder: JSONDecoder {
-        return JSONDecoder()
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.dateDecodingStrategy = .iso8601WithFractionalSeconds
+        return jsonDecoder
     }
     
     static public var restSession: URLSession {
@@ -56,4 +58,35 @@ public final class TwitterCloneNetworkKit {
         
         return session
     }
+}
+
+extension Formatter {
+   static var customDateFormatter: DateFormatter = {
+       let dateFormatter = DateFormatter()
+       dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+       dateFormatter.timeZone = .gmt
+       return dateFormatter
+   }()
+    
+    static var customISO8601DateFormatter: ISO8601DateFormatter = {
+      let formatter = ISO8601DateFormatter()
+      formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+      return formatter
+   }()
+
+}
+
+extension JSONDecoder.DateDecodingStrategy {
+   static var iso8601WithFractionalSeconds = custom { decoder in
+      let dateStr = try decoder.singleValueContainer().decode(String.self)
+      let customDateFormatter = Formatter.customDateFormatter
+      if let date = customDateFormatter.date(from: dateStr) {
+         return date
+      } else if let date = Formatter.customISO8601DateFormatter.date(from: dateStr) {
+          return date
+      }
+      throw DecodingError.dataCorrupted(
+               DecodingError.Context(codingPath: decoder.codingPath,
+                                     debugDescription: "Invalid date"))
+   }
 }
