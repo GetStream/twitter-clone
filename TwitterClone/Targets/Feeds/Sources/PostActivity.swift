@@ -44,13 +44,7 @@ public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
     public var numberOfComments: String?
     
     public var userProfilePhoto: String?
-    
-    public var actionsMenuIcon: String?
-    public var commentIcon: String?
-    public var likeIcon: String?
-    public var retweetIcon: String?
-    public var shareTweetIcon: String?
-    
+        
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode("SU:" + self.actor, forKey: .actor)

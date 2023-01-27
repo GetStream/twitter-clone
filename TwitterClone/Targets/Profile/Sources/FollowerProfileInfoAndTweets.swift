@@ -48,21 +48,8 @@ struct FollowerProfileInfoAndTweets: View {
                 
                 ProfileInfoView(myProfile: FollowerProfileData)
                 
-                Picker("For You and Following picker", selection: $selection) {
-                    Text("Tweets").tag(0)
-                    Text("Likes").tag(2)
-                }
-                .pickerStyle(.segmented)
-                .labelsHidden()
-                
-                // MARK: Display the content under each picker
-                if selection == 0 { // My own tweets
-                    ForYouFeedsView()
-                        .frame(height: UIScreen.main.bounds.height)
-                } else { // Tweets I have liked
-                    FollowingFeedsView(followingTweets: FollowingTweetData)
-                        .frame(height: UIScreen.main.bounds.height)
-                }
+                ForYouFeedsView()
+                    .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }
        

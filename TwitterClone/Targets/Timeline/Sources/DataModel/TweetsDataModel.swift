@@ -17,12 +17,8 @@ struct ForYouTweetsStructure: Identifiable {
     var tweetSummary: String
     var hashTag: String
     var tweetPhoto: String
-    var commentIcon: String
     var numberOfComments: String
-    var retweetIcon: String
-    var likeIcon: String
     var numberOfLikes: String
-    var shareTweetIcon: String
 }
 
 // This is the same as the above but removes the tweet with image
@@ -35,12 +31,8 @@ public struct FollowingTweetsStructure: Identifiable {
     public var actionsMenuIcon: String
     public var tweetSummary: String
     public var hashTag: String
-    public var commentIcon: String
     public var numberOfComments: String
-    public var retweetIcon: String
-    public var likeIcon: String
     public var numberOfLikes: String
-    public var shareTweetIcon: String
 }
 
 // TODO add sample data
@@ -56,12 +48,8 @@ let ForYouTweetDataOld = [
         tweetSummary: "Starting the day with a positive attitude is key to a happy life 🥰",
         hashTag: "#happylife",
         tweetPhoto: "https://picsum.photos/id/220/350/200",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "2",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "2"),
     
     ForYouTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/25/200",
@@ -72,12 +60,8 @@ let ForYouTweetDataOld = [
         tweetSummary: "Just finished reading the latest bestseller and I am blown away by the author's storytelling skills",
         hashTag: "#BookReview",
         tweetPhoto: "https://picsum.photos/id/81/350/200",
-        commentIcon: "message",
         numberOfComments: "5",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "10",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "10"),
     
     ForYouTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/3/200",
@@ -88,12 +72,8 @@ let ForYouTweetDataOld = [
         tweetSummary: "Spending the afternoon playing with my furry best friend 🐇 🐈",
         hashTag: "",
         tweetPhoto: "https://picsum.photos/id/120/350/200",
-        commentIcon: "message",
         numberOfComments: "42",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "458",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "458"),
     
     ForYouTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/4/200",
@@ -104,12 +84,8 @@ let ForYouTweetDataOld = [
         tweetSummary: "Trying out a new Mexican restaurant and loving the flavors 🥗",
         hashTag: "",
         tweetPhoto: "https://picsum.photos/id/62/350/200",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "3",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "3"),
     
     ForYouTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/15/200",
@@ -120,12 +96,8 @@ let ForYouTweetDataOld = [
         tweetSummary: "What is $0 in Swift? 👩‍💻",
         hashTag: "#Swift #SwiftUI",
         tweetPhoto: "https://picsum.photos/id/18/350/200",
-        commentIcon: "message",
         numberOfComments: "70",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "123",
-        shareTweetIcon: "square.and.arrow.up.on.square")
+        numberOfLikes: "123")
 ]
 
 public let FollowingTweetData = [
@@ -137,12 +109,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "The future is here and it's all about Artificial Intelligence and MachineLearning 👩‍🏫",
         hashTag: "#Tech",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "2",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "2"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/137/200",
@@ -152,12 +120,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "Exploring the beautiful beaches of Thailand and loving every minute of it",
         hashTag: "",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "2",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "2"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/106/200",
@@ -167,12 +131,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "Beginning my day with a 5k run and feeling energized 🏃🏾‍♂️",
         hashTag: "#fitness",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "2",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "2"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/6/200",
@@ -182,12 +142,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "Listening to my favorite band's new album on repeat. It's amazing music🎻",
         hashTag: "",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "2",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "2"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/254/200",
@@ -197,12 +153,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "Just finished reading the latest bestseller and I am blown away by the author's storytelling skills",
         hashTag: "",
-        commentIcon: "message",
         numberOfComments: "5",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "10",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "10"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/33/200",
@@ -212,12 +164,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "Spending the afternoon playing with my furry best friend 🥰",
         hashTag: "#petsparent",
-        commentIcon: "message",
         numberOfComments: "42",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "458",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "458"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/44/200",
@@ -227,12 +175,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "Trying out a new Mexican restaurant and loving the flavors",
         hashTag: "",
-        commentIcon: "message",
         numberOfComments: "1",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "3",
-        shareTweetIcon: "square.and.arrow.up.on.square"),
+        numberOfLikes: "3"),
     
     FollowingTweetsStructure(
         userProfilePhoto: "https://picsum.photos/id/267/200",
@@ -242,12 +186,8 @@ public let FollowingTweetData = [
         actionsMenuIcon: "ellipsis.circle",
         tweetSummary: "What is $0 in Swift?",
         hashTag: "#Swift #SwiftUI",
-        commentIcon: "message",
         numberOfComments: "70",
-        retweetIcon: "arrow.2.squarepath",
-        likeIcon: "heart",
-        numberOfLikes: "123",
-        shareTweetIcon: "square.and.arrow.up.on.square")
+        numberOfLikes: "123")
 ]
 
 

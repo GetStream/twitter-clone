@@ -9,19 +9,7 @@ struct FeedsView: View {
     
     var body: some View {
         VStack {
-            Picker("For You and Following picker", selection: $selection) {
-                Text("For You").tag(0)
-                Text("Following").tag(2)
-            }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            
-            // MARK: Display the content under each picker
-            if selection == 0 {
-                ForYouFeedsView()
-            } else {
-                FollowingFeedsView(followingTweets: FollowingTweetData)
-            }
+            ForYouFeedsView()
         }
     }
 }

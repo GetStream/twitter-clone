@@ -22,7 +22,10 @@ public struct ForYouFeedsView: View {
                             .scaledToFit()
                             .clipShape(Circle())
                     } else if loading.error != nil {
-                        Text("There was an error loading the profile image.")
+                        Image(systemName: "exclamationmark.icloud")
+                            .resizable()
+                            .scaledToFit()
+//                            .clipShape(Circle())
                     } else {
                         ProgressView()
                     }
@@ -51,8 +54,7 @@ public struct ForYouFeedsView: View {
                         
                         Spacer()
                         
-                        Image(systemName:
-                                "\(item.actionsMenuIcon ?? "heart")")
+                        Image(systemName:"ellipsis.circle")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     }
@@ -72,7 +74,10 @@ public struct ForYouFeedsView: View {
                                 .resizable()
                                 .scaledToFit()
                         } else if loading.error != nil {
-                            Text("There was an error loading the profile image.")
+                            Image(systemName: "exclamationmark.icloud")
+                                .resizable()
+                                .scaledToFit()
+    //                            .clipShape(Circle())
                         } else {
                             //ProgressView()
                         }
@@ -83,15 +88,15 @@ public struct ForYouFeedsView: View {
                     .accessibilityAddTraits(.isButton)
                     
                     HStack{
-                        Image(systemName: "\(item.commentIcon ?? "heart")")
+                        Image(systemName: "message")
                         Text("\(item.numberOfComments ?? "x")")
                         Spacer()
-                        Image(systemName: "\(item.retweetIcon ?? "heart")")
+                        Image(systemName:"arrow.2.squarepath")
                         Spacer()
-                        Image(systemName: "\(item.likeIcon ?? "heart")")
-                        Text("\(item.numberOfLikes ?? "heart")")
+                        Image(systemName: "heart")
+                        Text("\(item.numberOfLikes ?? "0")")
                         Spacer()
-                        Image(systemName: "\(item.shareTweetIcon ?? "heart")")
+                        Image(systemName: "square.and.arrow.up.on.square")
                     }
                     .font(.subheadline)
                     .foregroundColor(.secondary)
