@@ -18,12 +18,46 @@ protocol Activity {
     var id: String { get set }
 }
 
+public struct EnrichedPostActivity: Decodable, Identifiable {
+    enum CodingKeys: CodingKey {
+        case id
+        case actor
+        case object
+        case verb
+        case time
+        case tweetPhoto
+    }
+    
+    public var actor: FeedUser
+    public var verb: String
+    public var object: String
+    public var id: String
+    
+    public var tweetPhoto: String?
+    
+    public var numberOfLikes: String?
+    public var numberOfComments: String?
+
+    public var time: String
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        actor = try container.decode(FeedUser.self, forKey: .actor)
+        verb = try container.decode(String.self, forKey: .verb)
+        object = try container.decode(String.self, forKey: .object)
+        id = try container.decode(String.self, forKey: .id)
+        time = try container.decode(String.self, forKey: .time)
+        tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
+    }
+}
+
 public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
     enum CodingKeys: CodingKey {
         case id
         case actor
         case object
         case verb
+        case tweetPhoto
     }
     public var actor: String
     /// The verb of the activity.
@@ -42,14 +76,15 @@ public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
     public var tweetPhoto: String?
     public var numberOfLikes: String?
     public var numberOfComments: String?
-    
-    public var userProfilePhoto: String?
-        
+            
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode("SU:" + self.actor, forKey: .actor)
         try container.encode(self.verb, forKey: .verb)
         try container.encode(self.object, forKey: .object)
+        if let tweetPhoto {
+            try container.encode(tweetPhoto, forKey: .tweetPhoto)
+        }
     }
     
     public init(from decoder: Decoder) throws {
@@ -59,6 +94,7 @@ public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
         object = try container.decode(String.self, forKey: .object)
         id = try container.decode(String.self, forKey: .id)
         
+        tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
     }
 }
 

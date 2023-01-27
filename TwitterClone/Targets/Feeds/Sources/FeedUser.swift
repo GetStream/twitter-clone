@@ -9,12 +9,17 @@
 import Foundation
 
 public struct FeedUser: Refable, Codable {
-    let userId: String
-    let firstname: String
-    let lastname: String
-    let username: String
-    let createdAt: Date
-    let updatedAt: Date
+    public let userId: String
+    public let firstname: String
+    public let lastname: String
+    public let username: String
+    public let createdAt: String
+    public let updatedAt: String
+    public let profilePicture: String?
+    
+    public var fullname: String {
+        return [firstname, lastname].joined(separator: " ") as String
+    }
     
     enum CodingKeys: String, CodingKey {
         case userId = "id"
@@ -24,18 +29,21 @@ public struct FeedUser: Refable, Codable {
         case firstname
         case lastname
         case username
+        case profilePicture
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.userId = try container.decode(String.self, forKey: .userId)
-        self.createdAt = try container.decode(Date.self, forKey: .created_at)
-        self.updatedAt = try container.decode(Date.self, forKey: .updated_at)
+        self.createdAt = try container.decode(String.self, forKey: .created_at)
+        self.updatedAt = try container.decode(String.self, forKey: .updated_at)
         
         let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
         self.firstname = try dataContainer.decode(String.self, forKey: .firstname)
         self.lastname = try dataContainer.decode(String.self, forKey: .lastname)
         self.username = try dataContainer.decode(String.self, forKey: .username)
+        
+        self.profilePicture = try dataContainer.decodeIfPresent(String.self, forKey: .profilePicture)
     }
     
     public func encode(to encoder: Encoder) throws {

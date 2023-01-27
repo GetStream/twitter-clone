@@ -15,7 +15,7 @@ public struct ForYouFeedsView: View {
         List(feedClient.activities) {
             item in
             HStack(alignment: .top) {
-                AsyncImage(url: URL(string: "\(item.userProfilePhoto ?? "https://picsum.photos/id/219/200")")) { loading in
+                AsyncImage(url: URL(string: "\(item.actor.profilePicture ?? "https://picsum.photos/id/219/200")")) { loading in
                     if let image = loading.image {
                         image
                             .resizable()
@@ -36,18 +36,18 @@ public struct ForYouFeedsView: View {
                 
                 VStack(alignment: .leading) {
                     HStack(alignment: .top) {
-                        Text("\(item.actor)")
+                        Text(item.actor.fullname)
                             .fontWeight(.bold)
                             .lineLimit(1)
                             .layoutPriority(1)
                         
-                        Text("\(item.actor)")
+                        Text(item.actor.username)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .lineLimit(1)
                             .layoutPriority(1)
                         
-                        Text("* \(item.tweetSentAt ?? "???")")
+                        Text("* " + item.time)
                             .font(.subheadline)
                             .lineLimit(1)
                             .foregroundColor(.secondary)
@@ -60,32 +60,30 @@ public struct ForYouFeedsView: View {
                     }
                     
                     HStack(alignment: .bottom) {
-                        Text("\(item.tweetSummary ?? "???")")
+                        Text(item.object)
                             .layoutPriority(2)
-                        Text("\(item.hashTag ?? "???")")
-                            .foregroundColor(.streamGreen)
-                            .layoutPriority(3)
-                        
                     }.font(.subheadline)
                     
-                    AsyncImage(url: URL(string: "\(item.tweetPhoto ?? "heart")")) { loading in
-                        if let image = loading.image {
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } else if loading.error != nil {
-                            Image(systemName: "exclamationmark.icloud")
-                                .resizable()
-                                .scaledToFit()
-    //                            .clipShape(Circle())
-                        } else {
-                            //ProgressView()
+                    if let tweetPhoto = item.tweetPhoto {
+                        AsyncImage(url: URL(string: tweetPhoto)) { loading in
+                            if let image = loading.image {
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                            } else if loading.error != nil {
+                                Image(systemName: "exclamationmark.icloud")
+                                    .resizable()
+                                    .scaledToFit()
+        //                            .clipShape(Circle())
+                            } else {
+                                //ProgressView()
+                            }
                         }
+                        .frame(width: .infinity, height: 180)
+                        .cornerRadius(16)
+                        .accessibilityLabel("Tweet with photo")
+                        .accessibilityAddTraits(.isButton)
                     }
-                    .frame(width: .infinity, height: 180)
-                    .cornerRadius(16)
-                    .accessibilityLabel("Tweet with photo")
-                    .accessibilityAddTraits(.isButton)
                     
                     HStack{
                         Image(systemName: "message")
@@ -112,6 +110,13 @@ public struct ForYouFeedsView: View {
                 } catch {
                     print(error)
                 }
+            }
+        }
+        .refreshable {
+            do {
+                try await feedClient.getActivities()
+            } catch {
+                print(error)
             }
         }
     }

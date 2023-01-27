@@ -45,7 +45,7 @@ public struct PagingModel: Encodable {
 public class FeedsClient: ObservableObject {
     private ( set ) public var auth: TwitterCloneAuth
     
-    @Published private ( set ) public var activities: [PostActivity] = []
+    @Published private ( set ) public var activities: [EnrichedPostActivity] = []
     
     private let urlFactory: URLFactory
     
@@ -263,7 +263,7 @@ public class FeedsClient: ObservableObject {
             os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
         }
         
-        let activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[PostActivity]>.self, from: data).results
+        let activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
         
         DispatchQueue.main.async { [weak self] in
             self?.activities = activities
