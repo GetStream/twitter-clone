@@ -55,10 +55,12 @@ public struct HomeTimelineView: View {
 }
 
 struct HomeTimelineView_Previews: PreviewProvider {
+    static let auth = TwitterCloneAuth()
+    static var feedClient = FeedsClient.previewClient()
     static var previews: some View {
         HomeTimelineView()
-            .environmentObject(TwitterCloneAuth())
-            .environmentObject(FeedsClient.previewClient())
+            .environmentObject(auth)
+            .environmentObject(feedClient)
             .preferredColorScheme(.dark)
     }
 }

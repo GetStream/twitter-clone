@@ -38,9 +38,10 @@ public struct ForYouFeedsView: View {
 }
 
 struct ForYouFeedsView_Previews: PreviewProvider {
+    static var feedClient = FeedsClient.previewClient()
     static var previews: some View {
         ForYouFeedsView()
-            .environmentObject(FeedsClient.previewClient())
+            .environmentObject(feedClient)
             .preferredColorScheme(.dark)
     }
 }

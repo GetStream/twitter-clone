@@ -73,8 +73,9 @@ public struct LogIn: View {
 }
 
 struct LogIn_Previews: PreviewProvider {
+    static let auth = TwitterCloneAuth()
     static var previews: some View {
         LogIn()
-            .environmentObject(TwitterCloneAuth())
+            .environmentObject(auth)
     }
 }

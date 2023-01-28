@@ -75,9 +75,10 @@ public struct StartView: View {
 }
 
 struct StartView_Previews: PreviewProvider {
+    static let auth = TwitterCloneAuth()
     static var previews: some View {
         StartView()
-            .environmentObject(TwitterCloneAuth())
+            .environmentObject(auth)
             .preferredColorScheme(.dark)
     }
 }
