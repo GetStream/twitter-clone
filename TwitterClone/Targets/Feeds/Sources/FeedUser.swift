@@ -32,6 +32,26 @@ public struct FeedUser: Refable, Codable {
         case profilePicture
     }
     
+    public static func previewUser() -> FeedUser {
+        return FeedUser(userId: "preview_user_id",
+                        username: "preview_user",
+                        firstname: "Firstname",
+                        lastname: "Lastname",
+                        createdAt: Date(),
+                        updatedAt: Date()
+        )
+    }
+    
+    private init(userId: String, username: String, firstname: String, lastname: String, createdAt: Date, updatedAt: Date) {
+        self.userId = userId
+        self.username = username
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.firstname = firstname
+        self.lastname = lastname
+        self.profilePicture = nil
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.userId = try container.decode(String.self, forKey: .userId)

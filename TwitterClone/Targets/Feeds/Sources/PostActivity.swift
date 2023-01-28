@@ -61,6 +61,18 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         time = try container.decode(Date.self, forKey: .time)
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
     }
+    
+    public static func previewPostActivity() -> EnrichedPostActivity {
+        return EnrichedPostActivity()
+    }
+    
+    private init() {
+        actor = FeedUser.previewUser()
+        verb = "post"
+        object = "A bit of preview text"
+        id = "preview_id"
+        time = Date()
+    }
 }
 
 public struct PostActivity: Activity, Encodable, Decodable, Identifiable {

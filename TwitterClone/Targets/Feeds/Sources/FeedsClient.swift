@@ -45,6 +45,8 @@ public struct PagingModel: Encodable {
 public class FeedsClient: ObservableObject {
     private ( set ) public var auth: TwitterCloneAuth
     
+    private let mockEnabled: Bool
+    
     @Published private ( set ) public var activities: [EnrichedPostActivity] = []
     
     private let urlFactory: URLFactory
@@ -53,9 +55,14 @@ public class FeedsClient: ObservableObject {
         return FeedsClient(urlString: region.rawValue, auth: auth)
     }
     
-    private init(urlString: String, auth: TwitterCloneAuth) {
+    static public func previewClient() -> FeedsClient{
+        return FeedsClient(urlString: Region.euWest.rawValue, auth: TwitterCloneAuth(), mockEnabled: true)
+    }
+    
+    private init(urlString: String, auth: TwitterCloneAuth, mockEnabled: Bool = false) {
         urlFactory = URLFactory(baseUrl: URL(string: urlString)!)
         self.auth = auth
+        self.mockEnabled = mockEnabled
     }
     
     public func user() async throws -> FeedUser {
@@ -238,6 +245,12 @@ public class FeedsClient: ObservableObject {
     
     //TODO: paging
     public func getActivities() async throws {
+        if (mockEnabled) {
+            DispatchQueue.main.async { [weak self] in
+                self?.activities = [EnrichedPostActivity.previewPostActivity()]
+            }
+            return
+        }
         let session = TwitterCloneNetworkKit.restSession
         
         guard let authUser = auth.authUser else {
