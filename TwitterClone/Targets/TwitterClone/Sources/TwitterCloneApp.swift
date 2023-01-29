@@ -13,6 +13,7 @@ struct TwitterCloneApp: App {
         
     @StateObject
     var feedClient = FeedsClient.productionClient(region: .euWest, auth: TwitterCloneAuth())
+//    var feedClient = FeedsClient.previewClient()
     
     var body: some Scene {
         WindowGroup {

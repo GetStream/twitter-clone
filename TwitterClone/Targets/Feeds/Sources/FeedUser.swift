@@ -42,7 +42,7 @@ public struct FeedUser: Refable, Codable {
         )
     }
     
-    private init(userId: String, username: String, firstname: String, lastname: String, createdAt: Date, updatedAt: Date) {
+    internal init(userId: String, username: String, firstname: String, lastname: String, createdAt: Date, updatedAt: Date) {
         self.userId = userId
         self.username = username
         self.createdAt = createdAt

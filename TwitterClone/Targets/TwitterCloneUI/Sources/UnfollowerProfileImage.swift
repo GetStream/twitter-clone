@@ -29,9 +29,9 @@ public struct UnfollowerProfileImage: View {
     }
 }
 
-struct UnfollowerProfileImage_Previews: PreviewProvider {
-    static var previews: some View {
-        UnfollowerProfileImage()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct UnfollowerProfileImage_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UnfollowerProfileImage()
+//            .preferredColorScheme(.dark)
+//    }
+//}

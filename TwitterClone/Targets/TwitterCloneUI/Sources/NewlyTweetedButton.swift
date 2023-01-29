@@ -47,9 +47,9 @@ public struct NewlyTweetedButton: View {
     }
 }
 
-struct NewlyTweetedButton_Previews: PreviewProvider {
-    static var previews: some View {
-        NewlyTweetedButton()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct NewlyTweetedButton_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NewlyTweetedButton()
+//            .preferredColorScheme(.dark)
+//    }
+//}

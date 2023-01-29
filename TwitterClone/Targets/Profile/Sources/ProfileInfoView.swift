@@ -62,9 +62,9 @@ struct ProfileInfoView: View {
     }
 }
 
-struct ProfileInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileInfoView(myProfile: MyProfileData)
-            .preferredColorScheme(.dark)
-    }
-}
+//struct ProfileInfoView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileInfoView(myProfile: MyProfileData)
+//            .preferredColorScheme(.dark)
+//    }
+//}

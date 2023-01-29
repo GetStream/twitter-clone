@@ -74,11 +74,11 @@ public struct StartView: View {
     }
 }
 
-struct StartView_Previews: PreviewProvider {
-    static let auth = TwitterCloneAuth()
-    static var previews: some View {
-        StartView()
-            .environmentObject(auth)
-            .preferredColorScheme(.dark)
-    }
-}
+//struct StartView_Previews: PreviewProvider {
+//    static let auth = TwitterCloneAuth()
+//    static var previews: some View {
+//        StartView()
+//            .environmentObject(auth)
+//            .preferredColorScheme(.dark)
+//    }
+//}

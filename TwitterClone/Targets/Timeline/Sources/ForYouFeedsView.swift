@@ -14,7 +14,7 @@ public struct ForYouFeedsView: View {
     public var body: some View {
         List(feedClient.activities) {
             item in
-            PostView(item: item)
+            PostRowView(item: item)
         } //LIST STYLES
         .listStyle(.plain)
         .onAppear {
@@ -37,11 +37,11 @@ public struct ForYouFeedsView: View {
     }
 }
 
-struct ForYouFeedsView_Previews: PreviewProvider {
-    static var feedClient = FeedsClient.previewClient()
-    static var previews: some View {
-        ForYouFeedsView()
-            .environmentObject(feedClient)
-            .preferredColorScheme(.dark)
-    }
-}
+//struct ForYouFeedsView_Previews: PreviewProvider {
+//    static var feedClient = FeedsClient.previewClient()
+//    static var previews: some View {
+//        ForYouFeedsView()
+//            .environmentObject(feedClient)
+//            .preferredColorScheme(.dark)
+//    }
+//}

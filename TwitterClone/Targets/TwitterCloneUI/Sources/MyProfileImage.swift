@@ -29,9 +29,9 @@ public struct MyProfileImage: View {
     }
 }
 
-struct MyProfileImage_Previews: PreviewProvider {
-    static var previews: some View {
-        MyProfileImage()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct MyProfileImage_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MyProfileImage()
+//            .preferredColorScheme(.dark)
+//    }
+//}

@@ -48,9 +48,9 @@ struct ProfileFollower: View { @State private var selection = 0
     }
 }
 
-struct ProfileFollower_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileFollower()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct ProfileFollower_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileFollower()
+//            .preferredColorScheme(.dark)
+//    }
+//}

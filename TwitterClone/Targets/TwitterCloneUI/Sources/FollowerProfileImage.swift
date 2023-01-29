@@ -28,9 +28,9 @@ public struct FollowerProfileImage: View {
     }
 }
 
-struct FollowerProfileImage_Previews: PreviewProvider {
-    static var previews: some View {
-        FollowerProfileImage()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct FollowerProfileImage_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FollowerProfileImage()
+//            .preferredColorScheme(.dark)
+//    }
+//}

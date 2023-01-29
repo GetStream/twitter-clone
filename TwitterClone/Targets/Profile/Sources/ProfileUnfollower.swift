@@ -48,9 +48,9 @@ struct ProfileUnfollower: View { @State private var selection = 0
     }
 }
 
-struct ProfileUnfollower_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileUnfollower()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct ProfileUnfollower_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileUnfollower()
+//            .preferredColorScheme(.dark)
+//    }
+//}

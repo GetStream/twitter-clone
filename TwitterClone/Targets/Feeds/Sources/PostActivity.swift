@@ -62,16 +62,16 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
     }
     
-    public static func previewPostActivity() -> EnrichedPostActivity {
-        return EnrichedPostActivity()
+    public static func previewPostActivities() -> [EnrichedPostActivity] {
+        return previewData()
     }
     
-    private init() {
-        actor = FeedUser.previewUser()
-        verb = "post"
-        object = "A bit of preview text"
-        id = "preview_id"
-        time = Date()
+    internal init(actor: FeedUser, verb: String, object: String, id: String, time: Date) {
+        self.actor = actor
+        self.verb = verb
+        self.object = object
+        self.id = id
+        self.time = time
     }
 }
 
@@ -136,4 +136,76 @@ public struct PostActivityResponse: Activity, Decodable {
     var object: String
     var origin: String
     var target: String
+}
+
+private func previewData() -> [EnrichedPostActivity]{
+    let user1 = FeedUser(userId: "preview_user_id",
+                         username: "username",
+                         firstname: "firstname",
+                         lastname: "lastname",
+                         createdAt: Date(),
+                         updatedAt: Date())
+    return [
+        EnrichedPostActivity(actor: user1,
+                             verb: "post",
+                             object: "",
+                             id: "",
+                             time: Date())
+    ]
+    
+//        userProfilePhoto: "https://picsum.photos/id/219/200",
+//        userName: "Happy Thoughts",
+//        userHandle: "@HappyThoughts",
+//        tweetSentAt: "2h",
+//        actionsMenuIcon: "ellipsis.circle",
+//        tweetSummary: "Starting the day with a positive attitude is key to a happy life 🥰",
+//        tweetPhoto: "https://picsum.photos/id/220/350/200",
+//        numberOfComments: "1",
+//        numberOfLikes: "2"),
+//
+//    ForYouTweetsStructure(
+//        userProfilePhoto: "https://picsum.photos/id/25/200",
+//        userName: "Book Worm",
+//        userHandle: "@bookworm",
+//        tweetSentAt: "3h",
+//        actionsMenuIcon: "ellipsis.circle",
+//        tweetSummary: "Just finished reading the latest bestseller and I am blown away by the author's storytelling skills",
+//        tweetPhoto: "https://picsum.photos/id/81/350/200",
+//        numberOfComments: "5",
+//        numberOfLikes: "10"),
+//
+//    ForYouTweetsStructure(
+//        userProfilePhoto: "https://picsum.photos/id/3/200",
+//        userName: "Pet Parent",
+//        userHandle: "@petParent",
+//        tweetSentAt: "5h",
+//        actionsMenuIcon: "ellipsis.circle",
+//        tweetSummary: "Spending the afternoon playing with my furry best friend 🐇 🐈",
+//        tweetPhoto: "https://picsum.photos/id/120/350/200",
+//        numberOfComments: "42",
+//        numberOfLikes: "458"),
+//
+//    ForYouTweetsStructure(
+//        userProfilePhoto: "https://picsum.photos/id/4/200",
+//        userName: "Foodie Fiesta",
+//        userHandle: "@foodie",
+//        tweetSentAt: "10h",
+//        actionsMenuIcon: "ellipsis.circle",
+//        tweetSummary: "Trying out a new Mexican restaurant and loving the flavors 🥗",
+//        tweetPhoto: "https://picsum.photos/id/62/350/200",
+//        numberOfComments: "1",
+//        numberOfLikes: "3"),
+//
+//    ForYouTweetsStructure(
+//        userProfilePhoto: "https://picsum.photos/id/15/200",
+//        userName: "Awo Yaa",
+//        userHandle: "@awoyaa",
+//        tweetSentAt: "15h",
+//        actionsMenuIcon: "ellipsis.circle",
+//        tweetSummary: "What is $0 in Swift? 👩‍💻",
+//        tweetPhoto: "https://picsum.photos/id/18/350/200",
+//        numberOfComments: "70",
+//        numberOfLikes: "123")
+//    ]
+
 }

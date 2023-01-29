@@ -57,9 +57,9 @@ struct UnfollowerProfileInfoAndTweets: View {
     }
 }
 
-struct UnfollowerProfileInfoAndTweets_Previews: PreviewProvider {
-    static var previews: some View {
-        UnfollowerProfileInfoAndTweets()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct UnfollowerProfileInfoAndTweets_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UnfollowerProfileInfoAndTweets()
+//            .preferredColorScheme(.dark)
+//    }
+//}

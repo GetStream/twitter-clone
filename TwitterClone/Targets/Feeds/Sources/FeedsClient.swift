@@ -247,7 +247,7 @@ public class FeedsClient: ObservableObject {
     public func getActivities() async throws {
         if (mockEnabled) {
             DispatchQueue.main.async { [weak self] in
-                self?.activities = [EnrichedPostActivity.previewPostActivity()]
+                self?.activities = EnrichedPostActivity.previewPostActivities()
             }
             return
         }

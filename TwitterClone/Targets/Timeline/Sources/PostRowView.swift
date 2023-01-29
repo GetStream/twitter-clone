@@ -10,7 +10,7 @@ import Feeds
 
 import SwiftUI
 
-struct PostView: View {
+struct PostRowView: View {
     
     var item: EnrichedPostActivity
     
@@ -104,9 +104,9 @@ struct PostView: View {
     }
 }
 
-struct PostView_Previews: PreviewProvider {
-    static var previews: some View {
-        return PostView(item: EnrichedPostActivity.previewPostActivity())
-            .preferredColorScheme(.dark)
-    }
-}
+//struct PostView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        return PostRowView(item: EnrichedPostActivity.previewPostActivities()[0])
+//            .preferredColorScheme(.dark)
+//    }
+//}

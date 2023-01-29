@@ -25,9 +25,9 @@ public struct TTwinLogo: View {
     }
 }
 
-struct TTwinLogo_Previews: PreviewProvider {
-    static var previews: some View {
-        TTwinLogo()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct TTwinLogo_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TTwinLogo()
+//            .preferredColorScheme(.dark)
+//    }
+//}

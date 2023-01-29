@@ -49,9 +49,9 @@ struct MyProfile: View { @State private var selection = 0
     }
 }
 
-struct MyProfile_Previews: PreviewProvider {
-    static var previews: some View {
-        MyProfile()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct MyProfile_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MyProfile()
+//            .preferredColorScheme(.dark)
+//    }
+//}

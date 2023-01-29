@@ -72,10 +72,10 @@ public struct LogIn: View {
     }
 }
 
-struct LogIn_Previews: PreviewProvider {
-    static let auth = TwitterCloneAuth()
-    static var previews: some View {
-        LogIn()
-            .environmentObject(auth)
-    }
-}
+//struct LogIn_Previews: PreviewProvider {
+//    static let auth = TwitterCloneAuth()
+//    static var previews: some View {
+//        LogIn()
+//            .environmentObject(auth)
+//    }
+//}

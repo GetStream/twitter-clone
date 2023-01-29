@@ -40,9 +40,9 @@ struct MyProfileInfoAndTweets: View {
     }
 }
 
-struct MyProfileInfoAndTweets_Previews: PreviewProvider {
-    static var previews: some View {
-        MyProfileInfoAndTweets()
-            .preferredColorScheme(.dark)
-    }
-}
+//struct MyProfileInfoAndTweets_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MyProfileInfoAndTweets()
+//            .preferredColorScheme(.dark)
+//    }
+//}
