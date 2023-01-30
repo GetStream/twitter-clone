@@ -23,7 +23,7 @@ public final class TwitterCloneNetworkKit {
             throw StatusCodeError.badResponse
         case 400:
             throw StatusCodeError.unauthorized
-        case 200:
+        case 200, 201:
             return
         default:
             throw StatusCodeError.unhandled

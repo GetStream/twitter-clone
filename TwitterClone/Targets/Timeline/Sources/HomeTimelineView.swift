@@ -32,7 +32,10 @@ public struct HomeTimelineView: View {
                             .font(.system(size: 42))
                             .padding(.horizontal)
                     }
-                    .sheet(isPresented: $isAddingTweet, content: AddNewTweetView.init)
+                    .sheet(isPresented: $isAddingTweet, content: {
+                        AddNewTweetView()
+                            .environmentObject(feedsClient)
+                    })
                 }
                 
                 TabBarView()

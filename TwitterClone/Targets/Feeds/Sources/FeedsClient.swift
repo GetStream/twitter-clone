@@ -283,7 +283,7 @@ public class FeedsClient: ObservableObject {
         }
     }
     
-    public func addActivity(_ activity: PostActivity) async throws -> PostActivityResponse {
+    public func addActivity(_ activity: PostActivity) async throws {
         let session = TwitterCloneNetworkKit.restSession
         
         guard let authUser = auth.authUser else {
@@ -294,18 +294,19 @@ public class FeedsClient: ObservableObject {
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
         request.httpMethod = "POST"
+        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(activity)
         
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
-        let (data, response) = try await session.data(for: request)
+        let (_, response) = try await session.data(for: request)
         
         let statusCode = (response as? HTTPURLResponse)?.statusCode
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
         
-        return try TwitterCloneNetworkKit.jsonDecoder.decode(PostActivityResponse.self, from: data)
+        try await getActivities()
     }
     
     public func uploadImage(fileName: String, mimeType: String, imageData: Data) async throws -> URL {

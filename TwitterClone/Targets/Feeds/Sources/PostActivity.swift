@@ -8,16 +8,6 @@
 
 import Foundation
 
-protocol Activity {
-    var actor: String { get set }
-    /// The verb of the activity.
-    var verb: String { get set }
-    /// The object of the activity.
-    /// - Note: It shouldn't be empty.
-    var object: String { get set }
-    var id: String { get set }
-}
-
 public struct EnrichedPostActivity: Decodable, Identifiable {
     static let dateComponentsFormatter: DateComponentsFormatter = {
         let form = DateComponentsFormatter()
@@ -75,9 +65,9 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
     }
 }
 
-public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
+public struct PostActivity: Encodable {
+    
     enum CodingKeys: CodingKey {
-        case id
         case actor
         case object
         case verb
@@ -85,21 +75,13 @@ public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
     }
     public var actor: String
     /// The verb of the activity.
-    public var verb: String
+    public var verb: String = "post"
     /// The object of the activity.
     /// - Note: It shouldn't be empty.
     public var object: String
-    public var id: String
     
     //TODO: needs to come from somewhere:
-    public var userName: String?
-    public var userHandle: String?
-    public var tweetSentAt: String?
-    public var tweetSummary: String?
-    public var hashTag: String?
     public var tweetPhoto: String?
-    public var numberOfLikes: String?
-    public var numberOfComments: String?
             
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -111,18 +93,23 @@ public struct PostActivity: Activity, Encodable, Decodable, Identifiable {
         }
     }
     
+    public init(actor: String, object: String) {
+        self.actor = actor
+        self.object = object
+    }
+
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         actor = try container.decode(String.self, forKey: .actor)
         verb = try container.decode(String.self, forKey: .verb)
         object = try container.decode(String.self, forKey: .object)
-        id = try container.decode(String.self, forKey: .id)
         
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
     }
 }
 
-public struct PostActivityResponse: Activity, Decodable {
+public struct PostActivityResponse: Decodable {
     //{"actor":"SU:6240378a0cb3a15b1ca56a4dfe4a3f07","duration":"5.78ms","foreign_id":"","id":"246eb280-97e5-11ed-831c-069d4b3df3d5","object":"what is this","origin":null,"target":"","time":"2023-01-19T10:36:33.289280","verb":"post"}
 
     var actor: String

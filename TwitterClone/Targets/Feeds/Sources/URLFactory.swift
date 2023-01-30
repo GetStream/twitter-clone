@@ -50,7 +50,8 @@ internal class URLFactory {
                 newURL.append(path: userId)
             }
         case .userFeed(let userId):
-            newURL.append(component: "feed/user")
+            newURL.append(component: "feed")
+            newURL.append(component: "user")
             newURL.append(path: userId)
         case .timelineFeed(let userId):
             // Note: we are GETting the enriched timeline feed which includes actor information.

@@ -8,8 +8,14 @@
 
 import SwiftUI
 import TwitterCloneUI
+import Auth
+
+import Feeds
 
 struct AddNewTweetView: View {
+    @EnvironmentObject var feedsClient: FeedsClient
+    @Environment(\.presentationMode) var presentationMode
+    
     @State private var isShowingComposeArea = ""
     @State private var isCanceled = false
     @State private var isRecording = false
@@ -36,13 +42,22 @@ struct AddNewTweetView: View {
                     }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
+                        AsyncButton("Tweet") {
+                            do {
+                                guard let userId = feedsClient.auth.authUser?.userId else {
+                                    throw AuthError.noLoadedAuthUser
+                                }
+                                let activity = PostActivity(actor: userId, object: isShowingComposeArea)
+                                try await feedsClient.addActivity(activity)
+                                presentationMode.wrappedValue.dismiss()
+                            } catch {
+                                print(error)
+                            }
+
                             print("tap to send tweet")
-                        } label: {
-                            Text("Tweet")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
                         }
+                        .font(.subheadline)
+                        .fontWeight(.bold)
                         .buttonStyle(.borderedProminent)
                         .disabled(isShowingComposeArea.isEmpty)
                     }
@@ -109,8 +124,8 @@ struct AddNewTweetView: View {
     }
 }
 
-struct AddNewTweetView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddNewTweetView()
-    }
-}
+//struct AddNewTweetView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddNewTweetView()
+//    }
+//}
