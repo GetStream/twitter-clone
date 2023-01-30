@@ -10,33 +10,33 @@ import TwitterCloneUI
 
 struct FollowerProfileInfoAndTweets: View {
     @State private var selection = 0
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
                     FollowerProfileImage()
                         .scaleEffect(1.2)
-                    
+
                     Spacer()
-                    
-                    Button{
+
+                    Button {
                         print("receives notifications from this user")
                     } label: {
                         Image(systemName: "bell.badge.circle.fill")
                             .symbolRenderingMode(.hierarchical)
                             .font(.title)
                     }
-                    
-                    Button{
+
+                    Button {
                         print("")
                     } label: {
                         Image(systemName: "message.circle.fill")
                             .symbolRenderingMode(.hierarchical)
                             .font(.title)
                     }
-                    
-                    Button{
+
+                    Button {
                         print("")
                     } label: {
                         Text("Following")
@@ -45,21 +45,20 @@ struct FollowerProfileInfoAndTweets: View {
                     }
                     .buttonStyle(.bordered)
                 }
-                
-                ProfileInfoView(myProfile: FollowerProfileData)
-                
+
+                ProfileInfoView(myProfile: followerProfileData)
+
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }
-       
-        
+
     }
 }
 
-//struct FollowerProfileInfoAndTweets_Previews: PreviewProvider {
+// struct FollowerProfileInfoAndTweets_Previews: PreviewProvider {
 //    static var previews: some View {
 //        FollowerProfileInfoAndTweets()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

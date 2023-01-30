@@ -15,11 +15,11 @@ import Feeds
 struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @Environment(\.presentationMode) var presentationMode
-    
+
     @State private var isShowingComposeArea = ""
     @State private var isCanceled = false
     @State private var isRecording = false
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -40,7 +40,7 @@ struct AddNewTweetView: View {
                         }
                         .fullScreenCover(isPresented: $isCanceled, content: HomeTimelineView.init)
                     }
-                    
+
                     ToolbarItem(placement: .navigationBarTrailing) {
                         AsyncButton("Tweet") {
                             do {
@@ -61,7 +61,7 @@ struct AddNewTweetView: View {
                         .buttonStyle(.borderedProminent)
                         .disabled(isShowingComposeArea.isEmpty)
                     }
-                    
+
                     // Pin to the device keyboard
                     ToolbarItem(placement: .keyboard) {
                         Button {
@@ -71,9 +71,9 @@ struct AddNewTweetView: View {
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
-                        
+
                     }
-                    
+
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to initiate a new Space")
@@ -82,9 +82,9 @@ struct AddNewTweetView: View {
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
-                
+
                     }
-                    
+
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             self.isRecording.toggle()
@@ -95,7 +95,7 @@ struct AddNewTweetView: View {
                         }
                         .fullScreenCover(isPresented: $isRecording, content: RecordAudioView.init)
                     }
-                    
+
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to record audio")
@@ -105,7 +105,7 @@ struct AddNewTweetView: View {
                                 .fontWeight(.bold)
                         }
                     }
-                    
+
                     // For the sake of keeping the 4 above icons on the left of the keyboard
                     ToolbarItem(placement: .keyboard) {
                         Button {
@@ -117,15 +117,15 @@ struct AddNewTweetView: View {
                         }
                     }
                 }
-                
+
                 Spacer()
             }
         }
     }
 }
 
-//struct AddNewTweetView_Previews: PreviewProvider {
+// struct AddNewTweetView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        AddNewTweetView()
 //    }
-//}
+// }

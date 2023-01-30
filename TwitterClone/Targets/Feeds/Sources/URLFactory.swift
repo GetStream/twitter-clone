@@ -29,14 +29,14 @@ public enum Region: String {
 
 internal class URLFactory {
     let baseUrl: URL
-        
+
     internal init(baseUrl: URL) {
         self.baseUrl = baseUrl
     }
-    
+
     internal func url(forPath: FeedsURL) -> URL {
         var newURL = baseUrl
-        
+
         switch forPath {
         case .images:
             newURL.append(component: "images")
@@ -80,7 +80,7 @@ private extension URL {
     mutating func appendApiKey() {
         append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
     }
-    
+
     func appendingApiKey() -> URL {
         return appending(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
     }

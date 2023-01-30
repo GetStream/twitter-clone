@@ -13,7 +13,7 @@ public struct MyProfile: View {
     @State private var selection = 0
     @State private var isShowingSearch = false
     public init () {}
-    
+
     public var body: some View {
         NavigationStack {
             VStack {
@@ -26,7 +26,7 @@ public struct MyProfile: View {
             .toolbarBackground(.streamBlue.opacity(0.1), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .padding()
-            .toolbar{
+            .toolbar {
                 /*ToolbarItem(placement: .navigationBarLeading) {
                  NavigationLink {
                  // Destination
@@ -35,14 +35,14 @@ public struct MyProfile: View {
                  Image(systemName: "chevron.backward.circle.fill")
                  }
                  }*/
-                
+
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(){
-                        //print("Navigates to the search page")
+                    Button {
+                        // print("Navigates to the search page")
                         self.isShowingSearch.toggle()
                     } label: {
                         Image(systemName: "magnifyingglass.circle.fill")
-                        
+
                     }.sheet(isPresented: $isShowingSearch, content: SearchView.init)
                 }
             }
@@ -51,9 +51,9 @@ public struct MyProfile: View {
     }
 }
 
-//struct MyProfile_Previews: PreviewProvider {
+// struct MyProfile_Previews: PreviewProvider {
 //    static var previews: some View {
 //        MyProfile()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

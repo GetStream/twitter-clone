@@ -9,16 +9,16 @@ import Timeline
 
 struct MyProfileInfoAndTweets: View {
     @State private var selection = 0
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
                     MyProfileImage()
                         .scaleEffect(1.2)
-                    
+
                     Spacer()
-                    
+
                     Button {
                         print("Navigate to edit profile page")
                     } label: {
@@ -28,21 +28,20 @@ struct MyProfileInfoAndTweets: View {
                     }
                     .buttonStyle(.borderedProminent)
                 }
-                
-                ProfileInfoView(myProfile: MyProfileData)
-                
+
+                ProfileInfoView(myProfile: myProfileData)
+
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }
-       
-        
+
     }
 }
 
-//struct MyProfileInfoAndTweets_Previews: PreviewProvider {
+// struct MyProfileInfoAndTweets_Previews: PreviewProvider {
 //    static var previews: some View {
 //        MyProfileInfoAndTweets()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

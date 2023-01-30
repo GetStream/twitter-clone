@@ -10,7 +10,7 @@ import Search
 
 struct ProfileUnfollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -23,7 +23,7 @@ struct ProfileUnfollower: View { @State private var selection = 0
             .toolbarBackground(.streamBlue.opacity(0.1), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .padding()
-            .toolbar{
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
                         // Destination
@@ -32,14 +32,14 @@ struct ProfileUnfollower: View { @State private var selection = 0
                         Image(systemName: "chevron.backward.circle.fill")
                     }
                 }
-                
+
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(){
-                        //print("Navigates to the search page")
+                    Button {
+                        // print("Navigates to the search page")
                         self.isShowingSearch.toggle()
                     } label: {
                         Image(systemName: "magnifyingglass.circle.fill")
-                        
+
                     }.sheet(isPresented: $isShowingSearch, content: SearchView.init)
                 }
             }
@@ -48,9 +48,9 @@ struct ProfileUnfollower: View { @State private var selection = 0
     }
 }
 
-//struct ProfileUnfollower_Previews: PreviewProvider {
+// struct ProfileUnfollower_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ProfileUnfollower()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

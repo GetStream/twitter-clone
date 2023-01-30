@@ -89,6 +89,7 @@ let authUiTarget =
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
+                                    .target(name: feedsName),
                                     .target(name: uiName)])
 
 let authorizationTarget =

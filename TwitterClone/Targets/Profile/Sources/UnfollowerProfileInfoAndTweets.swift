@@ -9,34 +9,34 @@ import Timeline
 
 struct UnfollowerProfileInfoAndTweets: View {
     @State private var selection = 0
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
                     UnfollowerProfileImage()
                         .scaleEffect(1.2)
-                    
+
                     Spacer()
-                    
+
                     HStack {
-                        Button{
+                        Button {
                             print("receives notifications from this user")
                         } label: {
                             Image(systemName: "bell.badge.circle.fill")
                                 .symbolRenderingMode(.hierarchical)
                                 .font(.title)
                         }
-                        
-                        Button{
+
+                        Button {
                             print("")
                         } label: {
                             Image(systemName: "message.circle.fill")
                                 .symbolRenderingMode(.hierarchical)
                                 .font(.title)
                         }
-                        
-                        Button{
+
+                        Button {
                             print("")
                         } label: {
                             Text("Follow")
@@ -46,20 +46,19 @@ struct UnfollowerProfileInfoAndTweets: View {
                         .buttonStyle(.bordered)
                     }
                 }
-                ProfileInfoView(myProfile: UnfollowerProfileData)
-                
+                ProfileInfoView(myProfile: unfollowerProfileData)
+
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }
-        
-        
+
     }
 }
 
-//struct UnfollowerProfileInfoAndTweets_Previews: PreviewProvider {
+// struct UnfollowerProfileInfoAndTweets_Previews: PreviewProvider {
 //    static var previews: some View {
 //        UnfollowerProfileInfoAndTweets()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

@@ -2,32 +2,34 @@
 //  SignUp.swift
 //  TwitterClone
 //
-//  MARK: Create a new account
+// MARK: Create a new account
 
 import SwiftUI
+
 import TwitterCloneUI
+import Feeds
 import Auth
 
 public struct SignUp: View {
-    @EnvironmentObject var auth: TwitterCloneAuth
+    @EnvironmentObject var feedsClient: FeedsClient
     @Environment(\.presentationMode) var presentationMode
-    
+
     @State private var username = ""
     @State private var password = ""
-    
+
     public var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack {
                 Form {
                     Section {
                         TextField("Username", text: $username)
-                        //.textFieldStyle(.roundedBorder)
+                        // .textFieldStyle(.roundedBorder)
                             .textContentType(.username)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .keyboardType(.emailAddress)
                         SecureField("Password", text: $password)
-                        //.textFieldStyle(.roundedBorder)
+                        // .textFieldStyle(.roundedBorder)
                             .textContentType(.password)
                     } header: {
                         Text("Create your account")
@@ -35,10 +37,14 @@ public struct SignUp: View {
                 }
                 .frame(height: 148)
                 .cornerRadius(16)
-                
+
                 AsyncButton("Sign up") {
                     do {
-                        try await auth.signup(username: username, password: password)
+                        let authUser = try await feedsClient.auth.signup(username: username, password: password)
+                        // TODO where to get username, password and profile picture
+                        let user = NewFeedUser(userId: authUser.userId, firstname: "Firstname", lastname: "Lastname", username: username, profilePicture: nil)
+                        _ = try await feedsClient.createUser(user)
+                        try await feedsClient.follow(target: user.userId, activityCopyLimit: 10)
                         presentationMode.wrappedValue.dismiss()
                     } catch {
                         print(error)
@@ -61,7 +67,7 @@ public struct SignUp: View {
                             Image(systemName: "chevron.backward.circle.fill")
                         }
                 }
-                
+
                 ToolbarItem(placement: .principal) {
                     TTwinLogo()
                 }
@@ -70,10 +76,10 @@ public struct SignUp: View {
     }
 }
 
-//struct SignUp_Previews: PreviewProvider {
+// struct SignUp_Previews: PreviewProvider {
 //    static let auth = TwitterCloneAuth()
 //    static var previews: some View {
 //        SignUp()
 //            .environmentObject(auth)
 //    }
-//}
+// }

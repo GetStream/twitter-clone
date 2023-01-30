@@ -21,14 +21,14 @@ struct MyProfileStructure: Identifiable {
     var dateJoined: String
 }
 
-let MyProfileData = [
+let myProfileData = [
     MyProfileStructure(myName: "Amos Gyamfi", myHandle: "@amos_gyamfi", aboutMe: "Developer Advocate", myLocation: "Financial Drive, Mississauga, ON", myWebsite: "getstream.io", myFollowing: "1009", myFollowers: "3347", dateJoined: "1929")
 ]
 
-let FollowerProfileData = [
+let followerProfileData = [
     MyProfileStructure(myName: "Jeroen the Leenarts", myHandle: "@appforce1", aboutMe: "DevRel Manager", myLocation: "Amsterdam", myWebsite: "getstream.io", myFollowing: "1000", myFollowers: "15k", dateJoined: "1852")
 ]
 
-let UnfollowerProfileData = [
+let unfollowerProfileData = [
     MyProfileStructure(myName: "Stefan Kwaku Blos", myHandle: "@stefanjblos", aboutMe: "DevRel Manager", myLocation: "Amsterdam", myWebsite: "getstream.io", myFollowing: "256", myFollowers: "42k", dateJoined: "1809")
 ]

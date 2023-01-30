@@ -8,8 +8,8 @@
 import SwiftUI
 
 public struct UnfollowerProfileImage: View {
-    public init(){}
-    
+    public init() {}
+
     public var body: some View {
         AsyncImage(url: URL(string: "https://picsum.photos/id/152/200")) { loading in
             if let image = loading.image {
@@ -29,9 +29,9 @@ public struct UnfollowerProfileImage: View {
     }
 }
 
-//struct UnfollowerProfileImage_Previews: PreviewProvider {
+// struct UnfollowerProfileImage_Previews: PreviewProvider {
 //    static var previews: some View {
 //        UnfollowerProfileImage()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

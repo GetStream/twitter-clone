@@ -24,50 +24,51 @@ private struct UnfollowParamModel: Encodable {
 public struct PagingModel: Encodable {
     let limit: Int
     let offset: Int
-    
+
     func appendingPagingModel(to url: URL) -> URL {
         return url.appending(queryItems:
             [
                 URLQueryItem(name: "limit", value: "\(limit)"),
-                URLQueryItem(name: "offset", value: "\(offset)"),
+                URLQueryItem(name: "offset", value: "\(offset)")
             ])
     }
 
 }
 
 public class FeedsClient: ObservableObject {
-    private ( set ) public var auth: TwitterCloneAuth
-    
+    public private ( set ) var auth: TwitterCloneAuth
+
     private let mockEnabled: Bool
-    
-    @Published private ( set ) public var activities: [EnrichedPostActivity] = []
-    
+
+    @Published public private ( set ) var activities: [EnrichedPostActivity] = []
+
     private let urlFactory: URLFactory
-    
-    static public func productionClient(region: Region, auth: TwitterCloneAuth) -> FeedsClient {
+
+    public static func productionClient(region: Region, auth: TwitterCloneAuth) -> FeedsClient {
         return FeedsClient(urlString: region.rawValue, auth: auth)
     }
-    
-    static public func previewClient() -> FeedsClient{
+
+    public static func previewClient() -> FeedsClient {
         return FeedsClient(urlString: Region.euWest.rawValue, auth: TwitterCloneAuth(), mockEnabled: true)
     }
-    
+
     private init(urlString: String, auth: TwitterCloneAuth, mockEnabled: Bool = false) {
+        // swiftlint:disable:next force_unwrapping
         urlFactory = URLFactory(baseUrl: URL(string: urlString)!)
         self.auth = auth
         self.mockEnabled = mockEnabled
     }
-    
+
     public func user() async throws -> FeedUser {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
 
         let userId = authUser.userId
         let feedToken = authUser.feedToken
-        
+
         var request = URLRequest(url: urlFactory.url(forPath: .user(userId: userId)))
         request.httpMethod = "GET"
 
@@ -76,17 +77,17 @@ public class FeedsClient: ObservableObject {
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-        
+
         return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedUser.self, from: data)
     }
-    
+
     public func updateUser(_ user: FeedUser) async throws {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -102,15 +103,15 @@ public class FeedsClient: ObservableObject {
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (_, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
-    
-    public func createUser(_ user: FeedUser) async throws {
+
+    public func createUser(_ user: NewFeedUser) async throws -> FeedUser {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -124,16 +125,18 @@ public class FeedsClient: ObservableObject {
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
-        let (_, response) = try await session.data(for: request)
-        
+        let (data, response) = try await session.data(for: request)
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(FeedUser.self, from: data)
     }
-    
-    public func follow(feedId: String, target: String, activityCopyLimit: Int) async throws {
+
+    public func follow(target: String, activityCopyLimit: Int) async throws {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -143,21 +146,21 @@ public class FeedsClient: ObservableObject {
         var request = URLRequest(url: urlFactory.url(forPath: .follow(userId: userId)))
         request.httpMethod = "POST"
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(FollowParamModel(target: target, activity_copy_limit: activityCopyLimit))
-        
+
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (_, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
-    
+
     public func unfollow(feedId: String, target: String, keepHistory: Bool) async throws {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -166,23 +169,23 @@ public class FeedsClient: ObservableObject {
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .unfollow(userId: userId, target: target)))
         request.httpMethod = "DELETE"
-        
-        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(UnfollowParamModel(keep_history:keepHistory))
+
+        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(UnfollowParamModel(keep_history: keepHistory))
 
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (_, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
-    
+
     public func followers(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -191,26 +194,26 @@ public class FeedsClient: ObservableObject {
         let feedToken = authUser.feedToken
         var url = urlFactory.url(forPath: .followers(userId: userId))
         url = pagingModel?.appendingPagingModel(to: url) ?? url
-                
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
+
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-                
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-        
+
         return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[FeedFollower]>.self, from: data).results
     }
-    
+
     public func following(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -219,33 +222,33 @@ public class FeedsClient: ObservableObject {
         let feedToken = authUser.feedToken
         var url = urlFactory.url(forPath: .follows(userId: userId))
         url = pagingModel?.appendingPagingModel(to: url) ?? url
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
+
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-        
+
         return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[FeedFollower]>.self, from: data).results
     }
-    
-    //TODO: paging
+
+    // TODO: paging
     public func getActivities() async throws {
-        if (mockEnabled) {
+        if mockEnabled {
             DispatchQueue.main.async { [weak self] in
                 self?.activities = EnrichedPostActivity.previewPostActivities()
             }
             return
         }
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -260,25 +263,25 @@ public class FeedsClient: ObservableObject {
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
         if OSLog.networkPayloadLog.isEnabled(type: .debug) {
             os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
         }
-        
+
         let activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
-        
+
         DispatchQueue.main.async { [weak self] in
             self?.activities = activities
         }
     }
-    
+
     public func addActivity(_ activity: PostActivity) async throws {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -288,23 +291,23 @@ public class FeedsClient: ObservableObject {
         var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
         request.httpMethod = "POST"
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(activity)
-        
+
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (_, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-        
+
         try await getActivities()
     }
-    
+
     public func uploadImage(fileName: String, mimeType: String, imageData: Data) async throws -> URL {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -312,30 +315,31 @@ public class FeedsClient: ObservableObject {
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .images))
         request.httpMethod = "POST"
-        
+
         var multipart = MultipartRequest()
         multipart.add(key: "file", fileName: fileName, fileMimeType: mimeType, fileData: imageData)
-        
+
         request.setValue(multipart.httpContentTypeHeadeValue, forHTTPHeaderField: "Content-Type")
         request.httpBody = multipart.httpBody
-        
+
         // Headers
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-        
+
         let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
-        return URL(string: fileUrl)! //TODO: check response
+        // swiftlint:disable:next force_unwrapping
+        return URL(string: fileUrl)! // TODO: check response
     }
-    
+
     public func deleteImage(cdnUrl: String) async throws {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
@@ -350,31 +354,31 @@ public class FeedsClient: ObservableObject {
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (_, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
-    
+
     public func processImage(cdnUrl: String, resize: CdnImageResizeStrategy? = nil, crop: CdnImageCropStrategy? = nil, width: Int? = nil, height: Int? = nil) async throws -> URL {
         let session = TwitterCloneNetworkKit.restSession
-        
+
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
 
         let feedToken = authUser.feedToken
         var url = urlFactory.url(forPath: .images)
-        
+
         let queryItems = [
-            resize.map{ URLQueryItem(name: "resize", value:$0.rawValue) },
-            crop.map{ URLQueryItem(name: "crop", value:$0.rawValue) },
-            width.map{ URLQueryItem(name: "w", value: "\($0)") },
-            height.map{ URLQueryItem(name: "h", value: "\($0)") },
-            URLQueryItem(name: "url", value: cdnUrl),
-        ].compactMap {$0}
-        
-        url.append(queryItems:queryItems)
+            resize.map { URLQueryItem(name: "resize", value: $0.rawValue) },
+            crop.map { URLQueryItem(name: "crop", value: $0.rawValue) },
+            width.map { URLQueryItem(name: "w", value: "\($0)") },
+            height.map { URLQueryItem(name: "h", value: "\($0)") },
+            URLQueryItem(name: "url", value: cdnUrl)
+        ].compactMap { $0 }
+
+        url.append(queryItems: queryItems)
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -384,13 +388,14 @@ public class FeedsClient: ObservableObject {
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-        
+
         let statusCode = (response as? HTTPURLResponse)?.statusCode
-        
+
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
         let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
-        return URL(string: fileUrl)! //TODO: check response
+        // swiftlint:disable:next force_unwrapping
+        return URL(string: fileUrl)! // TODO: check response
     }
 }
 

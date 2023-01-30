@@ -8,14 +8,13 @@ import SwiftUI
 
 public struct ForYouFeedsView: View {
     @EnvironmentObject var feedClient: FeedsClient
-    
+
     public init() {}
-    
+
     public var body: some View {
-        List(feedClient.activities) {
-            item in
+        List(feedClient.activities) { item in
             PostRowView(item: item)
-        } //LIST STYLES
+        } // LIST STYLES
         .listStyle(.plain)
         .onAppear {
             Task {
@@ -37,11 +36,11 @@ public struct ForYouFeedsView: View {
     }
 }
 
-//struct ForYouFeedsView_Previews: PreviewProvider {
+// struct ForYouFeedsView_Previews: PreviewProvider {
 //    static var feedClient = FeedsClient.previewClient()
 //    static var previews: some View {
 //        ForYouFeedsView()
 //            .environmentObject(feedClient)
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

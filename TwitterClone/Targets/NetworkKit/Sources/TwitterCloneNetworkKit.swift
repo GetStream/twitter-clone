@@ -12,8 +12,9 @@ case noStatus
 }
 
 public extension OSLog {
+    // swiftlint:disable:next force_unwrapping
     private static var subsystem = Bundle.main.bundleIdentifier!
-    
+
     /// Logs the view cycles like viewDidLoad.
     static let networkPayloadLog = ProcessInfo.processInfo.arguments.contains("NETWORK_PAYLOAD_LOGGING_ENABLED") ? OSLog(subsystem: subsystem, category: "payload") : .disabled
 }
@@ -21,11 +22,11 @@ public extension OSLog {
 public final class TwitterCloneNetworkKit {
     /// Checks the status code for errors
     /// - Parameter statusCode: The response status code to check. If it does not throw it is an acceptable status.
-    static public func checkStatusCode(statusCode: Int?) throws {
+    public static func checkStatusCode(statusCode: Int?) throws {
         guard let statusCode = statusCode else {
             throw StatusCodeError.noStatus
         }
-        
+
         switch statusCode {
         case 500:
             throw StatusCodeError.badResponse
@@ -37,21 +38,20 @@ public final class TwitterCloneNetworkKit {
             throw StatusCodeError.unhandled
         }
     }
-    
-    
-    static public var jsonEncoder: JSONEncoder {
+
+    public static var jsonEncoder: JSONEncoder {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = .prettyPrinted
         return jsonEncoder
     }
-    
-    static public var jsonDecoder: JSONDecoder {
+
+    public static var jsonDecoder: JSONDecoder {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.dateDecodingStrategy = .iso8601WithFractionalSeconds
         return jsonDecoder
     }
-    
-    static public var restSession: URLSession {
+
+    public static var restSession: URLSession {
         /* Configure session, choose between:
          * defaultSessionConfiguration
          * ephemeralSessionConfiguration
@@ -60,10 +60,10 @@ public final class TwitterCloneNetworkKit {
          HTTPCookieAcceptPolicy, requestCachePolicy or timeoutIntervalForRequest.
          */
         let sessionConfig = URLSessionConfiguration.ephemeral
-        
+
         /* Create session, and optionally set a URLSessionDelegate. */
         let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-        
+
         return session
     }
 }
@@ -75,7 +75,7 @@ extension Formatter {
        dateFormatter.timeZone = .gmt
        return dateFormatter
    }()
-    
+
     static var customISO8601DateFormatter: ISO8601DateFormatter = {
       let formatter = ISO8601DateFormatter()
       formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]

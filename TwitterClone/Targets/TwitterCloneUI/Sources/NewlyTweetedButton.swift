@@ -10,15 +10,15 @@ import SwiftUI
 
 public struct NewlyTweetedButton: View {
     @State private var buttonPosition = 0.0
-    
+
     public init() {}
-    
+
     public var body: some View {
-        
+
         HStack {
             Image(systemName: "arrow.up")
-            
-            HStack(spacing: -12){
+
+            HStack(spacing: -12) {
                 Image(systemName: "ant.circle.fill")
                     .zIndex(3)
                 Image(systemName: "figure.run.circle.fill")
@@ -27,8 +27,7 @@ public struct NewlyTweetedButton: View {
             }
             .font(.title)
             .symbolRenderingMode(.hierarchical)
-            
-            
+
             Text("Tweeted")
         }
         .padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
@@ -38,18 +37,18 @@ public struct NewlyTweetedButton: View {
         .offset(y: buttonPosition)
         .accessibilityLabel("New Tweets")
         .accessibilityAddTraits(.isButton)
-        .onAppear{
+        .onAppear {
             withAnimation(.interpolatingSpring(stiffness: 75, damping: 15).delay(2).repeatCount(5)) {
                 buttonPosition = -UIScreen.main.bounds.height
             }
         }
-        
+
     }
 }
 
-//struct NewlyTweetedButton_Previews: PreviewProvider {
+// struct NewlyTweetedButton_Previews: PreviewProvider {
 //    static var previews: some View {
 //        NewlyTweetedButton()
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

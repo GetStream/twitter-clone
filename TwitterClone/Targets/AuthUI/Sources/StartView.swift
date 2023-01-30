@@ -2,7 +2,7 @@
 //  StartView.swift
 //  TTwin
 //
-//  MARK: Create account, sign in, sign up
+// MARK: Create account, sign in, sign up
 //
 
 import SwiftUI
@@ -13,9 +13,9 @@ public struct StartView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @State private var isPresented = false
     @State private var isShown = false
-    
+
     public init() {}
-    
+
     public var body: some View {
         NavigationStack {
             VStack {
@@ -23,11 +23,11 @@ public struct StartView: View {
                     .font(.title)
                     .fontWeight(.heavy)
                     .multilineTextAlignment(.center)
-                
+
                 AuthUIAsset.startImage.swiftUIImage
                     .resizable()
                     .scaledToFit()
-                
+
                 Button {
                     self.isShown.toggle()
                 } label: {
@@ -36,9 +36,9 @@ public struct StartView: View {
                 }
                 .padding(.top)
                 .buttonStyle(.bordered)
-                //.fullScreenCover(isPresented: $isShown, content: SignUp.init)
+                // .fullScreenCover(isPresented: $isShown, content: SignUp.init)
                 .sheet(isPresented: $isShown, content: SignUp.init)
-                
+
                 // Button with image and label
                 HStack {
                     Rectangle()
@@ -49,7 +49,7 @@ public struct StartView: View {
                         .frame(width: 150, height: 2)
                         .foregroundColor(Color(.systemGray6))
                 }
-                
+
                 HStack {
                     Text("Have an account already?")
                     Button("Login") {
@@ -57,10 +57,10 @@ public struct StartView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(Color(.systemBlue))
-                    //.fullScreenCover(isPresented: $isPresented, content: LogIn.init)
+                    // .fullScreenCover(isPresented: $isPresented, content: LogIn.init)
                     .sheet(isPresented: $isPresented, content: LogIn.init)
                 }
-                
+
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
@@ -69,16 +69,16 @@ public struct StartView: View {
                     TTwinLogo()
                 }
             }
-            
+
         }
     }
 }
 
-//struct StartView_Previews: PreviewProvider {
+// struct StartView_Previews: PreviewProvider {
 //    static let auth = TwitterCloneAuth()
 //    static var previews: some View {
 //        StartView()
 //            .environmentObject(auth)
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

@@ -12,7 +12,7 @@ protocol Refable {
     func ref() -> String
 }
 
-
+// swiftlint:disable identifier_name
 enum ActorType: String {
     /// Stream activity
     case SA
@@ -23,16 +23,16 @@ enum ActorType: String {
     /// Stream User
     case SU
 }
-
+// swiftlint:enable identifier_name
 struct FeedActor: Refable, Encodable {
-    
+
     var type: ActorType
     var id: String
-    
+
     func ref() -> String {
         return type.rawValue + id
     }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(ref())

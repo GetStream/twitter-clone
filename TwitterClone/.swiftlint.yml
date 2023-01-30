@@ -1,0 +1,97 @@
+analyzer_rules:
+- unused_import
+
+included:
+    - Targets
+
+excluded:
+    - Derived
+    - Products
+    - Projects/*/Derived
+    - Tuist
+
+opt_in_rules:
+- operator_usage_whitespace 
+- closure_end_indentation 
+- closure_parameter_position 
+- multiline_parameters 
+- closure_spacing 
+# Hygienic Rules 🧻
+- explicit_init
+- unneeded_parentheses_in_closure_argument
+- redundant_type_annotation
+- empty_string
+- first_where 
+- last_where 
+- sorted_first_last
+
+# Convention Rules 🤝
+- modifier_order 
+- legacy_random
+- prohibited_super_call
+- override_in_extension
+- unused_optional_binding
+- yoda_condition
+
+# Code Smells Rules 💩
+- force_unwrapping
+- redundant_nil_coalescing
+
+# Bug Avoiding Rules 🐞
+- fallthrough
+- no_fallthrough_only
+- file_name
+- empty_count
+
+disabled_rules:
+    - trailing_newline
+    - trailing_whitespace
+    - trailing_comma
+    - override_in_extension
+    - comment_spacing
+
+    - large_tuple
+    - function_parameter_count
+
+
+type_name:
+    min_length: 3
+    max_length: 70
+
+identifier_name:
+    min_length: 3
+    max_length: 60
+    allowed_symbols: "_"
+    excluded:
+    - id
+    - to
+    - af
+    - !str on
+
+file_length:
+  warning: 901
+  error: 900
+
+
+function_body_length:
+    warning: 50
+    error: 50
+    
+type_body_length:
+    warning: 400
+    error: 500
+
+# large_tuple:
+#  warning: 3
+
+# cyclomatic_complexity disabled for switch cases
+cyclomatic_complexity:
+  ignores_case_statements: true
+
+
+line_length:
+    warning: 301
+    error: 300
+    ignores_comments: true
+
+reporter: "xcode"

@@ -12,19 +12,19 @@ public struct HomeTimelineView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @EnvironmentObject var feedsClient: FeedsClient
     @State private var isAddingTweet = false
-    
+
     public init() {}
-    
+
     public var body: some View {
         NavigationStack {
             VStack {
                 NewlyTweetedButton()
-        
+
                 FeedsView()
-                
+
                 HStack {
                     Spacer()
-                    
+
                     Button {
                         self.isAddingTweet.toggle()
                     } label: {
@@ -37,7 +37,7 @@ public struct HomeTimelineView: View {
                             .environmentObject(feedsClient)
                     })
                 }
-                
+
                 TabBarView()
                     .frame(width: .infinity, height: 68)
             } // Header, scrollable feeds, tab bar
@@ -46,7 +46,7 @@ public struct HomeTimelineView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     MyProfileImage()
                 }
-                
+
                 ToolbarItem(placement: .principal) {
                     Button {
                         print("TTwin logo pressed")
@@ -59,7 +59,7 @@ public struct HomeTimelineView: View {
     }
 }
 
-//struct HomeTimelineView_Previews: PreviewProvider {
+// struct HomeTimelineView_Previews: PreviewProvider {
 //    static let auth = TwitterCloneAuth()
 //    static var feedClient = FeedsClient.previewClient()
 //    static var previews: some View {
@@ -68,4 +68,4 @@ public struct HomeTimelineView: View {
 //            .environmentObject(feedClient)
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

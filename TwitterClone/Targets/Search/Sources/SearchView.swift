@@ -27,7 +27,7 @@ public struct SearchView: View {
 
     @State private var searchText = ""
     @State private var searchScope = SearchScope.recent
-    
+
     public init() {}
 
     public var body: some View {
@@ -73,9 +73,8 @@ public struct SearchView: View {
     }
 }
 
-
-//struct SearchView_Previews: PreviewProvider {
+// struct SearchView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SearchView()
 //    }
-//}
+// }

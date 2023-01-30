@@ -14,8 +14,8 @@ struct OthersProfile: View {
     }
 }
 
-//struct OthersProfile_Previews: PreviewProvider {
+// struct OthersProfile_Previews: PreviewProvider {
 //    static var previews: some View {
 //        OthersProfile()
 //    }
-//}
+// }

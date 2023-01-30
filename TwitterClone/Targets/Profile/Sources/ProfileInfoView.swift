@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ProfileInfoView: View {
     var myProfile: [MyProfileStructure] = []
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             ForEach(myProfile) { profile in
@@ -19,7 +19,7 @@ struct ProfileInfoView: View {
                 Text(profile.myHandle)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-                
+
                 VStack(alignment: .leading, spacing: 8) {
                     Text("\(profile.aboutMe)")
                         .font(.subheadline)
@@ -29,7 +29,7 @@ struct ProfileInfoView: View {
                             Text("\(profile.myLocation)")
                         }
                         .font(.caption)
-                        
+
                         HStack(spacing: 2) {
                             Image(systemName: "calendar")
                             Text("Joined June \(profile.dateJoined)")
@@ -37,7 +37,7 @@ struct ProfileInfoView: View {
                         .font(.caption)
                     }
                     .foregroundColor(.secondary)
-                    
+
                     HStack(spacing: 16) {
                         HStack(spacing: 4) {
                             Text("\(profile.myFollowing)")
@@ -46,7 +46,7 @@ struct ProfileInfoView: View {
                                 .foregroundColor(.secondary)
                         }
                         .font(.subheadline)
-                        
+
                         HStack(spacing: 2) {
                             Text("\(profile.myFollowers)")
                                 .fontWeight(.bold)
@@ -62,9 +62,9 @@ struct ProfileInfoView: View {
     }
 }
 
-//struct ProfileInfoView_Previews: PreviewProvider {
+// struct ProfileInfoView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ProfileInfoView(myProfile: MyProfileData)
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

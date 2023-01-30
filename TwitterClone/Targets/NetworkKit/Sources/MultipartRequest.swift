@@ -9,9 +9,9 @@
 import Foundation
 
 public struct MultipartRequest {
-    
+
     public let boundary: String
-    
+
     private let separator: String = "\r\n"
     private var data: Data
 
@@ -19,11 +19,11 @@ public struct MultipartRequest {
         self.boundary = boundary
         self.data = .init()
     }
-    
+
     private mutating func appendBoundarySeparator() {
         data.append("--\(boundary)\(separator)")
     }
-    
+
     private mutating func appendSeparator() {
         data.append(separator)
     }

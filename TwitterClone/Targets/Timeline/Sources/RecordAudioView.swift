@@ -11,24 +11,24 @@ import TwitterCloneUI
 
 struct RecordAudioView: View {
     @State private var isCanceled = false
-    
+
     var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
-                
+
                 MyProfileImage()
                     .scaleEffect(2)
-                
+
                 Spacer()
-                
+
                 Text("What's happening?")
                 Text("Hit rocord")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-                
+
                 Spacer()
-                
+
                 ZStack {
                     Circle()
                         .frame(width: 80, height: 80)
@@ -54,7 +54,7 @@ struct RecordAudioView: View {
                 }
             }
         }
-        
+
     }
 }
 

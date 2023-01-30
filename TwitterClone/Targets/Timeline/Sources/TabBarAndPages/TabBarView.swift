@@ -10,9 +10,9 @@ import Search
 public struct TabBarView: View {
     @State private var selectedFeeds = 1
     @State private var isSearchShowing = false
-    
-    public init(){}
-    
+
+    public init() {}
+
     public var body: some View {
         TabView(selection: $selectedFeeds) {
             ZStack {
@@ -26,7 +26,7 @@ public struct TabBarView: View {
                 Image(systemName: "house")
                 Text("Home")
             }
-            
+
             SearchView()
                 .tabItem {
                     Button {
@@ -37,20 +37,20 @@ public struct TabBarView: View {
                     }
                     .sheet(isPresented: $isSearchShowing, content: SearchView.init)
                 }
-               
+
             Text("")
                 .tabItem {
                     Image(systemName: "waveform.and.mic")
                     Text("Spaces")
                 }
-            
+
             Text("")
                 .tabItem {
                     Image(systemName: "bell")
                     Text("Notifications")
                 }
                 .badge(10)
-            
+
             Text("")
                 .tabItem {
                     Image(systemName: "text.bubble")
@@ -60,10 +60,9 @@ public struct TabBarView: View {
     }
 }
 
-//struct TabBarView_Previews: PreviewProvider {
+// struct TabBarView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        TabBarView()
 //            .preferredColorScheme(.dark)
 //    }
-//}
-
+// }

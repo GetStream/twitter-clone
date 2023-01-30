@@ -51,6 +51,9 @@ extension Project {
             "UIMainStoryboardFile": "",
             "UILaunchStoryboardName": "LaunchScreen"
             ]
+        
+        let swiftlintTargetAction = TargetScript.pre(path: .relativeToRoot("bin/swiftlint.sh"), name: "Swiftlint.", basedOnDependencyAnalysis: false)
+
 
         let mainTarget = Target(
             name: name,
@@ -60,6 +63,7 @@ extension Project {
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/Sources/**"],
             resources: ["Targets/\(name)/Resources/**"],
+            scripts: [swiftlintTargetAction],
             dependencies: dependencies,
             launchArguments: [LaunchArgument(name: "NETWORK_PAYLOAD_LOGGING_ENABLED", isEnabled: false)]
         )

@@ -11,13 +11,13 @@ import TwitterCloneUI
 
 public struct ProfileSideMenu: View {
     public init () {}
-    
+
     public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                ProfileInfoView(myProfile: MyProfileData)
+                ProfileInfoView(myProfile: myProfileData)
                     .padding(.top)
-                
+
                 // Link to the full profile page: MyProfile.swift
                 NavigationLink {
                     MyProfile()
@@ -25,7 +25,7 @@ public struct ProfileSideMenu: View {
                     Image(systemName: "person.circle.fill")
                     Text("View full profile")
                 }
-                
+
                 // Link to the full profile page: MyProfile.swift
                 NavigationLink {
                     MyProfile()
@@ -33,7 +33,7 @@ public struct ProfileSideMenu: View {
                     Image(systemName: "gear.circle.fill")
                     Text("Settings")
                 }
-                
+
                 Spacer()
             }
             .navigationTitle("")
@@ -41,7 +41,7 @@ public struct ProfileSideMenu: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     MyProfileImage()
                 }
-                
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         print("Navigate to edit profile page")

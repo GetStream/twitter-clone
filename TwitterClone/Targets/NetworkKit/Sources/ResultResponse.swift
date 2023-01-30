@@ -18,7 +18,7 @@ public struct ResultResponse<ResultsType: Decodable>: Decodable {
     public let results: ResultsType
     public let next: String
     public let duration: String
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         results = try container.decode(ResultsType.self, forKey: .results)

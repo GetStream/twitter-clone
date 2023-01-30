@@ -10,11 +10,11 @@ import Profile
 
 @main
 struct TwitterCloneApp: App {
-        
+
     @StateObject
     var feedClient = FeedsClient.productionClient(region: .euWest, auth: TwitterCloneAuth())
 //    var feedClient = FeedsClient.previewClient()
-    
+
     var body: some Scene {
         WindowGroup {
             if feedClient.auth.authUser != nil {
@@ -22,15 +22,14 @@ struct TwitterCloneApp: App {
             } else {
                 StartView().environmentObject(feedClient.auth)
             }
-            
+
             // MARK: For previewing
-            //LogIn()
-            //StartView()
-            //MyProfile()
-            //ProfileFollower()
-            //ProfileUnfollower()
-            //ProfileSideMenu()
+            // LogIn()
+            // StartView()
+            // MyProfile()
+            // ProfileFollower()
+            // ProfileUnfollower()
+            // ProfileSideMenu()
         }
     }
 }
-

@@ -11,9 +11,9 @@ import Feeds
 import SwiftUI
 
 struct PostRowView: View {
-    
+
     var item: EnrichedPostActivity
-    
+
     var body: some View {
         HStack(alignment: .top) {
             AsyncImage(url: URL(string: "\(item.actor.profilePicture ?? "https://picsum.photos/id/219/200")")) { loading in
@@ -34,37 +34,37 @@ struct PostRowView: View {
             .frame(width: 48, height: 48)
             .accessibilityLabel("Profile photo")
             .accessibilityAddTraits(.isButton)
-            
+
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
                     Text(item.actor.fullname)
                         .fontWeight(.bold)
                         .lineLimit(1)
                         .layoutPriority(1)
-                    
+
                     Text(item.actor.username)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                         .layoutPriority(1)
-                    
+
                     Text("* " + item.postAge)
                         .font(.subheadline)
                         .lineLimit(1)
                         .foregroundColor(.secondary)
-                    
+
                     Spacer()
-                    
-                    Image(systemName:"ellipsis.circle")
+
+                    Image(systemName: "ellipsis.circle")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
-                
+
                 HStack(alignment: .bottom) {
                     Text(item.object)
                         .layoutPriority(2)
                 }.font(.subheadline)
-                
+
                 if let tweetPhoto = item.tweetPhoto {
                     AsyncImage(url: URL(string: tweetPhoto)) { loading in
                         if let image = loading.image {
@@ -77,7 +77,7 @@ struct PostRowView: View {
                                 .scaledToFit()
                             //                            .clipShape(Circle())
                         } else {
-                            //ProgressView()
+                            // ProgressView()
                         }
                     }
                     .frame(width: .infinity, height: 180)
@@ -85,12 +85,12 @@ struct PostRowView: View {
                     .accessibilityLabel("Tweet with photo")
                     .accessibilityAddTraits(.isButton)
                 }
-                
-                HStack{
+
+                HStack {
                     Image(systemName: "message")
                     Text("\(item.numberOfComments ?? "x")")
                     Spacer()
-                    Image(systemName:"arrow.2.squarepath")
+                    Image(systemName: "arrow.2.squarepath")
                     Spacer()
                     Image(systemName: "heart")
                     Text("\(item.numberOfLikes ?? "0")")
@@ -104,9 +104,9 @@ struct PostRowView: View {
     }
 }
 
-//struct PostView_Previews: PreviewProvider {
+// struct PostView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        return PostRowView(item: EnrichedPostActivity.previewPostActivities()[0])
 //            .preferredColorScheme(.dark)
 //    }
-//}
+// }

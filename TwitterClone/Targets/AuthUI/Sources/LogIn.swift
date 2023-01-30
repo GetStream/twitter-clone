@@ -13,23 +13,23 @@ import Auth
 public struct LogIn: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @Environment(\.presentationMode) var presentationMode
-    
+
     @State private var username = ""
     @State private var password = ""
-    
+
     public var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack {
                 Form {
                     Section {
                         TextField("Your username", text: $username)
-                        //.textFieldStyle(.roundedBorder)
+                        // .textFieldStyle(.roundedBorder)
                             .textContentType(.username)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .keyboardType(.emailAddress)
                         SecureField("Your password", text: $password)
-                        //.textFieldStyle(.roundedBorder)
+                        // .textFieldStyle(.roundedBorder)
                             .textContentType(.password)
                     } header: {
                         Text("Please enter your login credentials")
@@ -37,7 +37,7 @@ public struct LogIn: View {
                 }
                 .frame(height: 148)
                 .cornerRadius(16)
-                
+
                 AsyncButton("Log In") {
                     do {
                         try await auth.login(username: username, password: password)
@@ -57,12 +57,12 @@ public struct LogIn: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
                             // Destination: Go to the create account page
-                           StartView()
-                        } label: { // A label to show on the screen
-                            Image(systemName: "chevron.backward.circle.fill")
-                        }
+                       StartView()
+                    } label: { // A label to show on the screen
+                        Image(systemName: "chevron.backward.circle.fill")
+                    }
                 }
-                
+
                 ToolbarItem(placement: .principal) {
                     TTwinLogo()
                 }
@@ -71,10 +71,10 @@ public struct LogIn: View {
     }
 }
 
-//struct LogIn_Previews: PreviewProvider {
+// struct LogIn_Previews: PreviewProvider {
 //    static let auth = TwitterCloneAuth()
 //    static var previews: some View {
 //        LogIn()
 //            .environmentObject(auth)
 //    }
-//}
+// }
