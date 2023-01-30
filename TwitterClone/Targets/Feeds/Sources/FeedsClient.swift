@@ -12,13 +12,6 @@ import Auth
 import NetworkKit
 import os.log
 
-internal extension OSLog {
-    private static var subsystem = Bundle.main.bundleIdentifier!
-
-    /// Logs the view cycles like viewDidLoad.
-    static let clientLog = OSLog(subsystem: subsystem, category: "client")
-}
-
 private struct FollowParamModel: Encodable {
     let target: String
     let activity_copy_limit: Int
@@ -272,7 +265,7 @@ public class FeedsClient: ObservableObject {
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
-        if OSLog.clientLog.isEnabled(type: .debug) {
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
             os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
         }
         

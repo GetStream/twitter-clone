@@ -1,4 +1,5 @@
 import Foundation
+import os.log
 
 public enum StatusCodeError: Error {
 case badResponse
@@ -8,6 +9,13 @@ case unauthorized
 case unhandled
 
 case noStatus
+}
+
+public extension OSLog {
+    private static var subsystem = Bundle.main.bundleIdentifier!
+    
+    /// Logs the view cycles like viewDidLoad.
+    static let networkPayloadLog = ProcessInfo.processInfo.arguments.contains("NETWORK_PAYLOAD_LOGGING_ENABLED") ? OSLog(subsystem: subsystem, category: "payload") : .disabled
 }
 
 public final class TwitterCloneNetworkKit {

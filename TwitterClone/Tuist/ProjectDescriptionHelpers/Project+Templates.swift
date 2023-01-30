@@ -60,7 +60,8 @@ extension Project {
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/Sources/**"],
             resources: ["Targets/\(name)/Resources/**"],
-            dependencies: dependencies
+            dependencies: dependencies,
+            launchArguments: [LaunchArgument(name: "NETWORK_PAYLOAD_LOGGING_ENABLED", isEnabled: false)]
         )
 
         let testTarget = Target(
