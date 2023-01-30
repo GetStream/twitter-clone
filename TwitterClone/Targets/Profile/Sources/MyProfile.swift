@@ -9,10 +9,12 @@ import TwitterCloneUI
 import Timeline
 import Search
 
-struct MyProfile: View { @State private var selection = 0
+public struct MyProfile: View {
+    @State private var selection = 0
     @State private var isShowingSearch = false
+    public init () {}
     
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             VStack {
                 MyProfileInfoAndTweets()
@@ -25,14 +27,14 @@ struct MyProfile: View { @State private var selection = 0
             .toolbarBackground(.visible, for: .navigationBar)
             .padding()
             .toolbar{
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink {
-                            // Destination
-                            HomeTimelineView()
-                        } label: { // A label to show on the screen
-                            Image(systemName: "chevron.backward.circle.fill")
-                        }
-                }
+                /*ToolbarItem(placement: .navigationBarLeading) {
+                 NavigationLink {
+                 // Destination
+                 HomeTimelineView()
+                 } label: { // A label to show on the screen
+                 Image(systemName: "chevron.backward.circle.fill")
+                 }
+                 }*/
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(){
@@ -40,7 +42,7 @@ struct MyProfile: View { @State private var selection = 0
                         self.isShowingSearch.toggle()
                     } label: {
                         Image(systemName: "magnifyingglass.circle.fill")
-                            
+                        
                     }.sheet(isPresented: $isShowingSearch, content: SearchView.init)
                 }
             }

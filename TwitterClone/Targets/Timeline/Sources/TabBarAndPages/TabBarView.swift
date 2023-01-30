@@ -8,13 +8,13 @@ import SwiftUI
 import Search
 
 public struct TabBarView: View {
-    @State private var selectedFeeds = 0
+    @State private var selectedFeeds = 1
     @State private var isSearchShowing = false
     
     public init(){}
     
     public var body: some View {
-        TabView {
+        TabView(selection: $selectedFeeds) {
             ZStack {
                 Rectangle()
                     .foregroundStyle(.streamBlue) // From the color extension
@@ -27,7 +27,7 @@ public struct TabBarView: View {
                 Text("Home")
             }
             
-            Text("")
+            SearchView()
                 .tabItem {
                     Button {
                         self.isSearchShowing.toggle()
@@ -35,9 +35,9 @@ public struct TabBarView: View {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
                     }
+                    .sheet(isPresented: $isSearchShowing, content: SearchView.init)
                 }
-                .sheet(isPresented: $isSearchShowing, content: SearchView.init)
-            
+               
             Text("")
                 .tabItem {
                     Image(systemName: "waveform.and.mic")

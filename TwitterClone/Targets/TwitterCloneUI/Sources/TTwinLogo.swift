@@ -2,7 +2,6 @@
 //  TTwinLogo.swift
 //  TTwin
 
-
 import SwiftUI
 
 public struct TTwinLogo: View {
@@ -13,15 +12,7 @@ public struct TTwinLogo: View {
         TwitterCloneUIAsset.twitterLogo.swiftUIImage
             .resizable()
             .scaledToFit()
-            .frame(width: 32, height: 26)
-            .overlay(
-                TwitterCloneUIAsset.twitterLogo.swiftUIImage
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 32, height: 26)
-                    .offset(x: 6)
-                    .blendMode(.plusDarker)
-            )
+            .frame(width: 32, height: 32)
     }
 }
 

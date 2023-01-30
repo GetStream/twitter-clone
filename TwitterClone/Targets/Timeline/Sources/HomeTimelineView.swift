@@ -11,6 +11,7 @@ import Feeds
 public struct HomeTimelineView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @EnvironmentObject var feedsClient: FeedsClient
+    @State private var isAddingTweet = false
     
     public init() {}
     
@@ -25,12 +26,13 @@ public struct HomeTimelineView: View {
                     Spacer()
                     
                     Button {
-                        print("Tap this button to initiate a new message with Stream Chat")
+                        self.isAddingTweet.toggle()
                     } label: {
-                        Image(systemName: "plus.message.fill")
+                        Image(systemName: "plus.circle.fill")
                             .font(.system(size: 42))
                             .padding(.horizontal)
                     }
+                    .sheet(isPresented: $isAddingTweet, content: AddNewTweetView.init)
                 }
                 
                 TabBarView()

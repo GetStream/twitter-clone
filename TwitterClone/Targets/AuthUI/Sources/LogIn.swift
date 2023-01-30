@@ -47,7 +47,6 @@ public struct LogIn: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-//                .tint(.streamBlue)
                 .disabled(username.isEmpty || password.isEmpty)
                 Spacer()
             }

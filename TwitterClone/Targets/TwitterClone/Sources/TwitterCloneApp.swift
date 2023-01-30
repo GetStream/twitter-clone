@@ -1,5 +1,4 @@
 import SwiftUI
-
 import StreamChatSwiftUI
 
 import TwitterCloneUI
@@ -7,6 +6,7 @@ import Timeline
 import Auth
 import AuthUI
 import Feeds
+import Profile
 
 @main
 struct TwitterCloneApp: App {
@@ -23,17 +23,13 @@ struct TwitterCloneApp: App {
                 StartView().environmentObject(feedClient.auth)
             }
             
-            
             // MARK: For previewing
             //LogIn()
             //StartView()
             //MyProfile()
-            //OthersProfile()
-            //ProfileInfoView(myProfile: MyProfileData)
-            //MyProfileInfoAndTweets()
-            //UnFollowerProfileInfoAndTweets()
             //ProfileFollower()
             //ProfileUnfollower()
+            //ProfileSideMenu()
         }
     }
 }

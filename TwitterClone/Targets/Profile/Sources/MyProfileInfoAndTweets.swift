@@ -19,7 +19,7 @@ struct MyProfileInfoAndTweets: View {
                     
                     Spacer()
                     
-                    Button{
+                    Button {
                         print("Navigate to edit profile page")
                     } label: {
                         Text("Edit profile")
