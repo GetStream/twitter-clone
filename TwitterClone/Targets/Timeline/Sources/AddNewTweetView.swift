@@ -9,6 +9,7 @@
 import SwiftUI
 import TwitterCloneUI
 import Auth
+import PhotosUI
 
 import Feeds
 
@@ -19,6 +20,10 @@ public struct AddNewTweetView: View {
     @State private var isShowingComposeArea = ""
     @State private var isCanceled = false
     @State private var isRecording = false
+    
+    @State var selectedPhotoItem: [PhotosPickerItem] = []
+    // Store information about the selected photo that might be there or missing
+    @State var data: Data?
 
     public init () {}
     
@@ -64,16 +69,27 @@ public struct AddNewTweetView: View {
                         .disabled(isShowingComposeArea.isEmpty)
                     }
 
-                    // Pin to the device keyboard
+                    // Photo picker view
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to upload an image")
                         } label: {
-                           Image(systemName: "photo.on.rectangle.angled")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
+                            VStack {
+                                if let data = data, let uiimage = UIImage(data: data) {
+                                    Image(uiImage: uiimage)
+                                        .resizable()
+                                }
+                                
+                                PhotosPicker(
+                                    selection: $selectedPhotoItem,
+                                    matching: .images
+                                ) {
+                                    Image(systemName: "photo.on.rectangle.angled")
+                                        .accessibilityLabel("Photo picker")
+                                        .accessibilityAddTraits(.isButton)
+                                }
+                            }
                         }
-
                     }
 
                     ToolbarItem(placement: .keyboard) {

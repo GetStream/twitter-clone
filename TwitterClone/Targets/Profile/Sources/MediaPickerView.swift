@@ -8,6 +8,7 @@
 
 import SwiftUI
 import PhotosUI
+import Timeline
 
 public struct MediaPickerView: View {
     @State var selectedPhotoItem: [PhotosPickerItem] = []
@@ -27,13 +28,9 @@ public struct MediaPickerView: View {
                 selection: $selectedPhotoItem,
                 matching: .images
             ) {
-                Button {
-                    print("tap to upload an image")
-                } label: {
-                    Image(systemName: "photo.on.rectangle.angled")
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                }
+                Image(systemName: "photo.on.rectangle.angled")
+                    .accessibilityLabel("Photo picker")
+                    .accessibilityAddTraits(.isButton)
             }
         }
     }

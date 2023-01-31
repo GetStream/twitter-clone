@@ -28,10 +28,8 @@ public struct EditProfileView: View {
                         ZStack {
                             MyProfileImage()
                                 .opacity(0.6)
-                            Image(systemName: "camera")
-                                .fontWeight(.heavy)
+                            MediaPickerView()
                         }
-                        Text("Change")
                     }
                     
                     Spacer()

@@ -30,6 +30,10 @@ struct TwitterCloneApp: App {
             // ProfileFollower()
             // ProfileUnfollower()
             // ProfileSideMenu()
+             //AddNewTweetView()
+             //ProfileSummaryView()
+            // EditProfileView()
+            // MediaPickerView()
         }
     }
 }
