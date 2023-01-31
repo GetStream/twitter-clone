@@ -7,10 +7,10 @@
 
 import SwiftUI
 import TwitterCloneUI
-import Auth
+import Feeds
 
 public struct StartView: View {
-    @EnvironmentObject var auth: TwitterCloneAuth
+    @EnvironmentObject var feedsClient: FeedsClient
     @State private var isPresented = false
     @State private var isShown = false
 

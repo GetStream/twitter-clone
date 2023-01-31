@@ -8,10 +8,11 @@
 import SwiftUI
 
 import TwitterCloneUI
+import Feeds
 import Auth
 
 public struct LogIn: View {
-    @EnvironmentObject var auth: TwitterCloneAuth
+    @EnvironmentObject var feedsClient: FeedsClient
     @Environment(\.presentationMode) var presentationMode
 
     @State private var username = ""
@@ -40,7 +41,9 @@ public struct LogIn: View {
 
                 AsyncButton("Log In") {
                     do {
-                        try await auth.login(username: username, password: password)
+                        let authUser = try await feedsClient.auth.login(username: username, password: password)
+                        try await feedsClient.follow(target: authUser.userId, activityCopyLimit: 10)
+
                         presentationMode.wrappedValue.dismiss()
                     } catch {
                         print(error)

@@ -39,34 +39,34 @@ internal class URLFactory {
 
         switch forPath {
         case .images:
-            newURL.append(component: "images")
+            newURL.append(path: "images")
         case .followers(let userId):
-            newURL.append(component: "feed/user")
+            newURL.append(path: "feed/user")
            newURL.append(path: userId)
            newURL.append(path: "followers")
         case .user(let userId):
-            newURL.append(component: "user")
+            newURL.append(path: "user")
             if let userId {
                 newURL.append(path: userId)
             }
         case .userFeed(let userId):
-            newURL.append(component: "feed")
-            newURL.append(component: "user")
+            newURL.append(path: "feed")
+            newURL.append(path: "user")
             newURL.append(path: userId)
         case .timelineFeed(let userId):
             // Note: we are GETting the enriched timeline feed which includes actor information.
-            newURL.append(component: "enrich/feed/timeline")
+            newURL.append(path: "enrich/feed/timeline")
             newURL.append(path: userId)
         case .follows(let userId):
-            newURL.append(component: "feed/timeline")
+            newURL.append(path: "feed/timeline")
            newURL.append(path: userId)
            newURL.append(path: "follows")
         case .follow(userId: let userId):
-            newURL.append(component: "feed/timeline")
+            newURL.append(path: "feed/timeline")
             newURL.append(path: userId)
             newURL.append(path: "follows")
         case .unfollow(userId: let userId, target: let target):
-            newURL.append(component: "feed/timeline")
+            newURL.append(path: "feed/timeline")
             newURL.append(path: userId)
             newURL.append(path: "follows")
             newURL.append(path: target)

@@ -95,6 +95,10 @@ public final class TwitterCloneAuth: ObservableObject {
         let (data, response) = try await URLSession.shared.data(for: loginRequest)
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "signup response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
+        
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
         let authUser = try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
@@ -106,7 +110,7 @@ public final class TwitterCloneAuth: ObservableObject {
         return authUser
     }
 
-    public func login(username: String, password: String) async throws {
+    public func login(username: String, password: String) async throws -> AuthUser {
         os_log("User login @", username)
         let credential = LoginCredential(username: username, password: password)
         let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(credential)
@@ -117,6 +121,9 @@ public final class TwitterCloneAuth: ObservableObject {
         loginRequest.httpBody = postData
 
         let (data, response) = try await URLSession.shared.data(for: loginRequest)
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "login response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
@@ -126,5 +133,6 @@ public final class TwitterCloneAuth: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             self?.authUser = authUser
         }
+        return authUser
     }
 }

@@ -15,6 +15,17 @@ import os.log
 private struct FollowParamModel: Encodable {
     let target: String
     let activity_copy_limit: Int
+    
+    enum CodingKeys: CodingKey {
+        case target
+        case activity_copy_limit
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode("user:" + self.target, forKey: .target)
+        try container.encode(self.activity_copy_limit, forKey: .activity_copy_limit)
+    }
 }
 
 private struct UnfollowParamModel: Encodable {
@@ -103,6 +114,7 @@ public class FeedsClient: ObservableObject {
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(user)
 
         // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
@@ -126,6 +138,7 @@ public class FeedsClient: ObservableObject {
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(user)
 
         // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
@@ -149,13 +162,23 @@ public class FeedsClient: ObservableObject {
         let feedToken = authUser.feedToken
         var request = URLRequest(url: urlFactory.url(forPath: .follow(userId: userId)))
         request.httpMethod = "POST"
-        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(FollowParamModel(target: target, activity_copy_limit: activityCopyLimit))
+        let httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(FollowParamModel(target: target, activity_copy_limit: activityCopyLimit))
+        request.httpBody = httpBody
+        
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "follow request: %{public}@\n%{public}@", request.url?.description ?? "", String(data: httpBody, encoding: .utf8) ?? "")
+        }
 
         // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
-        let (_, response) = try await session.data(for: request)
+        let (data, response) = try await session.data(for: request)
+
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "follow response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
 
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
@@ -297,6 +320,7 @@ public class FeedsClient: ObservableObject {
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(activity)
 
         // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
@@ -327,6 +351,7 @@ public class FeedsClient: ObservableObject {
         request.httpBody = multipart.httpBody
 
         // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
