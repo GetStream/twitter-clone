@@ -69,7 +69,7 @@ public final class TwitterCloneAuth: ObservableObject {
         let authUrl = baseUrl.appending(path: "auth")
         signupUrl = authUrl.appending(path: "signup")
         loginUrl = authUrl.appending(path: "login")
-        authUser = try storedAuthUser()
+        authUser = try? storedAuthUser()
 //        logout()
     }
 

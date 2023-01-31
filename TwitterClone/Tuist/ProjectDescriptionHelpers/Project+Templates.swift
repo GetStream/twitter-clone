@@ -49,7 +49,10 @@ extension Project {
             "CFBundleShortVersionString": "1.0",
             "CFBundleVersion": "1",
             "UIMainStoryboardFile": "",
-            "UILaunchStoryboardName": "LaunchScreen"
+            "UILaunchStoryboardName": "LaunchScreen",
+            "NSAppleMusicUsageDescription": "Please allow access to media.",
+            "NSCameraUsageDescription": "Please allow access to the Camera to add photo&apos;s to posts.",
+            "NSPhotoLibraryUsageDescription": "Please allow access to the Photo library to add photo&apos;s to posts.",
             ]
         
         let swiftlintTargetAction = TargetScript.pre(path: .relativeToRoot("bin/swiftlint.sh"), name: "Swiftlint.", basedOnDependencyAnalysis: false)
