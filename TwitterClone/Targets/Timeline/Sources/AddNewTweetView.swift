@@ -54,7 +54,8 @@ public struct AddNewTweetView: View {
                                 guard let userId = feedsClient.auth.authUser?.userId else {
                                     throw AuthError.noLoadedAuthUser
                                 }
-                                let activity = PostActivity(actor: userId, object: isShowingComposeArea)
+                                // TODO: tweetPhotoUrlString needs to come from somewhere:
+                                let activity = PostActivity(actor: userId, object: isShowingComposeArea, tweetPhotoUrlString: nil)
                                 try await feedsClient.addActivity(activity)
                                 presentationMode.wrappedValue.dismiss()
                             } catch {

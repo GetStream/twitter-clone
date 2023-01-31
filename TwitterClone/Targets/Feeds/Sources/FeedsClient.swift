@@ -35,6 +35,10 @@ public struct PagingModel: Encodable {
 
 }
 
+public enum FeedError: Error {
+    case unexpectedResponse
+}
+
 public class FeedsClient: ObservableObject {
     public private ( set ) var auth: TwitterCloneAuth
 
@@ -48,8 +52,8 @@ public class FeedsClient: ObservableObject {
         return FeedsClient(urlString: region.rawValue, auth: auth)
     }
 
-    public static func previewClient() -> FeedsClient {
-        return FeedsClient(urlString: Region.euWest.rawValue, auth: TwitterCloneAuth(), mockEnabled: true)
+    public static func previewClient() throws -> FeedsClient {
+        return FeedsClient(urlString: Region.euWest.rawValue, auth: try TwitterCloneAuth(baseUrl: "http://localhost:8080"), mockEnabled: true)
     }
 
     private init(urlString: String, auth: TwitterCloneAuth, mockEnabled: Bool = false) {
@@ -333,8 +337,7 @@ public class FeedsClient: ObservableObject {
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
         let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
-        // swiftlint:disable:next force_unwrapping
-        return URL(string: fileUrl)! // TODO: check response
+        return try convertToURL(fileUrl)
     }
 
     public func deleteImage(cdnUrl: String) async throws {
@@ -394,8 +397,14 @@ public class FeedsClient: ObservableObject {
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
         let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
-        // swiftlint:disable:next force_unwrapping
-        return URL(string: fileUrl)! // TODO: check response
+        return try convertToURL(fileUrl)
+    }
+    
+    private func convertToURL(_ urlString: String) throws -> URL {
+        guard let result = URL(string: urlString) else {
+            throw FeedError.unexpectedResponse
+        }
+        return result
     }
 }
 

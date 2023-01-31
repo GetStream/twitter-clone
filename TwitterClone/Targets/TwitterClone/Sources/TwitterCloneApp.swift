@@ -12,7 +12,8 @@ import Profile
 struct TwitterCloneApp: App {
     
     @StateObject
-    var feedClient = FeedsClient.productionClient(region: .euWest, auth: TwitterCloneAuth())
+    var feedClient = FeedsClient.productionClient(region: .euWest, auth: try! TwitterCloneAuth(baseUrl: "http://localhost:8080"))
+    // swiftlint:disable:previous force_try    
     //    var feedClient = FeedsClient.previewClient()
     
     var body: some Scene {

@@ -16,6 +16,8 @@ public struct SignUp: View {
 
     @State private var username = ""
     @State private var password = ""
+    @State private var firstname = ""
+    @State private var lastname = ""
 
     public var body: some View {
         NavigationStack {
@@ -31,6 +33,9 @@ public struct SignUp: View {
                         SecureField("Password", text: $password)
                         // .textFieldStyle(.roundedBorder)
                             .textContentType(.password)
+                        TextField("Firstname", text: $firstname)
+                        TextField("Lastname", text: $lastname)
+
                     } header: {
                         Text("Create your account")
                     }
@@ -41,8 +46,8 @@ public struct SignUp: View {
                 AsyncButton("Sign up") {
                     do {
                         let authUser = try await feedsClient.auth.signup(username: username, password: password)
-                        // TODO where to get username, password and profile picture
-                        let user = NewFeedUser(userId: authUser.userId, firstname: "Firstname", lastname: "Lastname", username: username, profilePicture: nil)
+                        // TODO where to get profile picture
+                        let user = NewFeedUser(userId: authUser.userId, firstname: firstname, lastname: lastname, username: username, profilePicture: nil)
                         _ = try await feedsClient.createUser(user)
                         try await feedsClient.follow(target: user.userId, activityCopyLimit: 10)
                         presentationMode.wrappedValue.dismiss()
@@ -52,7 +57,7 @@ public struct SignUp: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.streamBlue)
-                .disabled(username.isEmpty || password.isEmpty)
+                .disabled(username.isEmpty || password.isEmpty || firstname.isEmpty || lastname.isEmpty)
                 Spacer()
             }
             .padding(16)

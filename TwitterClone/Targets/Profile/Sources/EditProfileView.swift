@@ -21,7 +21,7 @@ public struct EditProfileView: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                HStack{
+                HStack {
                     Button {
                         print("Open the photo picker view")
                     } label: {
@@ -70,14 +70,14 @@ public struct EditProfileView: View {
             .toolbarBackground(.streamBlue.opacity(0.1), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading){
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         self.isCanceled.toggle()
                     }
                     .fullScreenCover(isPresented: $isCanceled, content: ProfileSummaryView.init)
                 }
                 
-                ToolbarItem(placement: .principal){
+                ToolbarItem(placement: .principal) {
                     Text("Edit profile")
                 }
             }

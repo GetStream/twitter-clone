@@ -80,7 +80,6 @@ public struct PostActivity: Encodable {
     /// - Note: It shouldn't be empty.
     public var object: String
 
-    // TODO: needs to come from somewhere:
     public var tweetPhoto: String?
 
     public func encode(to encoder: Encoder) throws {
@@ -93,9 +92,10 @@ public struct PostActivity: Encodable {
         }
     }
 
-    public init(actor: String, object: String) {
+    public init(actor: String, object: String, tweetPhotoUrlString: String?) {
         self.actor = actor
         self.object = object
+        self.tweetPhoto = tweetPhotoUrlString
     }
 
     public init(from decoder: Decoder) throws {

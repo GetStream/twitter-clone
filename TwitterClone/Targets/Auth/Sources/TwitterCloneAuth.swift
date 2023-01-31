@@ -42,6 +42,7 @@ private struct LoginCredential: Encodable {
 public enum AuthError: Error {
     case noStoredAuthUser
     case noLoadedAuthUser
+    case urlInvalid
 }
 
 public final class TwitterCloneAuth: ObservableObject {
@@ -60,18 +61,15 @@ public final class TwitterCloneAuth: ObservableObject {
         authUser = nil
     }
 
-    public init() {
-        // TODO: Make baseUrl dynamic
+    public init(baseUrl baseUrlString: String) throws {
         os_log("Init auth")
-        // swiftlint:disable:next force_unwrapping
-        signupUrl = URL(string: "http://localhost:8080/auth/signup")!
-        // swiftlint:disable:next force_unwrapping
-        loginUrl = URL(string: "http://localhost:8080/auth/login")!
-        do {
-            authUser = try storedAuthUser()
-        } catch {
-            os_log(.error, "Load credentials from keychain failed: {public}@", error.localizedDescription)
+        guard let baseUrl = URL(string: baseUrlString) else {
+            throw AuthError.urlInvalid
         }
+        let authUrl = baseUrl.appending(path: "auth")
+        signupUrl = authUrl.appending(path: "signup")
+        loginUrl = authUrl.appending(path: "login")
+        authUser = try storedAuthUser()
 //        logout()
     }
 
