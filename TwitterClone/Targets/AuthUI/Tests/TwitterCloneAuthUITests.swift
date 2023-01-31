@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 import Auth
 
-final class TwitterCloneAuthTests: XCTestCase {
+final class TwitterCloneAuthUITests: XCTestCase {
 
     func test_auth_integration() async throws {
         let auth = TwitterCloneAuth()

@@ -61,11 +61,11 @@ public struct SignUp: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
-                            // Destination: Go to the create account page
-                           StartView()
-                        } label: { // A label to show on the screen
-                            Image(systemName: "chevron.backward.circle.fill")
-                        }
+                        // Destination: Go to the create account page
+                       StartView()
+                    } label: { // A label to show on the screen
+                        Image(systemName: "chevron.backward.circle.fill")
+                    }
                 }
 
                 ToolbarItem(placement: .principal) {

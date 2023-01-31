@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-final class TwitterCloneMessagesTests: XCTestCase {
+final class TwitterCloneFeedsTests: XCTestCase {
     func test_example() {
         XCTAssertEqual("TwitterCloneMessages", "TwitterCloneMessages")
     }
