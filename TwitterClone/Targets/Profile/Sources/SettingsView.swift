@@ -7,10 +7,13 @@
 //
 
 import SwiftUI
+import TwitterCloneUI
 
-struct SettingsView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+public struct SettingsView: View {
+    public init () {}
+    
+    public var body: some View {
+        Text("Hello, World!")
     }
 }
 

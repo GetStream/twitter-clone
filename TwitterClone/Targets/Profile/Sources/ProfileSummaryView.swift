@@ -1,5 +1,5 @@
 //
-//  ProfileSideMenu.swift
+//  ProfileSummaryView.swift
 //  TwitterCloneUI
 //
 //  Created by amos.gyamfi@getstream.io on 30.1.2023.
@@ -9,7 +9,8 @@
 import SwiftUI
 import TwitterCloneUI
 
-public struct ProfileSideMenu: View {
+public struct ProfileSummaryView: View {
+    @State private var isEditingPresented = false
     public init () {}
 
     public var body: some View {
@@ -36,6 +37,7 @@ public struct ProfileSideMenu: View {
 
                 Spacer()
             }
+            .padding()
             .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -44,21 +46,22 @@ public struct ProfileSideMenu: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        print("Navigate to edit profile page")
+                        self.isEditingPresented.toggle()
                     } label: {
                         Text("Edit profile")
                             .font(.subheadline)
                             .fontWeight(.bold)
                     }
                     .buttonStyle(.borderedProminent)
+                    .sheet(isPresented: $isEditingPresented, content: EditProfileView.init)
                 }
             }
         }
     }
 }
 
-struct ProfileSideMenu_Previews: PreviewProvider {
+struct ProfileSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSideMenu()
+        ProfileSummaryView()
     }
 }

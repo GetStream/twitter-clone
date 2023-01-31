@@ -12,7 +12,7 @@ import Auth
 
 import Feeds
 
-struct AddNewTweetView: View {
+public struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @Environment(\.presentationMode) var presentationMode
 
@@ -20,7 +20,9 @@ struct AddNewTweetView: View {
     @State private var isCanceled = false
     @State private var isRecording = false
 
-    var body: some View {
+    public init () {}
+    
+    public var body: some View {
         NavigationStack {
             VStack {
                 HStack(alignment: .top) {

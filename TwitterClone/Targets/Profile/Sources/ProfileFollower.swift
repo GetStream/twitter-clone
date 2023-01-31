@@ -7,11 +7,14 @@ import SwiftUI
 
 import Timeline
 import Search
+import TwitterCloneUI
 
-struct ProfileFollower: View { @State private var selection = 0
+public struct ProfileFollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
 
-    var body: some View {
+    public init () {}
+    
+    public var body: some View {
         NavigationStack {
             VStack {
                 FollowerProfileInfoAndTweets()
