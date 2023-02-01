@@ -19,22 +19,25 @@ public struct ProfileSummaryView: View {
                 ProfileInfoView(myProfile: myProfileData)
                     .padding(.top)
 
-                // Link to the full profile page: MyProfile.swift
-                NavigationLink {
-                    MyProfile()
-                } label: {
-                    Image(systemName: "person.circle.fill")
-                    Text("View full profile")
-                }
+                List {
+                    // Link to the full profile page: MyProfile.swift
+                    NavigationLink {
+                        MyProfile()
+                    } label: {
+                        Image(systemName: "person.circle.fill")
+                        Text("View full profile")
+                    }
 
-                // Link to the full profile page: MyProfile.swift
-                NavigationLink {
-                    MyProfile()
-                } label: {
-                    Image(systemName: "gear.circle.fill")
-                    Text("Settings")
+                    // Link to the full profile page: MyProfile.swift
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Image(systemName: "gear.circle.fill")
+                        Text("Settings")
+                    }
                 }
-
+                .listStyle(.plain)
+                
                 Spacer()
             }
             .padding()

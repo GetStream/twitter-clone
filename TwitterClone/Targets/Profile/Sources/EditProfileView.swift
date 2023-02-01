@@ -25,10 +25,13 @@ public struct EditProfileView: View {
                     Button {
                         print("Open the photo picker view")
                     } label: {
-                        ZStack {
-                            MyProfileImage()
-                                .opacity(0.6)
-                            MediaPickerView()
+                        HStack {
+                            ZStack {
+                                MyProfileImage()
+                                    .opacity(0.6)
+                                MediaPickerView()
+                            }
+                            Image(systemName: "pencil")
                         }
                     }
                     
