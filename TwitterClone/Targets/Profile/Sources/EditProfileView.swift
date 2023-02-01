@@ -32,6 +32,7 @@ public struct EditProfileView: View {
                                 MediaPickerView()
                             }
                             Image(systemName: "pencil")
+                                .fontWeight(.bold)
                         }
                     }
                     

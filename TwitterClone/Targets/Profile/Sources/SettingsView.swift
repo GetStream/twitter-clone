@@ -23,7 +23,7 @@ public struct SettingsView: View {
             List {
                 HStack{
                     Button {
-                        print("Open the photo picker view")
+                        print("Open the photo picker")
                     } label: {
                         HStack {
                             ZStack {

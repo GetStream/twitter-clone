@@ -26,14 +26,14 @@ public struct EditPassword: View {
                 }
                 
                 Section{
-                    TextField("At least 6 characters", text: $newPassword)
+                    TextField("At least 8 characters", text: $newPassword)
                         .keyboardType(.twitter)
                 } header: {
                     Text("New password")
                 }
                 
                 Section{
-                    TextField("At least 6 characters", text: $confirmPassword)
+                    TextField("At least 8 characters", text: $confirmPassword)
                         .keyboardType(.twitter)
                 } header: {
                     Text("Confirm password")

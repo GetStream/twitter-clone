@@ -52,7 +52,7 @@ public struct EditUserName: View {
                     } label: {
                         Text("Done")
                     }
-                    .disabled(updateUseName.isEmpty)
+                    .disabled(updateUseName.isEmpty) // Disable if empty
                 }
             }
         }
