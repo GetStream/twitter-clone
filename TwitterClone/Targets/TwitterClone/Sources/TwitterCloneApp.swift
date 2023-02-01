@@ -21,7 +21,7 @@ struct TwitterCloneApp: App {
             if feedClient.auth.authUser != nil {
                 HomeTimelineView().environmentObject(feedClient)
             } else {
-                StartView().environmentObject(feedClient.auth)
+                StartView().environmentObject(feedClient)
             }
             
             // MARK: For previewing
