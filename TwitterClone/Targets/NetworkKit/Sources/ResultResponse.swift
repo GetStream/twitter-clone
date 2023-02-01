@@ -16,13 +16,13 @@ public struct ResultResponse<ResultsType: Decodable>: Decodable {
     }
 
     public let results: ResultsType
-    public let next: String
-    public let duration: String
+    public let next: String?
+    public let duration: String?
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         results = try container.decode(ResultsType.self, forKey: .results)
-        next = try container.decode(String.self, forKey: .next)
-        duration = try container.decode(String.self, forKey: .duration)
+        next = try container.decodeIfPresent(String.self, forKey: .next)
+        duration = try container.decodeIfPresent(String.self, forKey: .duration)
     }
 }

@@ -19,6 +19,22 @@ private enum AuthKeychainKey: String {
     case userId
 }
 
+public struct UserReference: Decodable {
+    public let userId: String
+    public let username: String
+    
+    enum CodingKeys: String, CodingKey {
+        case userId = "id"
+        case username
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.userId = try container.decode(String.self, forKey: .userId)
+        self.username = try container.decode(String.self, forKey: .username)
+    }
+}
+
 public struct AuthUser: Decodable {
     public let feedToken: String
     public let chatToken: String
@@ -48,6 +64,7 @@ public enum AuthError: Error {
 public final class TwitterCloneAuth: ObservableObject {
     let signupUrl: URL
     let loginUrl: URL
+    let usersUrl: URL
 
     @Published
     public private(set) var authUser: AuthUser?
@@ -69,6 +86,7 @@ public final class TwitterCloneAuth: ObservableObject {
         let authUrl = baseUrl.appending(path: "auth")
         signupUrl = authUrl.appending(path: "signup")
         loginUrl = authUrl.appending(path: "login")
+        usersUrl = authUrl.appending(path: "users")
         authUser = try? storedAuthUser()
 //        logout()
     }
@@ -134,5 +152,27 @@ public final class TwitterCloneAuth: ObservableObject {
             self?.authUser = authUser
         }
         return authUser
+    }
+    
+    public func users(matching searchTerm: String) async throws -> [UserReference] {
+        os_log("Search users  %{public}@", searchTerm)
+        
+        let postDict = ["searchTerm": searchTerm]
+        let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(postDict)
+        
+        var searchUsersRequest = URLRequest(url: usersUrl)
+        searchUsersRequest.httpMethod = "POST"
+        searchUsersRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        searchUsersRequest.httpBody = postData
+
+        let (data, response) = try await URLSession.shared.data(for: searchUsersRequest)
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "search users response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[UserReference]>.self, from: data).results
     }
 }
