@@ -25,16 +25,6 @@ struct TwitterCloneApp: App {
             }
             
             // MARK: For previewing
-            // LogIn()
-            // StartView()
-            // MyProfile()
-            // ProfileFollower()
-            // ProfileUnfollower()
-            // ProfileSideMenu()
-             //AddNewTweetView()
-             //ProfileSummaryView()
-            // EditProfileView()
-            // MediaPickerView()
         }
     }
 }
