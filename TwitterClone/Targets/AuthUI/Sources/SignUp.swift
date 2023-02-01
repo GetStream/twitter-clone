@@ -40,7 +40,7 @@ public struct SignUp: View {
                         Text("Create your account")
                     }
                 }
-                .frame(height: 148)
+                .frame(height: 232)
                 .cornerRadius(16)
 
                 AsyncButton("Sign up") {
