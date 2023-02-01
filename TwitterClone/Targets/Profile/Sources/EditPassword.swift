@@ -18,21 +18,21 @@ public struct EditPassword: View {
     public var body: some View {
         NavigationStack {
             Form {
-                Section{
+                Section {
                     TextField("Current password", text: $oldPassword)
                         .keyboardType(.twitter)
                 } header: {
                     Text("Current password")
                 }
                 
-                Section{
+                Section {
                     TextField("At least 8 characters", text: $newPassword)
                         .keyboardType(.twitter)
                 } header: {
                     Text("New password")
                 }
                 
-                Section{
+                Section {
                     TextField("At least 8 characters", text: $confirmPassword)
                         .keyboardType(.twitter)
                 } header: {

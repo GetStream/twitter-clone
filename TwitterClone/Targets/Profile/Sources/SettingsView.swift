@@ -21,7 +21,7 @@ public struct SettingsView: View {
     public var body: some View {
         NavigationStack {
             List {
-                HStack{
+                HStack {
                     Button {
                         print("Open the photo picker")
                     } label: {
@@ -63,7 +63,7 @@ public struct SettingsView: View {
                 Button {
                     self.isEditingPassword.toggle()
                 } label: {
-                    HStack{
+                    HStack {
                         Text("Change your password")
                         Spacer()
                         Image(systemName: "chevron.right")

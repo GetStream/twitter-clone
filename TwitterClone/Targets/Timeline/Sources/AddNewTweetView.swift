@@ -16,14 +16,13 @@ import Feeds
 public struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @Environment(\.presentationMode) var presentationMode
-
+    
     @State private var isShowingComposeArea = ""
     @State private var isRecording = false
     
-    @State var selectedPhotoItem: [PhotosPickerItem] = []
-    // Store information about the selected photo that might be there or missing
-    @State var data: Data?
-
+    @State var selectedItems: [PhotosPickerItem] = []
+    @State var selectedPhotosData = [Data]()
+    
     public init () {}
     
     public var body: some View {
@@ -45,7 +44,7 @@ public struct AddNewTweetView: View {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
-
+                    
                     ToolbarItem(placement: .navigationBarTrailing) {
                         AsyncButton("Tweet") {
                             do {
@@ -59,7 +58,7 @@ public struct AddNewTweetView: View {
                             } catch {
                                 print(error)
                             }
-
+                            
                             print("tap to send tweet")
                         }
                         .font(.subheadline)
@@ -67,73 +66,87 @@ public struct AddNewTweetView: View {
                         .buttonStyle(.borderedProminent)
                         .disabled(isShowingComposeArea.isEmpty)
                     }
-
+                    
                     // Photo picker view
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to upload an image")
                         } label: {
                             VStack {
-                                if let data = data, let uiimage = UIImage(data: data) {
-                                    Image(uiImage: uiimage)
-                                        .resizable()
-                                }
-                                
                                 PhotosPicker(
-                                    selection: $selectedPhotoItem,
-                                    matching: .images
+                                    selection: $selectedItems,
+                                    matching: .any(of: [.images, .not(.livePhotos)])
                                 ) {
                                     Image(systemName: "photo.on.rectangle.angled")
                                         .accessibilityLabel("Photo picker")
                                         .accessibilityAddTraits(.isButton)
                                 }
+                                .onChange(of: selectedItems) { newItems in
+                                    selectedPhotosData.removeAll()
+                                    for newItem in newItems {
+                                        Task {
+                                            if let data = try? await newItem.loadTransferable(type: Data.self) {
+                                                selectedPhotosData.append(data)
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-
+                    
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to initiate a new Space")
                         } label: {
-                           Image(systemName: "mic.badge.plus")
+                            Image(systemName: "mic.badge.plus")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
-
+                        
                     }
-
+                    
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             self.isRecording.toggle()
                         } label: {
-                           Image(systemName: "waveform")
+                            Image(systemName: "waveform")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
                         .fullScreenCover(isPresented: $isRecording, content: RecordAudioView.init)
                     }
-
+                    
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to record audio")
                         } label: {
-                           Image(systemName: "bolt.square")
+                            Image(systemName: "bolt.square")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
                     }
-
+                    
                     // For the sake of keeping the 4 above icons on the left of the keyboard
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             print("tap to record audio")
                         } label: {
-                           Image(systemName: "")
+                            Image(systemName: "")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
                     }
                 }
+                ForEach(selectedPhotosData, id: \.self) { photoData in
+                                if let image = UIImage(data: photoData) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .cornerRadius(10.0)
+                                        .padding(.horizontal)
+                                }
+                            }
 
                 Spacer()
             }

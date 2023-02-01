@@ -16,13 +16,13 @@ public struct EditUserName: View {
     public var body: some View {
         NavigationStack {
             Form {
-                Section{
+                Section {
                     Text("stefanjblos")
                 } header: {
                     Text("Current username")
                 }
                 
-                Section{
+                Section {
                     TextField("username", text: $updateUseName)
                         .keyboardType(.twitter)
                 } header: {
