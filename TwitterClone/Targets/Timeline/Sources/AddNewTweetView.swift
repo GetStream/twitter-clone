@@ -18,7 +18,6 @@ public struct AddNewTweetView: View {
     @Environment(\.presentationMode) var presentationMode
 
     @State private var isShowingComposeArea = ""
-    @State private var isCanceled = false
     @State private var isRecording = false
     
     @State var selectedPhotoItem: [PhotosPickerItem] = []
@@ -43,9 +42,8 @@ public struct AddNewTweetView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancel") {
-                            self.isCanceled.toggle()
+                            presentationMode.wrappedValue.dismiss()
                         }
-                        .fullScreenCover(isPresented: $isCanceled, content: HomeTimelineView.init)
                     }
 
                     ToolbarItem(placement: .navigationBarTrailing) {
