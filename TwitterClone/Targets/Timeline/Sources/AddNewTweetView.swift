@@ -10,8 +10,11 @@ import SwiftUI
 import TwitterCloneUI
 import Auth
 import PhotosUI
+import os.log
 
 import Feeds
+
+let logger = Logger(subsystem: "AddNewTweetView", category: "main")
 
 public struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
@@ -51,8 +54,17 @@ public struct AddNewTweetView: View {
                                 guard let userId = feedsClient.auth.authUser?.userId else {
                                     throw AuthError.noLoadedAuthUser
                                 }
-                                // TODO: tweetPhotoUrlString needs to come from somewhere:
-                                let activity = PostActivity(actor: userId, object: isShowingComposeArea, tweetPhotoUrlString: nil)
+                                var tweetPhotoUrlString: String?
+                                logger.debug("add tweet photo identifier: \(selectedItems.first?.itemIdentifier ?? "", privacy: .public)")
+
+                                if let item = selectedItems.first, let mimeType = item.supportedContentTypes.first?.preferredMIMEType, let imageData = selectedPhotosData.first {
+
+                                    tweetPhotoUrlString = try await feedsClient.uploadImage(fileName: item.itemIdentifier ?? "", mimeType: mimeType, imageData: imageData).absoluteString
+                                    logger.debug("add tweet photo url: \(tweetPhotoUrlString ?? "", privacy: .public)")
+
+                                }
+                                
+                                let activity = PostActivity(actor: userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString)
                                 try await feedsClient.addActivity(activity)
                                 presentationMode.wrappedValue.dismiss()
                             } catch {
@@ -139,14 +151,14 @@ public struct AddNewTweetView: View {
                     }
                 }
                 ForEach(selectedPhotosData, id: \.self) { photoData in
-                                if let image = UIImage(data: photoData) {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .cornerRadius(10.0)
-                                        .padding(.horizontal)
-                                }
-                            }
+                    if let image = UIImage(data: photoData) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(10.0)
+                            .padding(.horizontal)
+                    }
+                }
 
                 Spacer()
             }

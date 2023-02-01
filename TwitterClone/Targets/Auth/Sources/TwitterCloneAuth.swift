@@ -114,7 +114,7 @@ public final class TwitterCloneAuth: ObservableObject {
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
         if OSLog.networkPayloadLog.isEnabled(type: .debug) {
-            os_log(.debug, "signup response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+            os_log("signup response: %{public}@", log: OSLog.clientLog, type: .debug, String(data: data, encoding: .utf8) ?? "")
         }
         
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)

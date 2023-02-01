@@ -1,7 +1,7 @@
 import Foundation
 
-public final class TwitterCloneSettings {
-    public static func hello() {
+public class TwitterCloneSettings {
+    public static func helloAbc() {
         print("Hello, from your Kit framework")
     }
 }

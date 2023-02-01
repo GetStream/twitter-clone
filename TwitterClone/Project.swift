@@ -13,10 +13,10 @@ let authName = "Auth"
 let authUiName = "AuthUI"
 let keychainName = "Keychain"
 
-let messagesName = "Messages"
+let messagesName = "DirectMessages"
 let profileName = "Profile"
 let searchName = "Search"
-let settingsName = "Settings"
+let settingsName = "UserSettings"
 let spacesName = "Spaces"
 let timelineName = "Timeline"
 let feedsName = "Feeds"
@@ -35,6 +35,7 @@ let profileTarget =
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
+                                    .target(name: authUiName),
                                     .target(name: timelineName),
                                     .target(name: uiName)
                                  ])
@@ -108,5 +109,6 @@ let keychainHelperTarget =
 let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
-                          dependencies: [.external(name: "StreamChatSwiftUI")],
-                          additionalTargets: uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget + networkKitTarget, additionalFiles: ["graph.png", "../README.md"])
+                          dependencies: [.external(name: "StreamChatSwiftUI"), .external(name: "HMSSDK")],
+                          additionalTargets: uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget + networkKitTarget,
+                          additionalFiles: ["graph.png", "../README.md"])
