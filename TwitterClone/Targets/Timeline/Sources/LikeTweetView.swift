@@ -16,7 +16,13 @@ public struct LikeTweetView: View {
             Button {
                 isLiked.toggle()
                 // Increment the number of likes by 1 when the heart icon is tapped
-                numberOfLikes += 1
+                
+                if isLiked {
+                    numberOfLikes += 1
+                } else {
+                    numberOfLikes -= 1
+                }
+                
             } label: {
                 ZStack{
                     Image(systemName: isLiked ? "heart.fill" : "heart")
