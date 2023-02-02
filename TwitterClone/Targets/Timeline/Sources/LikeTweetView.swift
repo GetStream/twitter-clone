@@ -39,7 +39,6 @@ public struct LikeTweetView: View {
                         .scaleEffect(isLiked ? 1.5 : 0)
                         .animation(.easeInOut(duration: 0.5), value: isLiked)
                     
-                    // Rotated splash
                     Image("splash")
                         .rotationEffect(.degrees(90))
                         .opacity(isLiked ? 0 : 1)
