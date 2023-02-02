@@ -46,6 +46,11 @@ public struct PagingModel: Encodable {
 
 }
 
+public struct FileResultModel: Decodable {
+    let duration: String
+    let file: String
+}
+
 public enum FeedError: Error {
     case unexpectedResponse
 }
@@ -350,19 +355,25 @@ public class FeedsClient: ObservableObject {
         request.setValue(multipart.httpContentTypeHeadeValue, forHTTPHeaderField: "Content-Type")
         request.httpBody = multipart.httpBody
 
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "upload image request body: %{public}@", String(data: multipart.httpBody, encoding: .utf8) ?? "")
+        }
+
         // Headers
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await session.data(for: request)
-
+        
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "upload image response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
-        let fileUrl = try TwitterCloneNetworkKit.jsonDecoder.decode(String.self, from: data)
-        return try convertToURL(fileUrl)
+        let fileResult = try TwitterCloneNetworkKit.jsonDecoder.decode(FileResultModel.self, from: data)
+        return try convertToURL(fileResult.file)
     }
 
     public func deleteImage(cdnUrl: String) async throws {

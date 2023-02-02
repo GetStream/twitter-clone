@@ -59,7 +59,7 @@ public struct AddNewTweetView: View {
 
                                 if let item = selectedItems.first, let mimeType = item.supportedContentTypes.first?.preferredMIMEType, let imageData = selectedPhotosData.first {
 
-                                    tweetPhotoUrlString = try await feedsClient.uploadImage(fileName: item.itemIdentifier ?? "", mimeType: mimeType, imageData: imageData).absoluteString
+                                    tweetPhotoUrlString = try await feedsClient.uploadImage(fileName: item.itemIdentifier ?? "filename", mimeType: mimeType, imageData: imageData).absoluteString
                                     logger.debug("add tweet photo url: \(tweetPhotoUrlString ?? "", privacy: .public)")
 
                                 }

@@ -56,7 +56,7 @@ public struct MultipartRequest {
     }
 
     public var httpContentTypeHeadeValue: String {
-        "multipart/form-data; boundary=\(boundary)"
+        "multipart/form-data; charset=utf-8; boundary=\(boundary)"
     }
 
     public var httpBody: Data {
