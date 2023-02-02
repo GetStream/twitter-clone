@@ -79,14 +79,14 @@ public class FeedsClient: ObservableObject {
         self.mockEnabled = mockEnabled
     }
 
-    public func user() async throws -> FeedUser {
+    public func user(id: String? = nil) async throws -> FeedUser {
         let session = TwitterCloneNetworkKit.restSession
 
         guard let authUser = auth.authUser else {
             throw AuthError.noLoadedAuthUser
         }
 
-        let userId = authUser.userId
+        let userId = id ?? authUser.userId
         let feedToken = authUser.feedToken
 
         var request = URLRequest(url: urlFactory.url(forPath: .user(userId: userId)))

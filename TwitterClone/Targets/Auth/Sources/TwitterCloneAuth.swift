@@ -19,7 +19,11 @@ private enum AuthKeychainKey: String {
     case userId
 }
 
-public struct UserReference: Decodable {
+public struct UserReference: Decodable, Identifiable {
+    public var id: String {
+        return userId
+    }
+    
     public let userId: String
     public let username: String
     
