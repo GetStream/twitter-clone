@@ -7,6 +7,7 @@ import Auth
 import AuthUI
 import Feeds
 import Profile
+import Search
 
 @main
 struct TwitterCloneApp: App {
@@ -25,6 +26,7 @@ struct TwitterCloneApp: App {
             }
             
             // MARK: For previewing
+
             // LogIn()
             // StartView()
             // MyProfile()
@@ -35,6 +37,9 @@ struct TwitterCloneApp: App {
             // ProfileSummaryView()
             // EditProfileView()
             // MediaPickerView()
+            //SettingsView()
+            //SearchView()
+            //LikeTweetView()
         }
     }
 }
