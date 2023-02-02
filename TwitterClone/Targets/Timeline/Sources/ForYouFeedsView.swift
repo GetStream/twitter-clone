@@ -16,14 +16,12 @@ public struct ForYouFeedsView: View {
             PostRowView(item: item)
         } // LIST STYLES
         .listStyle(.plain)
-        .onAppear {
-            Task {
-                // TODO: switch between the right feeds depending on context
-                do {
-                    try await feedClient.getActivities()
-                } catch {
-                    print(error)
-                }
+        .task {
+            // TODO: switch between the right feeds depending on context
+            do {
+                try await feedClient.getActivities()
+            } catch {
+                print(error)
             }
         }
         .refreshable {

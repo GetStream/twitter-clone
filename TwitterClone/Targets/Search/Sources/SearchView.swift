@@ -16,6 +16,7 @@ import Feeds
 import Combine
 import Auth
 
+@MainActor
 class UserSearchViewModel: ObservableObject {
     var feedClient: FeedsClient?
     @Published var users = [UserReference]()
@@ -25,10 +26,8 @@ class UserSearchViewModel: ObservableObject {
         Task {
             if let feedClient = self.feedClient {
                 let users = try await feedClient.auth.users(matching: searchText)
-                DispatchQueue.main.async {
-                    self.users.removeAll()
-                    self.users.append(contentsOf: users)
-                }
+                self.users.removeAll()
+                self.users.append(contentsOf: users)
             }
         }
     }
@@ -52,11 +51,13 @@ public struct SearchView: View {
             }
             .navigationTitle("Search Users")
             .searchable(text: $viewModel.searchText)
-            .onAppear {
+            .task {
                 viewModel.feedClient = feedClient
                 viewModel.runSearch()
             }
-            .onSubmit(of: .search, viewModel.runSearch)
+            .onSubmit(of: .search) {
+                viewModel.runSearch()
+            }
             
             //            .searchScopes($searchScope) {
             //                ForEach(SearchScope.allCases, id: \.self) { scope in

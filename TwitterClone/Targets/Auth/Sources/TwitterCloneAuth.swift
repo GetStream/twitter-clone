@@ -65,6 +65,7 @@ public enum AuthError: Error {
     case urlInvalid
 }
 
+@MainActor
 public final class TwitterCloneAuth: ObservableObject {
     let signupUrl: URL
     let loginUrl: URL
@@ -125,9 +126,7 @@ public final class TwitterCloneAuth: ObservableObject {
 
         let authUser = try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
         authUser.persist()
-        DispatchQueue.main.async { [weak self] in
-            self?.authUser = authUser
-        }
+        self.authUser = authUser
 
         return authUser
     }
@@ -152,9 +151,7 @@ public final class TwitterCloneAuth: ObservableObject {
 
         let authUser = try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
         authUser.persist()
-        DispatchQueue.main.async { [weak self] in
-            self?.authUser = authUser
-        }
+        self.authUser = authUser
         return authUser
     }
     

@@ -24,7 +24,7 @@ public struct LikeTweetView: View {
                 }
                 
             } label: {
-                ZStack{
+                ZStack {
                     Image(systemName: isLiked ? "heart.fill" : "heart")
                         .font(isLiked ? .title2 : .title3)
                         .foregroundColor(Color(isLiked ? .systemPink : .systemGray))
@@ -32,7 +32,7 @@ public struct LikeTweetView: View {
                     
                     Circle()
                         .strokeBorder(lineWidth: isLiked ? 0 : 35)
-                        .animation(.easeInOut(duration: 0.5).delay(0.1),value: isLiked)
+                        .animation(.easeInOut(duration: 0.5).delay(0.1), value: isLiked)
                         .frame(width: 70, height: 70, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                         .foregroundColor(Color(.systemPink))
                         .hueRotation(.degrees(isLiked ? 300 : 200))

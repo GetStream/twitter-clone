@@ -55,6 +55,7 @@ public enum FeedError: Error {
     case unexpectedResponse
 }
 
+@MainActor
 public class FeedsClient: ObservableObject {
     public private ( set ) var auth: TwitterCloneAuth
 
@@ -274,9 +275,7 @@ public class FeedsClient: ObservableObject {
     // TODO: paging
     public func getActivities() async throws {
         if mockEnabled {
-            DispatchQueue.main.async { [weak self] in
-                self?.activities = EnrichedPostActivity.previewPostActivities()
-            }
+            self.activities = EnrichedPostActivity.previewPostActivities()
             return
         }
         let session = TwitterCloneNetworkKit.restSession
@@ -304,11 +303,7 @@ public class FeedsClient: ObservableObject {
             os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
         }
 
-        let activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
-
-        DispatchQueue.main.async { [weak self] in
-            self?.activities = activities
-        }
+        activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
     }
 
     public func addActivity(_ activity: PostActivity) async throws {
