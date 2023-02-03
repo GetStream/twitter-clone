@@ -44,7 +44,7 @@ public struct ProfileSummaryView: View {
             .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    MyProfileImage(action: {})
+                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -60,11 +60,5 @@ public struct ProfileSummaryView: View {
                 }
             }
         }
-    }
-}
-
-struct ProfileSummaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileSummaryView()
     }
 }

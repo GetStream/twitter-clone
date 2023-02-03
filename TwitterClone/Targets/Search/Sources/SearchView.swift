@@ -47,6 +47,15 @@ public struct SearchView: View {
                         .font(.headline)
                     
                     Text(user.userId)
+                    Button("Follow") {
+                        Task {
+                            do {
+                                try await feedClient.follow(target: user.userId, activityCopyLimit: 100)
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    }
                 }
             }
             .navigationTitle("Search Users")
@@ -65,7 +74,6 @@ public struct SearchView: View {
             //                }
             //            }
         }
-//        .onChange(of: searchScope) { _ in runSearch() }
     }
 }
 

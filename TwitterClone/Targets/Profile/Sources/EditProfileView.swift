@@ -27,7 +27,7 @@ public struct EditProfileView: View {
                     } label: {
                         HStack {
                             ZStack {
-                                MyProfileImage(action: {})
+                                ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
                                     .opacity(0.6)
                                 MediaPickerView()
                             }

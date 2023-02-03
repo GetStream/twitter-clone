@@ -15,7 +15,7 @@ struct FollowerProfileInfoAndTweets: View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    FollowerProfileImage()
+                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
                         .scaleEffect(1.2)
 
                     Spacer()

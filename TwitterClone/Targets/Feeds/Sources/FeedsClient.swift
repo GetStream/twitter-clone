@@ -61,8 +61,6 @@ public class FeedsClient: ObservableObject {
 
     private let mockEnabled: Bool
 
-    @Published public private ( set ) var activities: [EnrichedPostActivity] = []
-
     private let urlFactory: URLFactory
 
     public static func productionClient(region: Region, auth: TwitterCloneAuth) -> FeedsClient {
@@ -272,11 +270,40 @@ public class FeedsClient: ObservableObject {
         return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[FeedFollower]>.self, from: data).results
     }
 
-    // TODO: paging
-    public func getActivities() async throws {
+    public func getUserActivities(userId: String) async throws -> [EnrichedPostActivity] {
         if mockEnabled {
-            self.activities = EnrichedPostActivity.previewPostActivities()
-            return
+            return EnrichedPostActivity.previewPostActivities()
+        }
+        let session = TwitterCloneNetworkKit.restSession
+
+        guard let authUser = auth.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
+
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
+        request.httpMethod = "GET"
+
+        // Headers
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await session.data(for: request)
+
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
+
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
+    }
+    // TODO: paging
+    public func getTimelineActivities() async throws -> [EnrichedPostActivity] {
+        if mockEnabled {
+            return EnrichedPostActivity.previewPostActivities()
         }
         let session = TwitterCloneNetworkKit.restSession
 
@@ -303,7 +330,7 @@ public class FeedsClient: ObservableObject {
             os_log(.debug, "getactivities response: %{public}@", String(data: data, encoding: .utf8) ?? "")
         }
 
-        activities = try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
+        return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[EnrichedPostActivity]>.self, from: data).results
     }
 
     public func addActivity(_ activity: PostActivity) async throws {
@@ -330,7 +357,7 @@ public class FeedsClient: ObservableObject {
 
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
-        try await getActivities()
+        try await getTimelineActivities()
     }
 
     public func uploadImage(fileName: String, mimeType: String, imageData: Data) async throws -> URL {

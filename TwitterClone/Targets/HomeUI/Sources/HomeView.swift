@@ -80,7 +80,7 @@ public struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    MyProfileImage(action: {
+                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {
                         self.isShowingProfile.toggle()
                     })
                     .sheet(isPresented: $isShowingProfile, content: {

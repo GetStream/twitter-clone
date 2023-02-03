@@ -17,7 +17,7 @@ struct RecordAudioView: View {
             VStack {
                 Spacer()
 
-                MyProfileImage(action: {
+                ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {
                     
                 })
                     .scaleEffect(2)
@@ -60,8 +60,8 @@ struct RecordAudioView: View {
     }
 }
 
-struct RecordAudioView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecordAudioView()
-    }
-}
+//struct RecordAudioView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RecordAudioView()
+//    }
+//}

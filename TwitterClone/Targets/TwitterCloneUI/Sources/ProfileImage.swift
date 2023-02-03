@@ -1,17 +1,16 @@
 //
-//  MyProfileImage.swift
-//  TTwin
-//
-//  Pulls Unsplash images through Picsum
+//  ProfileImage.swift
 //
 
 import SwiftUI
 
-public struct MyProfileImage: View {
-    public init (action: @escaping (() -> Void)) {
+public struct ProfileImage: View {
+    public init (imageUrl: String, action: @escaping (() -> Void)) {
         self.action = action
+        self.imageUrl = imageUrl
     }
     
+    var imageUrl: String
     var action: (() -> Void)
 
     public var body: some View {
@@ -19,7 +18,7 @@ public struct MyProfileImage: View {
         Button {
             self.action()
         } label: {
-            AsyncImage(url: URL(string: "https://picsum.photos/id/64/200")) { loading in
+            AsyncImage(url: URL(string: imageUrl)) { loading in
                 if let image = loading.image {
                     image
                         .resizable()
@@ -37,9 +36,9 @@ public struct MyProfileImage: View {
     }
 }
 
-// struct MyProfileImage_Previews: PreviewProvider {
+// struct ProfileImage_Previews: PreviewProvider {
 //    static var previews: some View {
-//        MyProfileImage()
+//        ProfileImage()
 //            .preferredColorScheme(.dark)
 //    }
 // }
