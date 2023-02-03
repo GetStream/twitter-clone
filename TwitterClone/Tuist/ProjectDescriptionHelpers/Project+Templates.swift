@@ -16,7 +16,8 @@ extension Project {
                        organizationName: "Stream.io Inc.",
                        packages: packages,
                        targets: targets,
-        additionalFiles: additionalFiles)
+        additionalFiles: additionalFiles,
+                       resourceSynthesizers: .default)
     }
 
     // MARK: - Private

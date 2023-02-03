@@ -5,7 +5,7 @@
 
 import SwiftUI
 import TwitterCloneUI
-import Timeline
+import TimelineUI
 
 struct MyProfileInfoAndTweets: View {
     @State private var selection = 0
@@ -14,7 +14,7 @@ struct MyProfileInfoAndTweets: View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    MyProfileImage()
+                    MyProfileImage(action: {})
                         .scaleEffect(1.2)
 
                     Spacer()

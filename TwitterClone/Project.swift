@@ -18,7 +18,8 @@ let profileName = "Profile"
 let searchName = "Search"
 let settingsName = "UserSettings"
 let spacesName = "Spaces"
-let timelineName = "Timeline"
+let timelineUiName = "TimelineUI"
+let homeUiName = "HomeUI"
 let feedsName = "Feeds"
 
 let messagesTarget =
@@ -36,13 +37,14 @@ let profileTarget =
                                  dependencies: [
                                     .target(name: authName),
                                     .target(name: authUiName),
-                                    .target(name: timelineName),
+                                    .target(name: timelineUiName),
                                     .target(name: uiName)
                                  ])
 let searchTarget =
     Project.makeFrameworkTargets(name: searchName,
                                  platform: .iOS,
                                  dependencies: [
+                                    .target(name: feedsName),
                                     .target(name: authName)
                                  ])
 let settingsTarget =
@@ -51,8 +53,20 @@ let settingsTarget =
                                  dependencies: [
                                         .target(name: uiName)
                                  ])
-let timelineTarget =
-    Project.makeFrameworkTargets(name: timelineName,
+let homeUiTarget =
+    Project.makeFrameworkTargets(name: homeUiName,
+                                 platform: .iOS,
+                                 dependencies: [
+                                    .target(name: authName),
+                                    .target(name: feedsName),
+                                    .target(name: searchName),
+                                    .target(name: profileName),
+                                    .target(name: timelineUiName),
+                                    .target(name: uiName)
+                                 ])
+
+let timelineUiTarget =
+    Project.makeFrameworkTargets(name: timelineUiName,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
@@ -110,5 +124,5 @@ let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
                           dependencies: [.external(name: "StreamChatSwiftUI"), .external(name: "HMSSDK")],
-                          additionalTargets: uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + timelineTarget + spacesTarget + feedsTarget + networkKitTarget,
+                          additionalTargets: uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + homeUiTarget + timelineUiTarget + spacesTarget + feedsTarget + networkKitTarget,
                           additionalFiles: ["graph.png", "../README.md"])

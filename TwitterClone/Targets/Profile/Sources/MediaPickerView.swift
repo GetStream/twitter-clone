@@ -8,7 +8,6 @@
 
 import SwiftUI
 import PhotosUI
-import Timeline
 
 public struct MediaPickerView: View {
     @State var selectedPhotoItem: [PhotosPickerItem] = []

@@ -5,8 +5,8 @@
 
 import SwiftUI
 
-import Timeline
 import TwitterCloneUI
+import TimelineUI
 
 struct FollowerProfileInfoAndTweets: View {
     @State private var selection = 0

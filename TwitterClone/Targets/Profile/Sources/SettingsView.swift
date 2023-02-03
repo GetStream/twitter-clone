@@ -27,7 +27,7 @@ public struct SettingsView: View {
                     } label: {
                         HStack {
                             ZStack {
-                                MyProfileImage()
+                                MyProfileImage(action: {})
                                     .opacity(0.6)
                                 MediaPickerView()
                             }
@@ -96,8 +96,8 @@ public struct SettingsView: View {
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
-}
+//struct SettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SettingsView()
+//    }
+//}

@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-import Timeline
+import TimelineUI
 import Search
 
 struct ProfileUnfollower: View { @State private var selection = 0
@@ -15,8 +15,8 @@ struct ProfileUnfollower: View { @State private var selection = 0
         NavigationStack {
             VStack {
                 UnfollowerProfileInfoAndTweets()
-                TabBarView()
-                    .frame(height: 68)
+//                TabBarView()
+//                    .frame(height: 68)
             } // All views
             .navigationBarTitleDisplayMode(.large)
             .navigationTitle("")
@@ -27,7 +27,7 @@ struct ProfileUnfollower: View { @State private var selection = 0
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
                         // Destination
-                        HomeTimelineView()
+                        FeedsView()
                     } label: { // A label to show on the screen
                         Image(systemName: "chevron.backward.circle.fill")
                     }

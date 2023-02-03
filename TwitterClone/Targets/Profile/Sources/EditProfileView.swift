@@ -27,7 +27,7 @@ public struct EditProfileView: View {
                     } label: {
                         HStack {
                             ZStack {
-                                MyProfileImage()
+                                MyProfileImage(action: {})
                                     .opacity(0.6)
                                 MediaPickerView()
                             }

@@ -17,7 +17,9 @@ struct RecordAudioView: View {
             VStack {
                 Spacer()
 
-                MyProfileImage()
+                MyProfileImage(action: {
+                    
+                })
                     .scaleEffect(2)
 
                 Spacer()

@@ -2,7 +2,8 @@ import SwiftUI
 import StreamChatSwiftUI
 
 import TwitterCloneUI
-import Timeline
+import TimelineUI
+import HomeUI
 import Auth
 import AuthUI
 import Feeds
@@ -20,7 +21,7 @@ struct TwitterCloneApp: App {
     var body: some Scene {
         WindowGroup {
             if feedClient.auth.authUser != nil {
-                HomeTimelineView().environmentObject(feedClient)
+                HomeView().environmentObject(feedClient)
             } else {
                 StartView().environmentObject(feedClient)
             }

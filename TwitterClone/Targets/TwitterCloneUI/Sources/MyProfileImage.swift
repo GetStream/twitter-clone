@@ -8,24 +8,32 @@
 import SwiftUI
 
 public struct MyProfileImage: View {
-    public init () {}
+    public init (action: @escaping (() -> Void)) {
+        self.action = action
+    }
+    
+    var action: (() -> Void)
 
     public var body: some View {
-        AsyncImage(url: URL(string: "https://picsum.photos/id/64/200")) { loading in
-            if let image = loading.image {
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Circle())
-            } else if loading.error != nil {
-                Text("There was an error loading the profile image.")
-            } else {
-                ProgressView()
+        
+        Button {
+            self.action()
+        } label: {
+            AsyncImage(url: URL(string: "https://picsum.photos/id/64/200")) { loading in
+                if let image = loading.image {
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                } else if loading.error != nil {
+                    Text("There was an error loading the profile image.")
+                } else {
+                    ProgressView()
+                }
             }
+            .frame(width: 48, height: 48)
+            .accessibilityLabel("Profile photo")
         }
-        .frame(width: 48, height: 48)
-        .accessibilityLabel("Profile photo")
-        .accessibilityAddTraits(.isButton)
     }
 }
 

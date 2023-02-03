@@ -5,9 +5,9 @@
 
 import SwiftUI
 
-import Timeline
 import Search
 import TwitterCloneUI
+import TimelineUI
 
 public struct ProfileFollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
@@ -18,8 +18,8 @@ public struct ProfileFollower: View { @State private var selection = 0
         NavigationStack {
             VStack {
                 FollowerProfileInfoAndTweets()
-                TabBarView()
-                    .frame(height: 68)
+//                TabBarView()
+//                    .frame(height: 68)
             } // All views
             .navigationBarTitleDisplayMode(.large)
             .navigationTitle("")
@@ -30,7 +30,7 @@ public struct ProfileFollower: View { @State private var selection = 0
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink {
                             // Destination
-                            HomeTimelineView()
+                            FeedsView()
                         } label: { // A label to show on the screen
                             Image(systemName: "chevron.backward.circle.fill")
                     }

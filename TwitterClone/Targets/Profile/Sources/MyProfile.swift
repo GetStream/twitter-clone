@@ -6,7 +6,6 @@
 import SwiftUI
 
 import TwitterCloneUI
-import Timeline
 import Search
 
 public struct MyProfile: View {
@@ -18,8 +17,8 @@ public struct MyProfile: View {
         NavigationStack {
             VStack {
                 MyProfileInfoAndTweets()
-                TabBarView()
-                    .frame(height: 68)
+//                TabBarView()
+//                    .frame(height: 68)
             } // All views
             .navigationBarTitleDisplayMode(.large)
             .navigationTitle("")

@@ -44,7 +44,7 @@ public struct ProfileSummaryView: View {
             .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    MyProfileImage()
+                    MyProfileImage(action: {})
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {

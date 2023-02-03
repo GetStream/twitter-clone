@@ -8,11 +8,15 @@ import TwitterCloneUI
 import Auth
 import Feeds
 import Search
+import Profile
+import TimelineUI
 
-public struct HomeTimelineView: View {
+public struct HomeView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @EnvironmentObject var feedsClient: FeedsClient
     @State private var isAddingTweet = false
+    
+    @State private var isShowingProfile = false
 
     public init() {}
 
@@ -76,7 +80,13 @@ public struct HomeTimelineView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    MyProfileImage()
+                    MyProfileImage(action: {
+                        self.isShowingProfile.toggle()
+                    })
+                    .sheet(isPresented: $isShowingProfile, content: {
+                        MyProfile()
+                            .environmentObject(feedsClient)
+                    })
                 }
                 
                 ToolbarItem(placement: .principal) {

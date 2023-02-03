@@ -2,12 +2,14 @@ import SwiftUI
 
 import Feeds
 
-struct FeedsView: View {
+public struct FeedsView: View {
     @EnvironmentObject var feedClient: FeedsClient
 
     @State private var selection = 0
+    
+    public init() {}
 
-    var body: some View {
+    public var body: some View {
         VStack {
             ForYouFeedsView()
         }

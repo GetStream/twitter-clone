@@ -32,7 +32,7 @@ public struct AddNewTweetView: View {
         NavigationStack {
             VStack {
                 HStack(alignment: .top) {
-                    MyProfileImage()
+                    MyProfileImage(action: {})
                     TextField("What's happening?", text: $isShowingComposeArea, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .lineLimit(10)
