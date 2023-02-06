@@ -7,9 +7,11 @@ import SwiftUI
 
 import TimelineUI
 import Search
+import Feeds
 
 struct ProfileUnfollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
+    @EnvironmentObject var feedsClient: FeedsClient
 
     var body: some View {
         NavigationStack {
@@ -40,7 +42,9 @@ struct ProfileUnfollower: View { @State private var selection = 0
                     } label: {
                         Image(systemName: "magnifyingglass.circle.fill")
 
-                    }.sheet(isPresented: $isShowingSearch, content: SearchView.init)
+                    }.sheet(isPresented: $isShowingSearch) {
+                        SearchView(feedsClient: feedsClient)
+                    }
                 }
             }
             .font(.title2)

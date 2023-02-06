@@ -242,7 +242,7 @@ public class FeedsClient: ObservableObject {
         return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[FeedFollower]>.self, from: data).results
     }
 
-    public func following(feedId: String, pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
+    public func following(pagingModel: PagingModel? = nil) async throws -> [FeedFollower] {
         let session = TwitterCloneNetworkKit.restSession
 
         guard let authUser = auth.authUser else {

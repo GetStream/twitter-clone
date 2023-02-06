@@ -7,7 +7,10 @@ import SwiftUI
 
 import Search
 
+import Feeds
+
 public struct TabBarView: View {
+    @EnvironmentObject var feedsClient: FeedsClient
     @State private var selectedFeeds = 1
     @State private var isSearchShowing = false
 
@@ -27,7 +30,7 @@ public struct TabBarView: View {
                 Text("Home")
             }
 
-            SearchView()
+            SearchView(feedsClient: feedsClient)
                 .tabItem {
                     Button {
                         self.isSearchShowing.toggle()
@@ -35,7 +38,6 @@ public struct TabBarView: View {
                         Image(systemName: "magnifyingglass")
                         Text("Search")
                     }
-                    .sheet(isPresented: $isSearchShowing, content: SearchView.init)
                 }
 
             Text("")

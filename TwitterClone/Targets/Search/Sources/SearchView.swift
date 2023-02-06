@@ -18,36 +18,63 @@ import Auth
 
 @MainActor
 class UserSearchViewModel: ObservableObject {
-    var feedClient: FeedsClient?
+    var feedsClient: FeedsClient
     @Published var users = [UserReference]()
     @Published var searchText: String = ""
     @Published var followedUserFeedIds = Set<String>()
+    
+    init(feedsClient: FeedsClient) {
+        self.feedsClient = feedsClient
+    }
+    
+    func isFollowing(user: UserReference) -> Bool {
+        return followedUserFeedIds.contains(user.userId)
+    }
+    
+    func follow(user: UserReference) {
+        Task {
+            do {
+                try await feedsClient.unfollow(target: user.userId, keepHistory: true)
+                followedUserFeedIds.remove("user:" + user.userId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func unfollow(user: UserReference) {
+        Task {
+            do {
+                try await feedsClient.follow(target: user.userId, activityCopyLimit: 100)
+                followedUserFeedIds.insert("user:" + user.userId)
+            } catch {
+                print(error)
+            }
+        }
+    }
         
     func runSearch() {
         Task {
             let users: [UserReference]
             let feedFollowers: [FeedFollower]
-            if let feedClient {
-                users = try await feedClient.auth.users(matching: searchText)
-                feedFollowers = try await feedClient.following(feedId: "")
-            } else {
-                users = []
-                feedFollowers = []
-            }
-                                                         
             self.users.removeAll()
-            self.users.append(contentsOf: users)
             followedUserFeedIds.removeAll()
+
+            users = try await feedsClient.auth.users(matching: searchText)
+            feedFollowers = try await feedsClient.following()
+                                                         
+            self.users.append(contentsOf: users)
             feedFollowers.forEach { followedUserFeedIds.insert($0.targetId) }
         }
     }
 }
 
 public struct SearchView: View {
-    @EnvironmentObject var feedClient: FeedsClient
-    @StateObject var viewModel = UserSearchViewModel()
+    @StateObject var viewModel: UserSearchViewModel
 
-    public init() {}
+    public init(feedsClient: FeedsClient) {        
+       _viewModel = StateObject(wrappedValue: UserSearchViewModel(feedsClient: feedsClient))
+    }
 
     public var body: some View {
         NavigationView {
@@ -57,30 +84,24 @@ public struct SearchView: View {
                         .font(.headline)
                     
                     Text(user.userId)
-                    let following = viewModel.followedUserFeedIds.contains { $0 == "user:" + user.userId }
-                    Button(following ? "Unfollow" : "Follow") {
-                        Task {
-                            do {
-                                if following {
-                                    try await feedClient.unfollow(target: user.userId, keepHistory: true)
-                                    viewModel.followedUserFeedIds.remove("user:" + user.userId)
-                                } else {
-                                    try await feedClient.follow(target: user.userId, activityCopyLimit: 100)
-                                    viewModel.followedUserFeedIds.insert("user:" + user.userId)
-                                }
-                            } catch {
-                                print(error)
-                            }
+                    if viewModel.isFollowing(user: user) {
+                        Button("Unfollow") {
+                            viewModel.unfollow(user: user)
                         }
+                        .buttonStyle(.borderedProminent)
+
+                    } else {
+                        Button("Follow") {
+                            viewModel.follow(user: user)
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
-                    .buttonStyle(.borderedProminent)
                 }
             }
             .navigationTitle("Search Users")
             .searchable(text: $viewModel.searchText)
             .autocapitalization(.none)
             .task {
-                viewModel.feedClient = feedClient
                 viewModel.runSearch()
             }
             .onSubmit(of: .search) {

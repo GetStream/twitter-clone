@@ -49,7 +49,7 @@ public struct HomeView: View {
                         Image(systemName: "house")
                         Text("Home")
                     }
-                    SearchView()
+                    SearchView(feedsClient: feedsClient)
                         .tabItem {
                             Image(systemName: "magnifyingglass")
                             Text("Search")

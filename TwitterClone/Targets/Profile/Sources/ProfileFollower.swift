@@ -8,8 +8,10 @@ import SwiftUI
 import Search
 import TwitterCloneUI
 import TimelineUI
+import Feeds
 
 public struct ProfileFollower: View { @State private var selection = 0
+    @EnvironmentObject var feedsClient: FeedsClient
     @State private var isShowingSearch = false
 
     public init () {}
@@ -43,7 +45,9 @@ public struct ProfileFollower: View { @State private var selection = 0
                     } label: {
                         Image(systemName: "magnifyingglass.circle.fill")
 
-                    }.sheet(isPresented: $isShowingSearch, content: SearchView.init)
+                    }.sheet(isPresented: $isShowingSearch) {
+                        SearchView(feedsClient: feedsClient)
+                    }
                 }
             }
             .font(.title2)
