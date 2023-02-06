@@ -51,7 +51,13 @@ public final class TwitterCloneNetworkKit {
         return jsonDecoder
     }
 
-    public static var restSession: URLSession {
+    public static var cachingRestSession: URLSession = {
+        let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.urlCache = URLCache(memoryCapacity: 50_000_000, diskCapacity: 300_000_000)
+        return URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+    }()
+
+    public static var restSession: URLSession = {
         /* Configure session, choose between:
          * defaultSessionConfiguration
          * ephemeralSessionConfiguration
@@ -65,7 +71,7 @@ public final class TwitterCloneNetworkKit {
         let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 
         return session
-    }
+    }()
 }
 
 extension Formatter {
