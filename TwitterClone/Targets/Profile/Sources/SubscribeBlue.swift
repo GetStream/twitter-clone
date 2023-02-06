@@ -13,7 +13,7 @@ public struct SubscribeBlue: View {
     
     public var body: some View {
         NavigationStack {
-            VStack{
+            VStack {
                 VStack(alignment: .leading, spacing: 16) {
                     Text("Get more out of Twitter Blue with exclusive features")
                         .font(.title)
