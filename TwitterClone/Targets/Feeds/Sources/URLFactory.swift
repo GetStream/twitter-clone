@@ -68,7 +68,7 @@ internal class URLFactory {
             newURL.append(path: "feed/timeline")
             newURL.append(path: userId)
             newURL.append(path: "follows")
-            newURL.append(path: target)
+            newURL.append(path: "user:" + target)
         }
         newURL.appendApiKey()
         return newURL

@@ -21,14 +21,24 @@ class UserSearchViewModel: ObservableObject {
     var feedClient: FeedsClient?
     @Published var users = [UserReference]()
     @Published var searchText: String = ""
+    @Published var followedUserFeedIds = Set<String>()
         
     func runSearch() {
         Task {
-            if let feedClient = self.feedClient {
-                let users = try await feedClient.auth.users(matching: searchText)
-                self.users.removeAll()
-                self.users.append(contentsOf: users)
+            let users: [UserReference]
+            let feedFollowers: [FeedFollower]
+            if let feedClient {
+                users = try await feedClient.auth.users(matching: searchText)
+                feedFollowers = try await feedClient.following(feedId: "")
+            } else {
+                users = []
+                feedFollowers = []
             }
+                                                         
+            self.users.removeAll()
+            self.users.append(contentsOf: users)
+            followedUserFeedIds.removeAll()
+            feedFollowers.forEach { followedUserFeedIds.insert($0.targetId) }
         }
     }
 }
@@ -47,10 +57,17 @@ public struct SearchView: View {
                         .font(.headline)
                     
                     Text(user.userId)
-                    Button("Follow") {
+                    let following = viewModel.followedUserFeedIds.contains { $0 == "user:" + user.userId }
+                    Button(following ? "Unfollow" : "Follow") {
                         Task {
                             do {
-                                try await feedClient.follow(target: user.userId, activityCopyLimit: 100)
+                                if following {
+                                    try await feedClient.unfollow(target: user.userId, keepHistory: true)
+                                    viewModel.followedUserFeedIds.remove("user:" + user.userId)
+                                } else {
+                                    try await feedClient.follow(target: user.userId, activityCopyLimit: 100)
+                                    viewModel.followedUserFeedIds.insert("user:" + user.userId)
+                                }
                             } catch {
                                 print(error)
                             }

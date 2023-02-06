@@ -189,7 +189,7 @@ public class FeedsClient: ObservableObject {
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
 
-    public func unfollow(feedId: String, target: String, keepHistory: Bool) async throws {
+    public func unfollow(target: String, keepHistory: Bool) async throws {
         let session = TwitterCloneNetworkKit.restSession
 
         guard let authUser = auth.authUser else {
