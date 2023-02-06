@@ -56,10 +56,12 @@ public struct SearchView: View {
                             }
                         }
                     }
+                    .buttonStyle(.borderedProminent)
                 }
             }
             .navigationTitle("Search Users")
             .searchable(text: $viewModel.searchText)
+            .autocapitalization(.none)
             .task {
                 viewModel.feedClient = feedClient
                 viewModel.runSearch()
@@ -67,12 +69,6 @@ public struct SearchView: View {
             .onSubmit(of: .search) {
                 viewModel.runSearch()
             }
-            
-            //            .searchScopes($searchScope) {
-            //                ForEach(SearchScope.allCases, id: \.self) { scope in
-            //                    Text(scope.rawValue.capitalized)
-            //                }
-            //            }
         }
     }
 }

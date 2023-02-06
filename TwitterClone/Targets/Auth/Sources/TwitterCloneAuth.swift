@@ -157,8 +157,14 @@ public final class TwitterCloneAuth: ObservableObject {
     
     public func users(matching searchTerm: String) async throws -> [UserReference] {
         os_log("Search users  %{public}@", searchTerm)
+
+        guard let authUser = self.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
+
+        let userId = authUser.userId
         
-        let postDict = ["searchTerm": searchTerm]
+        let postDict = ["searchTerm": searchTerm, "selfUserId": userId]
         let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(postDict)
         
         var searchUsersRequest = URLRequest(url: usersUrl)
