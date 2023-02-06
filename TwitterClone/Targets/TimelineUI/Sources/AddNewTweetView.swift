@@ -87,6 +87,7 @@ public struct AddNewTweetView: View {
                             VStack {
                                 PhotosPicker(
                                     selection: $selectedItems,
+                                    maxSelectionCount: 1,
                                     matching: .any(of: [.images, .not(.livePhotos)])
                                 ) {
                                     Image(systemName: "photo.on.rectangle.angled")
