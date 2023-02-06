@@ -72,11 +72,23 @@ public struct SettingsView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $isEditingPassword, content: EditPassword.init)
+                
+                NavigationLink {
+                    SubscribeBlue()
+                } label: {
+                    Button {
+                    } label: {
+                        Text("Get Blue")
+                        Image(systemName: "checkmark.seal.fill")
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .padding(.top)
             }
             .listStyle(.plain)
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .frame(maxHeight: 220)
+            .frame(maxHeight: 280)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Your acount settings")

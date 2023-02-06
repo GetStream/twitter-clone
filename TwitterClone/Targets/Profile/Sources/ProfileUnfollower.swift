@@ -9,11 +9,11 @@ import TimelineUI
 import Search
 import Feeds
 
-struct ProfileUnfollower: View { @State private var selection = 0
+public struct ProfileUnfollower: View { @State private var selection = 0
     @State private var isShowingSearch = false
     @EnvironmentObject var feedsClient: FeedsClient
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             VStack {
                 UnfollowerProfileInfoAndTweets()

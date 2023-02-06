@@ -54,7 +54,7 @@ public struct LikeTweetView: View {
                 }
             }
             Text("\(numberOfLikes)")
-                .foregroundColor(.secondary)
+                .foregroundColor(Color(isLiked ? .systemPink : .systemGray))
         }
     }
 }
