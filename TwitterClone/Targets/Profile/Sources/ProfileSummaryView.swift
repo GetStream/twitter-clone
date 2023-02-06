@@ -8,15 +8,19 @@
 
 import SwiftUI
 import TwitterCloneUI
+import Feeds
 
 public struct ProfileSummaryView: View {
+    var feedsClient: FeedsClient
     @State private var isEditingPresented = false
-    public init () {}
+    public init (feedsClient: FeedsClient) {
+        self.feedsClient = feedsClient
+    }
 
     public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                ProfileInfoView(myProfile: myProfileData)
+                ProfileInfoView(feedsClient: feedsClient, myProfile: myProfileData)
                     .padding(.top)
 
                 List {
@@ -56,7 +60,9 @@ public struct ProfileSummaryView: View {
                             .fontWeight(.bold)
                     }
                     .buttonStyle(.borderedProminent)
-                    .sheet(isPresented: $isEditingPresented, content: EditProfileView.init)
+                    .sheet(isPresented: $isEditingPresented) {
+                        EditProfileView(feedsClient: feedsClient)
+                    }
                 }
             }
         }

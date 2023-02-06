@@ -16,7 +16,7 @@ public struct ProfileUnfollower: View { @State private var selection = 0
     public var body: some View {
         NavigationStack {
             VStack {
-                UnfollowerProfileInfoAndTweets()
+                UnfollowerProfileInfoAndTweets(feedsClient: feedsClient)
 //                TabBarView()
 //                    .frame(height: 68)
             } // All views

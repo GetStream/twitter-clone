@@ -8,15 +8,25 @@
 
 import SwiftUI
 
-struct ProfileInfoView: View {
-    var myProfile: [MyProfileStructure] = []
+import Feeds
 
+class ProfileInfoViewModel: ObservableObject {
+    
+}
+
+struct ProfileInfoView: View {
+    
+    var feedsClient: FeedsClient
+    
+    var myProfile: MyProfileStructure?
+    
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(myProfile) { profile in
+            
+            if let profile = myProfile {
                 Text(profile.myName)
                     .fontWeight(.bold)
-                Text(profile.myHandle)
+                Text(feedsClient.auth.authUser?.username ?? "")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
 

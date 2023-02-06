@@ -31,7 +31,7 @@ struct MyProfileInfoAndTweets: View {
                     .buttonStyle(.borderedProminent)
                 }
 
-                ProfileInfoView(myProfile: myProfileData)
+                ProfileInfoView(feedsClient: feedsClient, myProfile: myProfileData)
 
                 ForYouFeedsView(feedType: .user(userId: feedsClient.auth.authUser?.userId))
                     .frame(height: UIScreen.main.bounds.height)

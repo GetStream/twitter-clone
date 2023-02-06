@@ -8,15 +8,19 @@
 
 import SwiftUI
 import TwitterCloneUI
+import Feeds
 
 public struct EditProfileView: View {
     var myProfile: [MyProfileStructure] = []
+    var feedsClient: FeedsClient
     @State private var isCanceled = false
     @State private var isEditingMyName = "Amos Gyamfi"
     @State private var isEditingAboutMe = "#Developer #Advocate"
     @State private var isEditingMyLocation = "Mount Olive DR, Toronto ON"
     @State private var isEditingMyWebsite = "getstream.io"
-    public init () {}
+    public init (feedsClient: FeedsClient) {
+        self.feedsClient = feedsClient
+    }
     
     public var body: some View {
         NavigationStack {
@@ -78,7 +82,9 @@ public struct EditProfileView: View {
                     Button("Cancel") {
                         self.isCanceled.toggle()
                     }
-                    .fullScreenCover(isPresented: $isCanceled, content: ProfileSummaryView.init)
+                    .fullScreenCover(isPresented: $isCanceled) {
+                        ProfileSummaryView(feedsClient: feedsClient)
+                    }
                 }
                 
                 ToolbarItem(placement: .principal) {
@@ -89,8 +95,8 @@ public struct EditProfileView: View {
     }
 }
 
-struct EditProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditProfileView()
-    }
-}
+//struct EditProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        EditProfileView(feedsClient: Feed)
+//    }
+//}

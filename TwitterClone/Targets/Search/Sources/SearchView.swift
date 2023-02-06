@@ -2,14 +2,6 @@
 //  ContentView.swift
 //  TTwin
 
-//
-// From SwiftUI by Example by Paul Hudson
-// https://www.hackingwithswift.com/quick-start/swiftui
-//
-// You're welcome to use this code for any purpose,
-// commercial or otherwise, with or without attribution.
-//
-
 import SwiftUI
 
 import Feeds
@@ -28,10 +20,9 @@ class UserSearchViewModel: ObservableObject {
     }
     
     func isFollowing(user: UserReference) -> Bool {
-        return followedUserFeedIds.contains(user.userId)
+        return followedUserFeedIds.contains("user:" + user.userId)
     }
-    
-    func follow(user: UserReference) {
+    func unfollow(user: UserReference) {
         Task {
             do {
                 try await feedsClient.unfollow(target: user.userId, keepHistory: true)
@@ -42,7 +33,7 @@ class UserSearchViewModel: ObservableObject {
         }
     }
     
-    func unfollow(user: UserReference) {
+    func follow(user: UserReference) {
         Task {
             do {
                 try await feedsClient.follow(target: user.userId, activityCopyLimit: 100)

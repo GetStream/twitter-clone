@@ -7,8 +7,11 @@ import SwiftUI
 import TwitterCloneUI
 
 import TimelineUI
+import Feeds
 
 struct UnfollowerProfileInfoAndTweets: View {
+    var feedsClient: FeedsClient
+    
     @State private var selection = 0
 
     var body: some View {
@@ -47,7 +50,7 @@ struct UnfollowerProfileInfoAndTweets: View {
                         .buttonStyle(.bordered)
                     }
                 }
-                ProfileInfoView(myProfile: unfollowerProfileData)
+                ProfileInfoView(feedsClient: feedsClient, myProfile: unfollowerProfileData)
 
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)
