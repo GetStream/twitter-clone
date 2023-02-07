@@ -26,7 +26,6 @@ public struct TweetAudioView: View {
     @State private var isTweetingAudio = "What are some of the well designed iOS apps you know about?"
     public init() {}
 
-
     public var body: some View {
         NavigationStack {
             VStack {
@@ -40,7 +39,7 @@ public struct TweetAudioView: View {
                     playSound(sound: "messageBubble", type: "mp3")
                 } label: {
                     ZStack(alignment: .topTrailing) {
-                        ZStack{
+                        ZStack {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(.streamBlue.opacity(0.25))
                                 .frame(width: 250, height: 150)

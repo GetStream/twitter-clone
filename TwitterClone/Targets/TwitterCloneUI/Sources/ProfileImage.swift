@@ -5,19 +5,29 @@
 import SwiftUI
 
 public struct ProfileImage: View {
-    public init (imageUrl: String, action: @escaping (() -> Void)) {
+    public init (imageUrl: String?, action: (() -> Void)?) {
         self.action = action
         self.imageUrl = imageUrl
     }
     
-    var imageUrl: String
-    var action: (() -> Void)
+    var imageUrl: String?
+    var action: (() -> Void)?
 
     public var body: some View {
-        
-        Button {
-            self.action()
-        } label: {
+        if let action {
+            Button {
+                action()
+            } label: {
+                profileImage
+            }
+        } else {
+            profileImage
+        }
+    }
+    
+    @ViewBuilder
+    private var profileImage: some View {
+        if let imageUrl {
             AsyncImage(url: URL(string: imageUrl)) { loading in
                 if let image = loading.image {
                     image
@@ -32,6 +42,11 @@ public struct ProfileImage: View {
             }
             .frame(width: 48, height: 48)
             .accessibilityLabel("Profile photo")
+        } else {
+            Image(systemName: "person.circle")
+                .scaleEffect(1.5)
+                .frame(width: 48, height: 48)
+                .accessibilityLabel("Profile photo")
         }
     }
 }

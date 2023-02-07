@@ -22,7 +22,7 @@ public struct ProfileSummaryView: View {
     public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: myProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel)
                     .padding(.top)
                     .task {
                         profileInfoViewModel.feedUser = try? await feedsClient.user()

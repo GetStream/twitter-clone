@@ -9,65 +9,73 @@
 import SwiftUI
 
 import Feeds
+import TwitterCloneUI
 
 class ProfileInfoViewModel: ObservableObject {
     @Published var feedUser: FeedUser?
+    
+    let location = "Amsterdam"
+    let following = 10
+    let followers = 11
+    
+    func formattedDate(date: Date?) -> String {
+        guard let date else {
+            return "-"
+        }
+        
+        return Formatter.uiDateFormatter.string(from: date)
+    }
 }
 
 struct ProfileInfoView: View {
     
     @ObservedObject var viewModel: ProfileInfoViewModel
-    
-    var myProfile: MyProfileStructure?
-    
+        
     var body: some View {
         VStack(alignment: .leading) {
-            
-            if let profile = myProfile {
-                Text(viewModel.feedUser?.fullname ?? "")
-                    .fontWeight(.bold)
-                Text(viewModel.feedUser?.username ?? "")
+            Text(viewModel.feedUser?.fullname ?? "")
+                .fontWeight(.bold)
+            Text(viewModel.feedUser?.username ?? "")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text(viewModel.feedUser?.aboutMe ?? "")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(viewModel.feedUser?.aboutMe ?? "")
-                        .font(.subheadline)
-                    HStack(spacing: 16) {
-                        HStack(spacing: 2) {
-                            Image(systemName: "mappin.and.ellipse")
-                            Text("\(profile.myLocation)")
-                        }
-                        .font(.caption)
-
-                        HStack(spacing: 2) {
-                            Image(systemName: "calendar")
-                            Text("Joined June \(profile.dateJoined)")
-                        }
-                        .font(.caption)
+                HStack(spacing: 16) {
+                    HStack(spacing: 2) {
+                        Image(systemName: "mappin.and.ellipse")
+                        Text("\(viewModel.location)")
                     }
-                    .foregroundColor(.secondary)
+                    .font(.caption)
 
-                    HStack(spacing: 16) {
-                        HStack(spacing: 4) {
-                            Text("\(profile.myFollowing)")
-                                .fontWeight(.bold)
-                            Text("Following")
-                                .foregroundColor(.secondary)
-                        }
-                        .font(.subheadline)
-
-                        HStack(spacing: 2) {
-                            Text("\(profile.myFollowers)")
-                                .fontWeight(.bold)
-                            Text("Followers")
-                                .foregroundColor(.secondary)
-                        }
-                        .font(.subheadline)
+                    HStack(spacing: 2) {
+                        Image(systemName: "calendar")
+                        Text("Joined \(viewModel.formattedDate(date: viewModel.feedUser?.createdAt))")
                     }
+                    .font(.caption)
                 }
-                .padding(.top, 8)
+                .foregroundColor(.secondary)
+
+                HStack(spacing: 16) {
+                    HStack(spacing: 4) {
+                        Text("\(viewModel.following)")
+                            .fontWeight(.bold)
+                        Text("Following")
+                            .foregroundColor(.secondary)
+                    }
+                    .font(.subheadline)
+
+                    HStack(spacing: 2) {
+                        Text("\(viewModel.followers)")
+                            .fontWeight(.bold)
+                        Text("Followers")
+                            .foregroundColor(.secondary)
+                    }
+                    .font(.subheadline)
+                }
             }
+            .padding(.top, 8)
         }
     }
 }

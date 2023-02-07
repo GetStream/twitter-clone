@@ -19,7 +19,7 @@ struct FollowerProfileInfoAndTweets: View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
+                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
                         .scaleEffect(1.2)
 
                     Spacer()
@@ -50,7 +50,7 @@ struct FollowerProfileInfoAndTweets: View {
                     .buttonStyle(.bordered)
                 }
 
-                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: followerProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel)
                     .task {
                         profileInfoViewModel.feedUser = try? await feedsClient.user()
                     }

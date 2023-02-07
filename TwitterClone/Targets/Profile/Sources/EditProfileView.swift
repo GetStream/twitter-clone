@@ -11,7 +11,6 @@ import TwitterCloneUI
 import Feeds
 
 public struct EditProfileView: View {
-    var myProfile: [MyProfileStructure] = []
     var feedsClient: FeedsClient
     @State private var isCanceled = false
     @State private var isEditingMyName = "Amos Gyamfi"

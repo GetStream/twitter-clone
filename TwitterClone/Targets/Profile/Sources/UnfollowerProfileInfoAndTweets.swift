@@ -20,7 +20,7 @@ struct UnfollowerProfileInfoAndTweets: View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
+                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
                         .scaleEffect(1.2)
 
                     Spacer()
@@ -52,7 +52,7 @@ struct UnfollowerProfileInfoAndTweets: View {
                         .buttonStyle(.bordered)
                     }
                 }
-                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: unfollowerProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel)
 
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)

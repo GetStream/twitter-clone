@@ -17,7 +17,7 @@ public struct PausedRecordingAudioView: View {
     // Recording
     @State private var counter: Int = 0
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State private var isVisible: Bool = false
+    @State private var isVisible = false
     
     public var body: some View {
         NavigationStack {
@@ -31,7 +31,7 @@ public struct PausedRecordingAudioView: View {
                 Spacer()
                 
                 HStack {
-                    ForEach(0 ..< 20) { rect in
+                    ForEach(0 ..< 20) { _ in
                         RoundedRectangle(cornerRadius: 2)
                             .frame(width: 3, height: .random(in: 16...32))
                             .foregroundColor(.white)

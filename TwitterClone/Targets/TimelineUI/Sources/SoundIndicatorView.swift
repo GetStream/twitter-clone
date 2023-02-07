@@ -19,7 +19,7 @@ public struct SoundIndicatorView: View {
                     .foregroundColor(.white)
                     .animation(.easeInOut(duration: 0.25).delay(Double(rect) * 0.01).repeatForever(autoreverses: true), value: isSounding)
             }
-            .onAppear{
+            .onAppear {
                 startSoundAnimation()
             }
         }

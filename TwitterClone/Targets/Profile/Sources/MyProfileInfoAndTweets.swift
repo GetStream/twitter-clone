@@ -22,13 +22,9 @@ struct MyProfileInfoAndTweets: View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    if let profilePicture = profileInfoViewModel.feedUser?.profilePicture {
-                        ProfileImage(imageUrl: profilePicture, action: {})
+                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
                             .scaleEffect(1.2)
-                    } else {
-                        Image(systemName: "person.circle")
-                            .scaleEffect(1.5)
-                    }
+
                     Spacer()
 
                     Button {
@@ -41,7 +37,7 @@ struct MyProfileInfoAndTweets: View {
                     .buttonStyle(.borderedProminent)
                 }
 
-                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: myProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel)
 
                 ForYouFeedsView(feedType: .user(userId: feedsClient.auth.authUser?.userId))
                     .frame(height: UIScreen.main.bounds.height)
