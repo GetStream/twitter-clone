@@ -12,6 +12,8 @@ import Feeds
 struct UnfollowerProfileInfoAndTweets: View {
     var feedsClient: FeedsClient
     
+    @StateObject var profileInfoViewModel = ProfileInfoViewModel()
+
     @State private var selection = 0
 
     var body: some View {
@@ -50,13 +52,15 @@ struct UnfollowerProfileInfoAndTweets: View {
                         .buttonStyle(.bordered)
                     }
                 }
-                ProfileInfoView(feedsClient: feedsClient, myProfile: unfollowerProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: unfollowerProfileData)
 
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }
-
+        .task {
+            profileInfoViewModel.feedUser = try? await feedsClient.user()
+        }
     }
 }
 

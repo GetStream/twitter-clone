@@ -53,6 +53,7 @@ public struct FeedUser: Refable, Codable {
     public let username: String
     public let createdAt: Date
     public let updatedAt: Date
+    public let aboutMe: String
     public let profilePicture: String?
 
     public var fullname: String {
@@ -67,7 +68,8 @@ public struct FeedUser: Refable, Codable {
         case firstname
         case lastname
         case username
-        case profilePicture
+        case aboutMe = "about_me"
+        case profilePicture = "profile_picture"
     }
 
     public static func previewUser() -> FeedUser {
@@ -76,18 +78,22 @@ public struct FeedUser: Refable, Codable {
                         firstname: "Firstname",
                         lastname: "Lastname",
                         createdAt: Date(),
-                        updatedAt: Date()
+                        updatedAt: Date(),
+                        aboutMe: "",
+                        profilePicture: nil
         )
     }
 
-    internal init(userId: String, username: String, firstname: String, lastname: String, createdAt: Date, updatedAt: Date) {
+    internal init(userId: String, username: String, firstname: String, lastname: String, createdAt: Date, updatedAt: Date, aboutMe: String, profilePicture: String?) {
         self.userId = userId
         self.username = username
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.firstname = firstname
         self.lastname = lastname
-        self.profilePicture = nil
+        self.aboutMe = aboutMe
+        self.profilePicture = profilePicture
+
     }
 
     public init(from decoder: Decoder) throws {
@@ -97,9 +103,10 @@ public struct FeedUser: Refable, Codable {
         self.updatedAt = try container.decode(Date.self, forKey: .updatedAt)
 
         let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
-        self.firstname = try dataContainer.decode(String.self, forKey: .firstname)
-        self.lastname = try dataContainer.decode(String.self, forKey: .lastname)
-        self.username = try dataContainer.decode(String.self, forKey: .username)
+        self.firstname = try dataContainer.decodeIfPresent(String.self, forKey: .firstname) ?? ""
+        self.lastname = try dataContainer.decodeIfPresent(String.self, forKey: .lastname) ?? ""
+        self.username = try dataContainer.decodeIfPresent(String.self, forKey: .username) ?? ""
+        self.aboutMe = try dataContainer.decodeIfPresent(String.self, forKey: .aboutMe) ?? ""
 
         self.profilePicture = try dataContainer.decodeIfPresent(String.self, forKey: .profilePicture)
     }
@@ -112,6 +119,9 @@ public struct FeedUser: Refable, Codable {
         try dataContainer.encode(firstname, forKey: .firstname)
         try dataContainer.encode(lastname, forKey: .lastname)
         try dataContainer.encode(username, forKey: .username)
+        if let profilePicture {
+            try dataContainer.encode(profilePicture, forKey: .profilePicture)
+        }
     }
 
     func ref() -> String {

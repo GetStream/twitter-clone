@@ -18,7 +18,7 @@ public struct MyProfile: View {
     public var body: some View {
         NavigationStack {
             VStack {
-                MyProfileInfoAndTweets()
+                MyProfileInfoAndTweets(feedsClient: feedsClient)
 //                TabBarView()
 //                    .frame(height: 68)
             } // All views

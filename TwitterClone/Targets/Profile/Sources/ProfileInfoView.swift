@@ -11,12 +11,12 @@ import SwiftUI
 import Feeds
 
 class ProfileInfoViewModel: ObservableObject {
-    
+    @Published var feedUser: FeedUser?
 }
 
 struct ProfileInfoView: View {
     
-    var feedsClient: FeedsClient
+    @ObservedObject var viewModel: ProfileInfoViewModel
     
     var myProfile: MyProfileStructure?
     
@@ -24,14 +24,14 @@ struct ProfileInfoView: View {
         VStack(alignment: .leading) {
             
             if let profile = myProfile {
-                Text(profile.myName)
+                Text(viewModel.feedUser?.fullname ?? "")
                     .fontWeight(.bold)
-                Text(feedsClient.auth.authUser?.username ?? "")
+                Text(viewModel.feedUser?.username ?? "")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("\(profile.aboutMe)")
+                    Text(viewModel.feedUser?.aboutMe ?? "")
                         .font(.subheadline)
                     HStack(spacing: 16) {
                         HStack(spacing: 2) {

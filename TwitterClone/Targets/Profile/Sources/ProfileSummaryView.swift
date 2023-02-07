@@ -12,6 +12,8 @@ import Feeds
 
 public struct ProfileSummaryView: View {
     var feedsClient: FeedsClient
+    @StateObject var profileInfoViewModel = ProfileInfoViewModel()
+
     @State private var isEditingPresented = false
     public init (feedsClient: FeedsClient) {
         self.feedsClient = feedsClient
@@ -20,8 +22,11 @@ public struct ProfileSummaryView: View {
     public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
-                ProfileInfoView(feedsClient: feedsClient, myProfile: myProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: myProfileData)
                     .padding(.top)
+                    .task {
+                        profileInfoViewModel.feedUser = try? await feedsClient.user()
+                    }
 
                 List {
                     // Link to the full profile page: MyProfile.swift

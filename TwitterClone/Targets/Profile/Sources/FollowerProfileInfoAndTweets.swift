@@ -12,6 +12,8 @@ import Feeds
 struct FollowerProfileInfoAndTweets: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @State private var selection = 0
+    
+    @StateObject var profileInfoViewModel = ProfileInfoViewModel()
 
     var body: some View {
         ScrollView {
@@ -48,7 +50,10 @@ struct FollowerProfileInfoAndTweets: View {
                     .buttonStyle(.bordered)
                 }
 
-                ProfileInfoView(feedsClient: feedsClient, myProfile: followerProfileData)
+                ProfileInfoView(viewModel: profileInfoViewModel, myProfile: followerProfileData)
+                    .task {
+                        profileInfoViewModel.feedUser = try? await feedsClient.user()
+                    }
 
                 ForYouFeedsView()
                     .frame(height: UIScreen.main.bounds.height)

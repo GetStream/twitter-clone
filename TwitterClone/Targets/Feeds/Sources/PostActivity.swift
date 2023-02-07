@@ -130,7 +130,9 @@ private func previewData() -> [EnrichedPostActivity] {
                          firstname: "firstname",
                          lastname: "lastname",
                          createdAt: Date(),
-                         updatedAt: Date())
+                         updatedAt: Date(),
+                         aboutMe: "about me",
+                         profilePicture: nil)
     return [
         EnrichedPostActivity(actor: user1,
                              verb: "post",
