@@ -13,6 +13,12 @@ import Search
 @main
 struct TwitterCloneApp: App {
     
+    init() {
+        
+        URLSession.shared.configuration.urlCache?.memoryCapacity = 400_000_000 // ~400 MB memory space
+        URLSession.shared.configuration.urlCache?.diskCapacity = 1_000_000_000 // ~1GB disk cache space
+    }
+    
     @StateObject
     var feedClient = FeedsClient.productionClient(region: .euWest, auth: try! TwitterCloneAuth(baseUrl: "http://localhost:8080"))
     // swiftlint:disable:previous force_try
