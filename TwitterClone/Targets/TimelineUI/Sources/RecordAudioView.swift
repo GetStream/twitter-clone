@@ -12,16 +12,16 @@ import TwitterCloneUI
 public struct RecordAudioView: View {
     @State private var isCanceled = false
     @State private var isRecording = false
+    @State private var isShowingRecordingAlert = false
     public init() {}
     
     public var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
-                
-                ProfileImage(imageUrl: "") {
-                    
-                }
+        
+                ProfileImage(imageUrl: "https://picsum.photos/id/429/200/200", action: {})
+                    .overlay(Circle().stroke(lineWidth: 2))
                     .scaleEffect(2)
                 
                 Spacer()
@@ -34,7 +34,7 @@ public struct RecordAudioView: View {
                 Spacer()
                 
                 Button {
-                    // print("Tap to record")
+                    isShowingRecordingAlert = true
                 } label: {
                     ZStack {
                         Circle()
@@ -55,10 +55,13 @@ public struct RecordAudioView: View {
                             .foregroundColor(.white)
                     }
                 }
+                .alert("TwitterClone would like to access your microphone", isPresented: $isShowingRecordingAlert) {
+                    Button("Don't Allow", role: .cancel) { }
+                    Button("OK") { }
+                }
                 .onAppear {
                     isRecording.toggle()
                 }
-                
             }
             .padding()
             .toolbar {
