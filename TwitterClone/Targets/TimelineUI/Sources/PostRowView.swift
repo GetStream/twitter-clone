@@ -9,31 +9,27 @@
 import Feeds
 
 import SwiftUI
+import TwitterCloneUI
+import Profile
 
 struct PostRowView: View {
 
     var item: EnrichedPostActivity
+    
+    @State private var isShowingActivityProfile = false
 
     var body: some View {
         HStack(alignment: .top) {
-            AsyncImage(url: URL(string: "\(item.actor.profilePicture ?? "https://picsum.photos/id/219/200")")) { loading in
-                if let image = loading.image {
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                } else if loading.error != nil {
-                    Image(systemName: "exclamationmark.icloud")
-                        .resizable()
-                        .scaledToFit()
-                    //                            .clipShape(Circle())
-                } else {
-                    ProgressView()
-                }
-            }
-            .frame(width: 48, height: 48)
-            .accessibilityLabel("Profile photo")
+            ProfileImage(imageUrl: item.actor.profilePicture, action: {
+                self.isShowingActivityProfile.toggle()
+            })
+            .accessibilityLabel("Profile of \(item.actor.fullname)")
             .accessibilityAddTraits(.isButton)
+            .sheet(isPresented: $isShowingActivityProfile, content: {
+                ProfileFollower(contentView: {
+                    AnyView(ProfileInfoAndTweets(userId: item.actor.userId, profilePicture: item.actor.profilePicture))
+                })
+            })
 
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
@@ -75,9 +71,8 @@ struct PostRowView: View {
                             Image(systemName: "exclamationmark.icloud")
                                 .resizable()
                                 .scaledToFit()
-                            //                            .clipShape(Circle())
                         } else {
-                            // ProgressView()
+                            ProgressView()
                         }
                     }
                     .frame(width: .infinity, height: 180)

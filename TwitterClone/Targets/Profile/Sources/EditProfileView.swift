@@ -11,14 +11,19 @@ import TwitterCloneUI
 import Feeds
 
 public struct EditProfileView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
+    var contentView: (() -> AnyView)
+    
     var feedsClient: FeedsClient
     @State private var isCanceled = false
     @State private var isEditingMyName = "Amos Gyamfi"
     @State private var isEditingAboutMe = "#Developer #Advocate"
     @State private var isEditingMyLocation = "Mount Olive DR, Toronto ON"
     @State private var isEditingMyWebsite = "getstream.io"
-    public init (feedsClient: FeedsClient) {
+    public init (feedsClient: FeedsClient, contentView: @escaping (() -> AnyView)) {
         self.feedsClient = feedsClient
+        self.contentView = contentView
     }
     
     public var body: some View {
@@ -70,6 +75,10 @@ public struct EditProfileView: View {
                     
                 }
                 .listStyle(.plain)
+                HStack {
+                    ProfileSummaryView(contentView: contentView)
+                }
+
             }
             .padding()
             .navigationBarTitleDisplayMode(.large)
@@ -80,9 +89,7 @@ public struct EditProfileView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         self.isCanceled.toggle()
-                    }
-                    .fullScreenCover(isPresented: $isCanceled) {
-                        ProfileSummaryView(feedsClient: feedsClient)
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
                 

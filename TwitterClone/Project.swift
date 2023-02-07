@@ -37,7 +37,6 @@ let profileTarget =
                                  dependencies: [
                                     .target(name: authName),
                                     .target(name: authUiName),
-                                    .target(name: timelineUiName),
                                     .target(name: uiName)
                                  ])
 let searchTarget =
@@ -72,6 +71,7 @@ let timelineUiTarget =
                                     .target(name: authName),
                                     .target(name: feedsName),
                                     .target(name: searchName),
+                                    .target(name: profileName),
                                     .target(name: uiName)
                                  ])
 let spacesTarget =

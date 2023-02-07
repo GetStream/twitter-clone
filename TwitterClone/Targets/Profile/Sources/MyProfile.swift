@@ -13,14 +13,17 @@ public struct MyProfile: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @State private var selection = 0
     @State private var isShowingSearch = false
-    public init () {}
+    
+    private var contentView: (() -> AnyView)
+    
+    public init (contentView: @escaping (() -> AnyView)) {
+        self.contentView = contentView
+    }
 
     public var body: some View {
         NavigationStack {
             VStack {
-                MyProfileInfoAndTweets(feedsClient: feedsClient)
-//                TabBarView()
-//                    .frame(height: 68)
+                contentView()
             } // All views
             .navigationBarTitleDisplayMode(.large)
             .navigationTitle("")

@@ -11,65 +11,38 @@ import TwitterCloneUI
 import Feeds
 
 public struct ProfileSummaryView: View {
-    var feedsClient: FeedsClient
     @StateObject var profileInfoViewModel = ProfileInfoViewModel()
 
     @State private var isEditingPresented = false
-    public init (feedsClient: FeedsClient) {
-        self.feedsClient = feedsClient
+    
+    private var contentView: (() -> AnyView)
+    public init (contentView: @escaping (() -> AnyView)) {
+        self.contentView = contentView
     }
 
     public var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: 16) {
-                ProfileInfoView(viewModel: profileInfoViewModel)
-                    .padding(.top)
-                    .task {
-                        profileInfoViewModel.feedUser = try? await feedsClient.user()
-                    }
-
-                List {
-                    // Link to the full profile page: MyProfile.swift
-                    NavigationLink {
-                        MyProfile()
-                    } label: {
-                        Image(systemName: "person.circle.fill")
-                        Text("View full profile")
-                    }
-
-                    // Link to the full profile page: MyProfile.swift
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Image(systemName: "gear.circle.fill")
-                        Text("Settings")
-                    }
-                }
-                .listStyle(.plain)
-                
-                Spacer()
-            }
-            .padding()
-            .navigationTitle("")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
+        VStack(alignment: .leading, spacing: 16) {
+            List {
+                // Link to the full profile page: MyProfile.swift
+                NavigationLink {
+                    MyProfile(contentView: contentView)
+                } label: {
+                    Image(systemName: "person.circle.fill")
+                    Text("View full profile")
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        self.isEditingPresented.toggle()
-                    } label: {
-                        Text("Edit profile")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .sheet(isPresented: $isEditingPresented) {
-                        EditProfileView(feedsClient: feedsClient)
-                    }
+                // Link to the full profile page: MyProfile.swift
+                NavigationLink {
+                    SettingsView()
+                } label: {
+                    Image(systemName: "gear.circle.fill")
+                    Text("Settings")
                 }
             }
+            .listStyle(.plain)
+            
+            Spacer()
         }
+        .padding()
     }
 }

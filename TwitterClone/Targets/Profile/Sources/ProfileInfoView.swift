@@ -11,8 +11,10 @@ import SwiftUI
 import Feeds
 import TwitterCloneUI
 
-class ProfileInfoViewModel: ObservableObject {
-    @Published var feedUser: FeedUser?
+public class ProfileInfoViewModel: ObservableObject {
+    @Published public var feedUser: FeedUser?
+    
+    public init() {}
     
     let location = "Amsterdam"
     let following = 10
@@ -27,11 +29,15 @@ class ProfileInfoViewModel: ObservableObject {
     }
 }
 
-struct ProfileInfoView: View {
+public struct ProfileInfoView: View {
     
     @ObservedObject var viewModel: ProfileInfoViewModel
+    
+    public init(viewModel: ProfileInfoViewModel) {
+        self.viewModel = viewModel
+    }
         
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             Text(viewModel.feedUser?.fullname ?? "")
                 .fontWeight(.bold)

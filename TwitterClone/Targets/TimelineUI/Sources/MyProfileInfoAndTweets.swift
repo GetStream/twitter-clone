@@ -5,20 +5,23 @@
 
 import SwiftUI
 import TwitterCloneUI
-import TimelineUI
 import Feeds
+import Profile
 
-struct MyProfileInfoAndTweets: View {
+public struct MyProfileInfoAndTweets: View {
     private var feedsClient: FeedsClient
+    
+    @State private var isShowingEditProfile = false
     
     @StateObject var profileInfoViewModel = ProfileInfoViewModel()
 
     @State private var selection = 0
 
-    init(feedsClient: FeedsClient) {
+    public init(feedsClient: FeedsClient) {
         self.feedsClient = feedsClient
     }
-    var body: some View {
+    
+    public var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
@@ -28,12 +31,18 @@ struct MyProfileInfoAndTweets: View {
                     Spacer()
 
                     Button {
+                        isShowingEditProfile.toggle()
                         print("Navigate to edit profile page")
                     } label: {
                         Text("Edit profile")
                             .font(.subheadline)
                             .fontWeight(.bold)
                     }
+                    .sheet(isPresented: $isShowingEditProfile, content: {
+                        EditProfileView(feedsClient: feedsClient, contentView: {
+                            AnyView(MyProfileInfoAndTweets(feedsClient: feedsClient))
+                        })
+                    })
                     .buttonStyle(.borderedProminent)
                 }
 
@@ -46,7 +55,6 @@ struct MyProfileInfoAndTweets: View {
         .task {
             profileInfoViewModel.feedUser = try? await feedsClient.user()
         }
-
     }
 }
 

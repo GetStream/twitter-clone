@@ -5,20 +5,22 @@
 
 import SwiftUI
 
-import TimelineUI
-import Search
+import TwitterCloneUI
 import Feeds
 
 public struct ProfileUnfollower: View { @State private var selection = 0
-    @State private var isShowingSearch = false
-    @EnvironmentObject var feedsClient: FeedsClient
+    @Environment(\.presentationMode) var presentationMode
 
+    var contentView: (() -> AnyView)
+    
+    public init (contentView: @escaping (() -> AnyView)) {
+        self.contentView = contentView
+    }
+    
     public var body: some View {
         NavigationStack {
             VStack {
-                UnfollowerProfileInfoAndTweets(feedsClient: feedsClient)
-//                TabBarView()
-//                    .frame(height: 68)
+                contentView()
             } // All views
             .navigationBarTitleDisplayMode(.large)
             .navigationTitle("")
@@ -27,25 +29,13 @@ public struct ProfileUnfollower: View { @State private var selection = 0
             .padding()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink {
-                        // Destination
-                        FeedsView()
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
                     } label: { // A label to show on the screen
                         Image(systemName: "chevron.backward.circle.fill")
                     }
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        // print("Navigates to the search page")
-                        self.isShowingSearch.toggle()
-                    } label: {
-                        Image(systemName: "magnifyingglass.circle.fill")
-
-                    }.sheet(isPresented: $isShowingSearch) {
-                        SearchView(feedsClient: feedsClient)
-                    }
-                }
             }
             .font(.title2)
         }

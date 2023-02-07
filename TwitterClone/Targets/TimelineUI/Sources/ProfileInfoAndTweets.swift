@@ -6,10 +6,13 @@
 import SwiftUI
 
 import TwitterCloneUI
-import TimelineUI
 import Feeds
+import Profile
 
-struct FollowerProfileInfoAndTweets: View {
+struct ProfileInfoAndTweets: View {
+    var userId: String
+    var profilePicture: String?
+    
     @EnvironmentObject var feedsClient: FeedsClient
     @State private var selection = 0
     
@@ -19,7 +22,7 @@ struct FollowerProfileInfoAndTweets: View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
+                    ProfileImage(imageUrl: profilePicture, action: {})
                         .scaleEffect(1.2)
 
                     Spacer()
@@ -51,15 +54,14 @@ struct FollowerProfileInfoAndTweets: View {
                 }
 
                 ProfileInfoView(viewModel: profileInfoViewModel)
-                    .task {
-                        profileInfoViewModel.feedUser = try? await feedsClient.user()
-                    }
 
-                ForYouFeedsView()
+                ForYouFeedsView(feedType: .user(userId: userId))
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }
-
+        .task {
+            profileInfoViewModel.feedUser = try? await feedsClient.user(id: userId)
+        }
     }
 }
 
