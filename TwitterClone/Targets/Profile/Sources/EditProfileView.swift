@@ -12,18 +12,18 @@ import Feeds
 
 public struct EditProfileView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
     
-    var contentView: (() -> AnyView)
+    @State var feedUser: FeedUser
     
     var feedsClient: FeedsClient
-    @State private var isCanceled = false
     @State private var isEditingMyName = "Amos Gyamfi"
     @State private var isEditingAboutMe = "#Developer #Advocate"
     @State private var isEditingMyLocation = "Mount Olive DR, Toronto ON"
     @State private var isEditingMyWebsite = "getstream.io"
-    public init (feedsClient: FeedsClient, contentView: @escaping (() -> AnyView)) {
+    public init (feedsClient: FeedsClient, currentUser: FeedUser) {
         self.feedsClient = feedsClient
-        self.contentView = contentView
+        _feedUser = State(initialValue: currentUser)
     }
     
     public var body: some View {
@@ -35,7 +35,7 @@ public struct EditProfileView: View {
                     } label: {
                         HStack {
                             ZStack {
-                                ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
+                                ProfileImage(imageUrl: feedUser.profilePicture, action: {})
                                     .opacity(0.6)
                                 MediaPickerView()
                             }
@@ -49,36 +49,38 @@ public struct EditProfileView: View {
                 
                 List {
                     HStack {
-                        Text("Name")
-                        TextField("Amos Gyamfi", text: $isEditingMyName)
+                        Text("Firstname")
+                        TextField("firstname", text: $feedUser.firstname)
+                            .foregroundColor(.streamBlue)
+                            .labelsHidden()
+                    }
+                    HStack {
+                        Text("Lastname")
+                        TextField("lastname", text: $feedUser.lastname)
                             .foregroundColor(.streamBlue)
                             .labelsHidden()
                     }
                     HStack {
                         Text("Bio")
-                        TextField("Amos Gyamfi", text: $isEditingAboutMe)
+                        TextField("Bio", text: $feedUser.aboutMe)
                             .foregroundColor(.streamBlue)
                             .labelsHidden()
                     }
-                    HStack {
-                        Text("Location")
-                        TextField("Amos Gyamfi", text: $isEditingMyLocation)
-                            .foregroundColor(.streamBlue)
-                            .labelsHidden()
-                    }
-                    HStack {
-                        Text("Website")
-                        TextField("Amos Gyamfi", text: $isEditingMyWebsite)
-                            .foregroundColor(.streamBlue)
-                            .labelsHidden()
-                    }
+//                    HStack {
+//                        Text("Location")
+//                        TextField("location", text: $feedUser.location)
+//                            .foregroundColor(.streamBlue)
+//                            .labelsHidden()
+//                    }
+//                    HStack {
+//                        Text("Website")
+//                        TextField("website", text: $feedUser.website)
+//                            .foregroundColor(.streamBlue)
+//                            .labelsHidden()
+//                    }
                     
                 }
                 .listStyle(.plain)
-                HStack {
-                    ProfileSummaryView(contentView: contentView)
-                }
-
             }
             .padding()
             .navigationBarTitleDisplayMode(.large)
@@ -88,8 +90,16 @@ public struct EditProfileView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
-                        self.isCanceled.toggle()
                         presentationMode.wrappedValue.dismiss()
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Ok") {
+                        Task {
+                            try await feedsClient.updateUser(feedUser)
+                            profileInfoViewModel.feedUser = feedUser
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
                 

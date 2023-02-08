@@ -10,26 +10,37 @@ import SwiftUI
 import PhotosUI
 
 public struct MediaPickerView: View {
-    @State var selectedPhotoItem: [PhotosPickerItem] = []
+    @State var selectedItems: [PhotosPickerItem] = []
     // Store information about the selected photo that might be there or missing
-    @State var data: Data?
+    @State var data: [Data] = []
     
     public init() {}
     
     public var body: some View {
         VStack {
-            if let data = data, let uiimage = UIImage(data: data) {
+            if let data = data.first, let uiimage = UIImage(data: data) {
                 Image(uiImage: uiimage)
                     .resizable()
             }
             
             PhotosPicker(
-                selection: $selectedPhotoItem,
+                selection: $selectedItems,
+                maxSelectionCount: 1,
                 matching: .images
             ) {
                 Image(systemName: "photo.on.rectangle.angled")
                     .accessibilityLabel("Photo picker")
                     .accessibilityAddTraits(.isButton)
+            }
+            .onChange(of: selectedItems) { newItems in
+                data.removeAll()
+                for newItem in newItems {
+                    Task {
+                        if let data = try? await newItem.loadTransferable(type: Data.self) {
+                            self.data.append(data)
+                        }
+                    }
+                }
             }
         }
     }

@@ -48,13 +48,13 @@ public struct NewFeedUser: Encodable {
 
 public struct FeedUser: Refable, Codable {
     public let userId: String
-    public let firstname: String
-    public let lastname: String
-    public let username: String
-    public let createdAt: Date
-    public let updatedAt: Date
-    public let aboutMe: String
-    public let profilePicture: String?
+    public var firstname: String
+    public var lastname: String
+    public var username: String
+    public var createdAt: Date
+    public var updatedAt: Date
+    public var aboutMe: String
+    public var profilePicture: String?
 
     public var fullname: String {
         return [firstname, lastname].joined(separator: " ") as String

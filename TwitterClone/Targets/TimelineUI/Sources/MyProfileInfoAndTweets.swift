@@ -39,9 +39,9 @@ public struct MyProfileInfoAndTweets: View {
                             .fontWeight(.bold)
                     }
                     .sheet(isPresented: $isShowingEditProfile, content: {
-                        EditProfileView(feedsClient: feedsClient, contentView: {
-                            AnyView(MyProfileInfoAndTweets(feedsClient: feedsClient))
-                        })
+                        if let feedUser = profileInfoViewModel.feedUser {
+                            EditProfileView(feedsClient: feedsClient, currentUser: feedUser)
+                        }
                     })
                     .buttonStyle(.borderedProminent)
                 }

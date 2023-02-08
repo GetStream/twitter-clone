@@ -95,8 +95,15 @@ public class FeedsClient: ObservableObject {
         request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
         request.addValue(feedToken, forHTTPHeaderField: "Authorization")
 
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "user request: %{public}@", request.url?.description ?? "")
+        }
         let (data, response) = try await session.data(for: request)
 
+        if OSLog.networkPayloadLog.isEnabled(type: .debug) {
+            os_log(.debug, "user response: %{public}@", String(data: data, encoding: .utf8) ?? "")
+        }
+        
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
