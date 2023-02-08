@@ -57,7 +57,6 @@ public struct StartView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(Color(.systemBlue))
-                    // .fullScreenCover(isPresented: $isPresented, content: LogIn.init)
                     .sheet(isPresented: $isPresented, content: LogIn.init)
                 }
 

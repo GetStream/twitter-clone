@@ -31,15 +31,6 @@ public struct MyProfile: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .padding()
             .toolbar {
-                /*ToolbarItem(placement: .navigationBarLeading) {
-                 NavigationLink {
-                 // Destination
-                 HomeTimelineView()
-                 } label: { // A label to show on the screen
-                 Image(systemName: "chevron.backward.circle.fill")
-                 }
-                 }*/
-
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         // print("Navigates to the search page")

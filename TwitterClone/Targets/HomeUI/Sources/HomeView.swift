@@ -15,6 +15,7 @@ public struct HomeView: View {
     @EnvironmentObject var auth: TwitterCloneAuth
     @EnvironmentObject var feedsClient: FeedsClient
     @State private var isAddingTweet = false
+    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
     
     @State private var isShowingProfile = false
 
@@ -47,31 +48,26 @@ public struct HomeView: View {
                         }
                     }.tabItem {
                         Image(systemName: "house")
-                        Text("Home")
                     }
                     SearchView(feedsClient: feedsClient)
                         .tabItem {
                             Image(systemName: "magnifyingglass")
-                            Text("Search")
                         }
                     
                     Text("")
                         .tabItem {
                             Image(systemName: "waveform.and.mic")
-                            Text("Spaces")
                         }
                     
                     Text("")
                         .tabItem {
                             Image(systemName: "bell")
-                            Text("Notifications")
                         }
                         .badge(10)
                     
                     Text("")
                         .tabItem {
                             Image(systemName: "text.bubble")
-                            Text("Chats")
                         }
                 }
                 //                TabBarView()
@@ -80,7 +76,7 @@ public struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {
+                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {
                         self.isShowingProfile.toggle()
                     })
                     .sheet(isPresented: $isShowingProfile, content: {
@@ -96,7 +92,6 @@ public struct HomeView: View {
                     } label: {
                         TTwinLogo()
                     }
-                    
                 }
             }
         }

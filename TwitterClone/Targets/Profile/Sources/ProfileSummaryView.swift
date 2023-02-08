@@ -11,7 +11,7 @@ import TwitterCloneUI
 import Feeds
 
 public struct ProfileSummaryView: View {
-    @StateObject var profileInfoViewModel = ProfileInfoViewModel()
+    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
 
     @State private var isEditingPresented = false
     

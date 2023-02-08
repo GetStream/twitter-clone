@@ -27,7 +27,6 @@ public struct TabBarView: View {
             }
             .tabItem {
                 Image(systemName: "house")
-                Text("Home")
             }
 
             SearchView(feedsClient: feedsClient)
@@ -36,27 +35,23 @@ public struct TabBarView: View {
                         self.isSearchShowing.toggle()
                     } label: {
                         Image(systemName: "magnifyingglass")
-                        Text("Search")
                     }
                 }
 
             Text("")
                 .tabItem {
                     Image(systemName: "waveform.and.mic")
-                    Text("Spaces")
                 }
 
             Text("")
                 .tabItem {
                     Image(systemName: "bell")
-                    Text("Notifications")
                 }
                 .badge(10)
 
             Text("")
                 .tabItem {
                     Image(systemName: "text.bubble")
-                    Text("Chats")
                 }
         }
     }

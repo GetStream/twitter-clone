@@ -20,20 +20,24 @@ struct TwitterCloneApp: App {
     }
     
     @StateObject
-    var feedClient = FeedsClient.productionClient(region: .euWest, auth: try! TwitterCloneAuth(baseUrl: "http://localhost:8080"))
+    var profileInfoViewModel = ProfileInfoViewModel()
+    
+    @StateObject
+    var feedsClient = FeedsClient.productionClient(region: .euWest, auth: try! TwitterCloneAuth(baseUrl: "http://localhost:8080"))
     // swiftlint:disable:previous force_try
     //    var feedClient = FeedsClient.previewClient()
     
     var body: some Scene {
         WindowGroup {
-            if feedClient.auth.authUser != nil {
-                HomeView().environmentObject(feedClient)
+            if feedsClient.auth.authUser != nil {
+                HomeView().environmentObject(feedsClient).environmentObject(profileInfoViewModel)
+                    .task {
+                        profileInfoViewModel.feedUser = try? await feedsClient.user()
+                    }
             } else {
-                StartView().environmentObject(feedClient)
+                StartView().environmentObject(feedsClient)
             }
-            
             // MARK: For previewing
-        
         }
     }
 }

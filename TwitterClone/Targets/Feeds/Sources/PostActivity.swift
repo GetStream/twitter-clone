@@ -109,8 +109,6 @@ public struct PostActivity: Encodable {
 }
 
 public struct PostActivityResponse: Decodable {
-    // {"actor":"SU:6240378a0cb3a15b1ca56a4dfe4a3f07","duration":"5.78ms","foreign_id":"","id":"246eb280-97e5-11ed-831c-069d4b3df3d5","object":"what is this","origin":null,"target":"","time":"2023-01-19T10:36:33.289280","verb":"post"}
-
     var actor: String
     /// The verb of the activity.
     var verb: String

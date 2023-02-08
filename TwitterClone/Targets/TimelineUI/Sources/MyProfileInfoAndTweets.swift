@@ -13,7 +13,7 @@ public struct MyProfileInfoAndTweets: View {
     
     @State private var isShowingEditProfile = false
     
-    @StateObject var profileInfoViewModel = ProfileInfoViewModel()
+    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
 
     @State private var selection = 0
 
@@ -51,9 +51,6 @@ public struct MyProfileInfoAndTweets: View {
                 ForYouFeedsView(feedType: .user(userId: feedsClient.auth.authUser?.userId))
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
-        }
-        .task {
-            profileInfoViewModel.feedUser = try? await feedsClient.user()
         }
     }
 }
