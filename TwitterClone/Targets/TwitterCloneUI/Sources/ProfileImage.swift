@@ -20,6 +20,7 @@ public struct ProfileImage: View {
             } label: {
                 profileImage
             }
+            .buttonStyle(.borderless)
         } else {
             profileImage
         }

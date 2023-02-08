@@ -54,6 +54,15 @@ struct PostRowView: View {
                     Image(systemName: "ellipsis.circle")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .buttonStyle(.borderless)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                // TODO implement activity deletion
+                                print("Delete")
+                            } label: {
+                                Label("Delete activity", systemImage: "trash")
+                            }
+                        }
                 }
 
                 HStack(alignment: .bottom) {

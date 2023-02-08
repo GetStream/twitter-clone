@@ -128,6 +128,7 @@ public struct FeedUser: Refable, Codable {
         try dataContainer.encode(firstname, forKey: .firstname)
         try dataContainer.encode(lastname, forKey: .lastname)
         try dataContainer.encode(username, forKey: .username)
+        try dataContainer.encode(aboutMe, forKey: .aboutMe)
         if let profilePicture {
             try dataContainer.encode(profilePicture, forKey: .profilePicture)
         }
