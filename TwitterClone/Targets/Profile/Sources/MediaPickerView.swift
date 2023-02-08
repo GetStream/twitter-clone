@@ -9,45 +9,50 @@
 import SwiftUI
 import PhotosUI
 
+public class MediaPickerViewModel: ObservableObject {
+    @Published public var mimetype: String?
+    @Published public var imageData: Data?
+}
+
 public struct MediaPickerView: View {
-    @State var selectedItems: [PhotosPickerItem] = []
-    // Store information about the selected photo that might be there or missing
-    @State var data: [Data] = []
+    @ObservedObject
+    private var viewModel: MediaPickerViewModel
     
-    public init() {}
+    @State var selectedItem: PhotosPickerItem?
+    // Store information about the selected photo that might be there or missing
+    @State var data: Data?
+    
+    public init(viewModel: MediaPickerViewModel) {
+        self.viewModel = viewModel
+    }
     
     public var body: some View {
         VStack {
-            if let data = data.first, let uiimage = UIImage(data: data) {
+            if let data = data, let uiimage = UIImage(data: data) {
                 Image(uiImage: uiimage)
                     .resizable()
             }
             
             PhotosPicker(
-                selection: $selectedItems,
-                maxSelectionCount: 1,
+                selection: $selectedItem,
                 matching: .images
             ) {
                 Image(systemName: "photo.on.rectangle.angled")
                     .accessibilityLabel("Photo picker")
                     .accessibilityAddTraits(.isButton)
             }
-            .onChange(of: selectedItems) { newItems in
-                data.removeAll()
-                for newItem in newItems {
-                    Task {
-                        if let data = try? await newItem.loadTransferable(type: Data.self) {
-                            self.data.append(data)
-                        }
-                    }
+            .onChange(of: selectedItem) { newItem in
+                Task {
+                    viewModel.imageData = try? await newItem?.loadTransferable(type: Data.self)
+                    viewModel.mimetype = newItem?.supportedContentTypes.first?.preferredMIMEType
                 }
             }
         }
     }
 }
 
-struct MediaPickerView_Previews: PreviewProvider {
-    static var previews: some View {
-        MediaPickerView()
-    }
-}
+//struct MediaPickerView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MediaPickerView()
+//    }
+//}

@@ -12,6 +12,8 @@ import AuthUI
 
 public struct SettingsView: View {
     
+    @StateObject var mediaPickerViewModel = MediaPickerViewModel()
+    
     @State private var isEditingName = "Amos Gyamfi"
     @State private var isEditingUserName = false
     @State private var isEditingPassword = false
@@ -29,7 +31,7 @@ public struct SettingsView: View {
                             ZStack {
                                 ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
                                     .opacity(0.6)
-                                MediaPickerView()
+                                MediaPickerView(viewModel: mediaPickerViewModel)
                             }
                             Image(systemName: "pencil")
                                 .fontWeight(.bold)

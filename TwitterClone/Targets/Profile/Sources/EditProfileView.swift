@@ -13,6 +13,7 @@ import Feeds
 public struct EditProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
+    @StateObject var mediaPickerViewModel = MediaPickerViewModel()
     
     @State var feedUser: FeedUser
     
@@ -37,7 +38,7 @@ public struct EditProfileView: View {
                             ZStack {
                                 ProfileImage(imageUrl: feedUser.profilePicture, action: {})
                                     .opacity(0.6)
-                                MediaPickerView()
+                                MediaPickerView(viewModel: mediaPickerViewModel)
                             }
                             Image(systemName: "pencil")
                                 .fontWeight(.bold)
@@ -96,6 +97,12 @@ public struct EditProfileView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Ok") {
                         Task {
+                            if let mimeType = mediaPickerViewModel.mimetype, let imageData = mediaPickerViewModel.imageData {
+                                let profileImageUrl = try await feedsClient.uploadImage(fileName: "profile_image",
+                                                                                        mimeType: mimeType,
+                                                                                        imageData: imageData)
+                                feedUser.profilePicture = profileImageUrl.absoluteString
+                            }
                             try await feedsClient.updateUser(feedUser)
                             profileInfoViewModel.feedUser = feedUser
                             presentationMode.wrappedValue.dismiss()

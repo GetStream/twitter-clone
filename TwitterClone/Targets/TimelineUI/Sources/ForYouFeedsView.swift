@@ -19,16 +19,20 @@ private class ForYouFeedsViewModel: ObservableObject {
     
     func refreshActivities() {
         Task {
-            if let feedClient = self.feedClient {
-                activities.removeAll()
-                switch type {
-                case .timeline:
-                    activities = try await feedClient.getTimelineActivities()
-                case .user(let userId):
-                    if let userId {
-                        activities = try await feedClient.getUserActivities(userId: userId)
+            do {
+                if let feedClient = self.feedClient {
+                    activities.removeAll()
+                    switch type {
+                    case .timeline:
+                        activities = try await feedClient.getTimelineActivities()
+                    case .user(let userId):
+                        if let userId {
+                            activities = try await feedClient.getUserActivities(userId: userId)
+                        }
                     }
                 }
+            } catch {
+                print(error)
             }
         }
     }

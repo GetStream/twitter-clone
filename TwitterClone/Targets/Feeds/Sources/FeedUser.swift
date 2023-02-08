@@ -55,6 +55,8 @@ public struct FeedUser: Refable, Codable {
     public var updatedAt: Date
     public var aboutMe: String
     public var profilePicture: String?
+    public var website: String
+    public var location: String
 
     public var fullname: String {
         return [firstname, lastname].joined(separator: " ") as String
@@ -70,6 +72,8 @@ public struct FeedUser: Refable, Codable {
         case username
         case aboutMe = "about_me"
         case profilePicture = "profile_picture"
+        case website
+        case location
     }
 
     public static func previewUser() -> FeedUser {
@@ -93,6 +97,8 @@ public struct FeedUser: Refable, Codable {
         self.lastname = lastname
         self.aboutMe = aboutMe
         self.profilePicture = profilePicture
+        self.location = ""
+        self.website = ""
 
     }
 
@@ -109,6 +115,9 @@ public struct FeedUser: Refable, Codable {
         self.aboutMe = try dataContainer.decodeIfPresent(String.self, forKey: .aboutMe) ?? ""
 
         self.profilePicture = try dataContainer.decodeIfPresent(String.self, forKey: .profilePicture)
+
+        self.location = try dataContainer.decodeIfPresent(String.self, forKey: .location) ?? ""
+        self.website = try dataContainer.decodeIfPresent(String.self, forKey: .website) ?? ""
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -121,6 +130,12 @@ public struct FeedUser: Refable, Codable {
         try dataContainer.encode(username, forKey: .username)
         if let profilePicture {
             try dataContainer.encode(profilePicture, forKey: .profilePicture)
+        }
+        if !location.isEmpty {
+            try dataContainer.encode(location, forKey: .location)
+        }
+        if !website.isEmpty {
+            try dataContainer.encode(website, forKey: .website)
         }
     }
 
