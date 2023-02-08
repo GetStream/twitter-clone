@@ -363,8 +363,6 @@ public class FeedsClient: ObservableObject {
         let statusCode = (response as? HTTPURLResponse)?.statusCode
 
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-
-        try await getTimelineActivities()
     }
 
     public func uploadImage(fileName: String, mimeType: String, imageData: Data) async throws -> URL {

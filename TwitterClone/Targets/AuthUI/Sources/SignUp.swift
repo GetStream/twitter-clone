@@ -46,7 +46,6 @@ public struct SignUp: View {
                 AsyncButton("Sign up") {
                     do {
                         let authUser = try await feedsClient.auth.signup(username: username, password: password)
-                        // TODO where to get profile picture
                         let user = NewFeedUser(userId: authUser.userId, firstname: firstname, lastname: lastname, username: username, profilePicture: nil)
                         _ = try await feedsClient.createUser(user)
                         try await feedsClient.follow(target: user.userId, activityCopyLimit: 10)
