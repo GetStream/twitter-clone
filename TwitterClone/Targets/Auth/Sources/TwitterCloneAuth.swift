@@ -52,6 +52,10 @@ public struct AuthUser: Decodable {
         KeyChainHelper.shared.setString(username, forKey: AuthKeychainKey.username.rawValue, requireUserpresence: false)
         KeyChainHelper.shared.setString(userId, forKey: AuthKeychainKey.userId.rawValue, requireUserpresence: false)
     }
+    
+    public static func previewUser() -> AuthUser {
+        return AuthUser(feedToken: "123_fake", chatToken: "123_fake", username: "preview", userId: "password")
+    }
 }
 
 private struct LoginCredential: Encodable {
@@ -73,7 +77,7 @@ public final class TwitterCloneAuth: ObservableObject {
 
     @Published
     public private(set) var authUser: AuthUser?
-
+    
     public func logout() {
         os_log("Logout triggered")
         KeyChainHelper.shared.removeKey(AuthKeychainKey.feedToken.rawValue)
@@ -131,8 +135,8 @@ public final class TwitterCloneAuth: ObservableObject {
         return authUser
     }
 
-    public func login(username: String, password: String) async throws -> AuthUser {
-        os_log("User login @", username)
+    public func login(username: String, password: String) async throws {
+        os_log("User login %@", username)
         let credential = LoginCredential(username: username, password: password)
         let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(credential)
 
@@ -152,7 +156,6 @@ public final class TwitterCloneAuth: ObservableObject {
         let authUser = try TwitterCloneNetworkKit.jsonDecoder.decode(AuthUser.self, from: data)
         authUser.persist()
         self.authUser = authUser
-        return authUser
     }
     
     public func users(matching searchTerm: String) async throws -> [UserReference] {

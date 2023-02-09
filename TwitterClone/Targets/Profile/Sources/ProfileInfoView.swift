@@ -16,7 +16,6 @@ public class ProfileInfoViewModel: ObservableObject {
     
     public init() {}
     
-    let location = "Amsterdam"
     let following = 10
     let followers = 11
     
@@ -51,7 +50,7 @@ public struct ProfileInfoView: View {
                 HStack(spacing: 16) {
                     HStack(spacing: 2) {
                         Image(systemName: "mappin.and.ellipse")
-                        Text("\(viewModel.location)")
+                        Text(viewModel.feedUser?.location ?? "")
                     }
                     .font(.caption)
 

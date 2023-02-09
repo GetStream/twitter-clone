@@ -19,23 +19,15 @@ struct TwitterCloneApp: App {
         URLSession.shared.configuration.urlCache?.diskCapacity = 1_000_000_000 // ~1GB disk cache space
     }
     
-    @StateObject
-    var profileInfoViewModel = ProfileInfoViewModel()
-    
-    @StateObject
-    var feedsClient = FeedsClient.productionClient(region: .euWest, auth: try! TwitterCloneAuth(baseUrl: "http://localhost:8080"))
-    // swiftlint:disable:previous force_try
-    //    var feedClient = FeedsClient.previewClient()
+    // swiftlint:disable:next force_try
+    @StateObject var auth = try! TwitterCloneAuth(baseUrl: "http://localhost:8080")
     
     var body: some Scene {
         WindowGroup {
-            if feedsClient.auth.authUser != nil {
-                HomeView().environmentObject(feedsClient).environmentObject(profileInfoViewModel)
-                    .task {
-                        profileInfoViewModel.feedUser = try? await feedsClient.user()
-                    }
+            if let authUser = auth.authUser {
+                HomeView(authUser: authUser).environmentObject(auth)
             } else {
-                StartView().environmentObject(feedsClient)
+                StartView().environmentObject(auth)
             }
             // MARK: For previewing
         }

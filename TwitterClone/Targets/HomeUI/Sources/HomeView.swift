@@ -12,19 +12,24 @@ import Profile
 import TimelineUI
 
 public struct HomeView: View {
-    @EnvironmentObject var auth: TwitterCloneAuth
-    @EnvironmentObject var feedsClient: FeedsClient
-    @State private var isAddingTweet = false
-    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
+    @StateObject
+    var feedsClient: FeedsClient
     
+    @StateObject
+    var profileInfoViewModel = ProfileInfoViewModel()
+    
+    @State
+    private var isAddingTweet = false
+        
     @State private var isShowingProfile = false
 
-    public init() {}
+    public init(authUser: AuthUser) {
+        _feedsClient = StateObject(wrappedValue: FeedsClient.productionClient(authUser: authUser))
+    }
 
     public var body: some View {
         NavigationStack {
             VStack {
-                NewlyTweetedButton()
                 TabView {
                     ZStack {
                         FeedsView()
@@ -94,6 +99,12 @@ public struct HomeView: View {
                     }
                 }
             }
+        }
+        .environmentObject(feedsClient)
+        .environmentObject(profileInfoViewModel)
+        .task {
+            profileInfoViewModel.feedUser = try? await feedsClient.user()
+            try? await feedsClient.follow(target: feedsClient.authUser.userId, activityCopyLimit: 10)
         }
     }
 }

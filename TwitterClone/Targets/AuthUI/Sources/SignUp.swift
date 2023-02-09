@@ -12,6 +12,7 @@ import Auth
 
 public struct SignUp: View {
     @EnvironmentObject var feedsClient: FeedsClient
+    @EnvironmentObject var auth: TwitterCloneAuth
     @Environment(\.presentationMode) var presentationMode
 
     @State private var username = ""
@@ -45,7 +46,7 @@ public struct SignUp: View {
 
                 AsyncButton("Sign up") {
                     do {
-                        let authUser = try await feedsClient.auth.signup(username: username, password: password)
+                        let authUser = try await auth.signup(username: username, password: password)
                         let user = NewFeedUser(userId: authUser.userId, firstname: firstname, lastname: lastname, username: username, profilePicture: nil)
                         _ = try await feedsClient.createUser(user)
                         try await feedsClient.follow(target: user.userId, activityCopyLimit: 10)

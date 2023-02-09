@@ -67,12 +67,12 @@ public struct EditProfileView: View {
                             .foregroundColor(.streamBlue)
                             .labelsHidden()
                     }
-//                    HStack {
-//                        Text("Location")
-//                        TextField("location", text: $feedUser.location)
-//                            .foregroundColor(.streamBlue)
-//                            .labelsHidden()
-//                    }
+                    HStack {
+                        Text("Location")
+                        TextField("location", text: $feedUser.location)
+                            .foregroundColor(.streamBlue)
+                            .labelsHidden()
+                    }
 //                    HStack {
 //                        Text("Website")
 //                        TextField("website", text: $feedUser.website)

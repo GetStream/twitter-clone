@@ -10,7 +10,6 @@ import TwitterCloneUI
 import Feeds
 
 public struct StartView: View {
-    @EnvironmentObject var feedsClient: FeedsClient
     @State private var isPresented = false
     @State private var isShown = false
 

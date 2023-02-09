@@ -11,6 +11,7 @@ import Auth
 @MainActor
 class UserSearchViewModel: ObservableObject {
     var feedsClient: FeedsClient
+    @EnvironmentObject var auth: TwitterCloneAuth
     @Published var users = [UserReference]()
     @Published var searchText: String = ""
     @Published var followedUserFeedIds = Set<String>()
@@ -51,7 +52,7 @@ class UserSearchViewModel: ObservableObject {
             self.users.removeAll()
             followedUserFeedIds.removeAll()
 
-            users = try await feedsClient.auth.users(matching: searchText)
+            users = try await auth.users(matching: searchText)
             feedFollowers = try await feedsClient.following()
                                                          
             self.users.append(contentsOf: users)

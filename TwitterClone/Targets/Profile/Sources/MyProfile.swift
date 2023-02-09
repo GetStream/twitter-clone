@@ -11,9 +11,8 @@ import Feeds
 
 public struct MyProfile: View {
     @EnvironmentObject var feedsClient: FeedsClient
-    @State private var selection = 0
     @State private var isShowingSearch = false
-    
+
     private var contentView: (() -> AnyView)
     
     public init (contentView: @escaping (() -> AnyView)) {
@@ -31,6 +30,14 @@ public struct MyProfile: View {
             .toolbarBackground(.visible, for: .navigationBar)
             .padding()
             .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    // Link to the full profile page: MyProfile.swift
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        Image(systemName: "gear.circle.fill")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         // print("Navigates to the search page")

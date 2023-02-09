@@ -51,9 +51,6 @@ public struct AddNewTweetView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         AsyncButton("Tweet") {
                             do {
-                                guard let userId = feedsClient.auth.authUser?.userId else {
-                                    throw AuthError.noLoadedAuthUser
-                                }
                                 var tweetPhotoUrlString: String?
                                 logger.debug("add tweet photo identifier: \(selectedItems.first?.itemIdentifier ?? "", privacy: .public)")
 
@@ -64,7 +61,7 @@ public struct AddNewTweetView: View {
 
                                 }
                                 
-                                let activity = PostActivity(actor: userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString)
+                                let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString)
                                 try await feedsClient.addActivity(activity)
                                 presentationMode.wrappedValue.dismiss()
                             } catch {

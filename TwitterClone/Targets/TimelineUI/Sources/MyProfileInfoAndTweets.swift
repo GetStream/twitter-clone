@@ -6,6 +6,7 @@
 import SwiftUI
 import TwitterCloneUI
 import Feeds
+import Auth
 import Profile
 
 public struct MyProfileInfoAndTweets: View {
@@ -48,7 +49,7 @@ public struct MyProfileInfoAndTweets: View {
 
                 ProfileInfoView(viewModel: profileInfoViewModel)
 
-                ForYouFeedsView(feedType: .user(userId: feedsClient.auth.authUser?.userId))
+                ForYouFeedsView(feedType: .user(userId: feedsClient.authUser.userId))
                     .frame(height: UIScreen.main.bounds.height)
             }.padding()
         }

@@ -9,8 +9,13 @@
 import SwiftUI
 import TwitterCloneUI
 import AuthUI
+import Auth
+import Feeds
 
 public struct SettingsView: View {
+    @EnvironmentObject var feedsClient: FeedsClient
+    @EnvironmentObject var auth: TwitterCloneAuth
+    @Environment(\.presentationMode) var presentationMode
     
     @StateObject var mediaPickerViewModel = MediaPickerViewModel()
     
@@ -98,12 +103,12 @@ public struct SettingsView: View {
             }
             
             Button(role: .destructive) {
-                self.isLoggedOut.toggle()
+                presentationMode.wrappedValue.dismiss()
+                auth.logout()
             } label: {
                 Image(systemName: "power.circle.fill")
                 Text("Log out")
             }
-            .fullScreenCover(isPresented: $isLoggedOut, content: StartView.init)
             
             Spacer()
         }
