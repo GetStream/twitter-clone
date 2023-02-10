@@ -19,6 +19,9 @@ public struct HomeView: View {
     @StateObject
     var chatModel = DirectMessagesModel()
     
+    @EnvironmentObject
+    var auth: TwitterCloneAuth
+    
     @StateObject
     var profileInfoViewModel = ProfileInfoViewModel()
     
@@ -58,7 +61,7 @@ public struct HomeView: View {
                     }.tabItem {
                         Image(systemName: "house")
                     }
-                    SearchView(feedsClient: feedsClient)
+                    SearchView(feedsClient: feedsClient, auth: auth)
                         .tabItem {
                             Image(systemName: "magnifyingglass")
                         }

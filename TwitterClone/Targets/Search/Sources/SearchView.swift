@@ -11,13 +11,15 @@ import Auth
 @MainActor
 class UserSearchViewModel: ObservableObject {
     var feedsClient: FeedsClient
-    @EnvironmentObject var auth: TwitterCloneAuth
+    var auth: TwitterCloneAuth
+    
     @Published var users = [UserReference]()
     @Published var searchText: String = ""
     @Published var followedUserFeedIds = Set<String>()
     
-    init(feedsClient: FeedsClient) {
+    init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
         self.feedsClient = feedsClient
+        self.auth = auth
     }
     
     func isFollowing(user: UserReference) -> Bool {
@@ -63,9 +65,9 @@ class UserSearchViewModel: ObservableObject {
 
 public struct SearchView: View {
     @StateObject var viewModel: UserSearchViewModel
-
-    public init(feedsClient: FeedsClient) {        
-       _viewModel = StateObject(wrappedValue: UserSearchViewModel(feedsClient: feedsClient))
+    
+    public init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
+       _viewModel = StateObject(wrappedValue: UserSearchViewModel(feedsClient: feedsClient, auth: auth))
     }
 
     public var body: some View {

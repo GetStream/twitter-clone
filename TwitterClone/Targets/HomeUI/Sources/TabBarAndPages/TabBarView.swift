@@ -6,11 +6,14 @@
 import SwiftUI
 
 import Search
+import Auth
 
 import Feeds
 
 public struct TabBarView: View {
     @EnvironmentObject var feedsClient: FeedsClient
+    @EnvironmentObject var auth: TwitterCloneAuth
+    
     @State private var selectedFeeds = 1
     @State private var isSearchShowing = false
 
@@ -29,7 +32,7 @@ public struct TabBarView: View {
                 Image(systemName: "house")
             }
 
-            SearchView(feedsClient: feedsClient)
+            SearchView(feedsClient: feedsClient, auth: auth)
                 .tabItem {
                     Button {
                         self.isSearchShowing.toggle()
