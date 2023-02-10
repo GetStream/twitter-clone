@@ -11,10 +11,12 @@ import TwitterCloneUI
 import AuthUI
 import Auth
 import Feeds
+import DirectMessages
 
 public struct SettingsView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @EnvironmentObject var auth: TwitterCloneAuth
+    @EnvironmentObject var chatModel: DirectMessagesModel
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject var mediaPickerViewModel = MediaPickerViewModel()
@@ -105,6 +107,7 @@ public struct SettingsView: View {
             Button(role: .destructive) {
                 presentationMode.wrappedValue.dismiss()
                 auth.logout()
+//                chatModel.logout()
             } label: {
                 Image(systemName: "power.circle.fill")
                 Text("Log out")

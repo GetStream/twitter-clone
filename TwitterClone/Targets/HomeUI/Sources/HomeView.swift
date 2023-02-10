@@ -111,6 +111,7 @@ public struct HomeView: View {
         }
         .environmentObject(feedsClient)
         .environmentObject(profileInfoViewModel)
+        .environmentObject(chatModel)
         .task {
             do {
                 let feedUser = try await feedsClient.user()

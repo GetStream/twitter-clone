@@ -37,6 +37,7 @@ let profileTarget =
                                  dependencies: [
                                     .target(name: authName),
                                     .target(name: authUiName),
+                                    .target(name: messagesName),
                                     .target(name: uiName)
                                  ])
 let searchTarget =

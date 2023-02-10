@@ -33,6 +33,10 @@ public class DirectMessagesModel: ObservableObject {
         return client
     }()
     
+    public func logout() {
+        chatClient.logout(completion: {})
+    }
+    
     // The `connectUser` function we need to add.
     public func connectUser(authUser: AuthUser, feedUser: FeedUser) throws {
         
