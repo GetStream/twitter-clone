@@ -48,9 +48,11 @@ public struct HomeView: View {
                                 Button {
                                     self.isAddingTweet.toggle()
                                 } label: {
-                                    Image(systemName: "plus.circle.fill")
-                                        .font(.system(size: 42))
-                                        .padding(.all)
+                                    Image("newTweetButton")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 46, height: 46)
+                                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 16))
                                 }
                                 .sheet(isPresented: $isAddingTweet, content: {
                                     AddNewTweetView()

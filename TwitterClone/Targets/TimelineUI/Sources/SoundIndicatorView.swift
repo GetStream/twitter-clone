@@ -13,7 +13,7 @@ public struct SoundIndicatorView: View {
     
     public var body: some View {
         HStack {
-            ForEach(0 ..< 20) { rect in
+            ForEach(0 ..< 7) { rect in
                 RoundedRectangle(cornerRadius: 2)
                     .frame(width: 3, height: .random(in: isSounding ? 16...32 : 8...24))
                     .foregroundColor(.white)
