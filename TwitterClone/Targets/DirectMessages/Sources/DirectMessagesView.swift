@@ -14,7 +14,7 @@ public struct DirectMessagesView: View {
     public init() {}
     
     public var body: some View {
-        ChatChannelListView()
+        ChatChannelListView(viewFactory: DemoAppFactory.shared)
     }
 }
 
