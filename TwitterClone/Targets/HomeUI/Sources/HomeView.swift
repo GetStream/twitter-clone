@@ -10,10 +10,14 @@ import Feeds
 import Search
 import Profile
 import TimelineUI
+import DirectMessages
 
 public struct HomeView: View {
     @StateObject
     var feedsClient: FeedsClient
+    
+    @StateObject
+    var chatModel = DirectMessagesModel()
     
     @StateObject
     var profileInfoViewModel = ProfileInfoViewModel()
@@ -70,7 +74,7 @@ public struct HomeView: View {
                         }
                         .badge(10)
                     
-                    Text("")
+                    DirectMessagesView()
                         .tabItem {
                             Image(systemName: "text.bubble")
                         }
@@ -103,8 +107,15 @@ public struct HomeView: View {
         .environmentObject(feedsClient)
         .environmentObject(profileInfoViewModel)
         .task {
-            profileInfoViewModel.feedUser = try? await feedsClient.user()
-            try? await feedsClient.follow(target: feedsClient.authUser.userId, activityCopyLimit: 10)
+            do {
+                let feedUser = try await feedsClient.user()
+                profileInfoViewModel.feedUser = feedUser
+                try chatModel.connectUser(authUser: feedsClient.authUser, feedUser: feedUser)
+                try await feedsClient.follow(target: feedsClient.authUser.userId, activityCopyLimit: 10)
+            } catch {
+                // TODO better error handling
+                print(error)
+            }
         }
     }
 }
