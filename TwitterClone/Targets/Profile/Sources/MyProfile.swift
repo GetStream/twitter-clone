@@ -6,7 +6,6 @@
 import SwiftUI
 
 import TwitterCloneUI
-import Search
 import Feeds
 
 public struct MyProfile: View {
@@ -36,17 +35,6 @@ public struct MyProfile: View {
                         SettingsView()
                     } label: {
                         Image(systemName: "gear.circle.fill")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        // print("Navigates to the search page")
-                        self.isShowingSearch.toggle()
-                    } label: {
-                        Image(systemName: "magnifyingglass.circle.fill")
-
-                    }.sheet(isPresented: $isShowingSearch) {
-                        SearchView(feedsClient: feedsClient)
                     }
                 }
             }

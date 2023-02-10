@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import NetworkKit
 
 internal enum FeedsURL {
     case images
@@ -77,10 +78,11 @@ internal class URLFactory {
 
 private extension URL {
     mutating func appendApiKey() {
-        append(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
+        append(queryItems: [URLQueryItem(name: "api_key", value: TwitterCloneNetworkKit.apiKey)])
+        
     }
 
     func appendingApiKey() -> URL {
-        return appending(queryItems: [URLQueryItem(name: "api_key", value: "dn4mpr346fns")])
+        return appending(queryItems: [URLQueryItem(name: "api_key", value: TwitterCloneNetworkKit.apiKey)])
     }
 }

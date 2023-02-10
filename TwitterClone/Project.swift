@@ -61,6 +61,7 @@ let homeUiTarget =
                                     .target(name: searchName),
                                     .target(name: profileName),
                                     .target(name: timelineUiName),
+                                    .target(name: messagesName),
                                     .target(name: uiName)
                                  ])
 
@@ -123,6 +124,22 @@ let keychainHelperTarget =
 let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
-                          dependencies: [.external(name: "StreamChatSwiftUI"), .external(name: "HMSSDK")],
-                          additionalTargets: uiTarget + authUiTarget + authorizationTarget + keychainHelperTarget + messagesTarget + profileTarget + searchTarget + settingsTarget + homeUiTarget + timelineUiTarget + spacesTarget + feedsTarget + networkKitTarget,
+                          dependencies: [
+                            .external(name: "StreamChatSwiftUI"),
+                            .external(name: "HMSSDK")
+                          ],
+                          additionalTargets:
+                            uiTarget +
+                            authUiTarget +
+                            authorizationTarget +
+                            keychainHelperTarget +
+                            messagesTarget +
+                            profileTarget +
+                            searchTarget +
+                            settingsTarget +
+                            homeUiTarget +
+                            timelineUiTarget +
+                            spacesTarget +
+                            feedsTarget +
+                            networkKitTarget,
                           additionalFiles: ["graph.png", "../README.md"])

@@ -20,6 +20,8 @@ public extension OSLog {
 }
 
 public final class TwitterCloneNetworkKit {
+    
+    public static let apiKey = "dn4mpr346fns"
     /// Checks the status code for errors
     /// - Parameter statusCode: The response status code to check. If it does not throw it is an acceptable status.
     public static func checkStatusCode(statusCode: Int?) throws {
