@@ -129,8 +129,8 @@ let project = Project.app(name: "TwitterClone",
                           platform: .iOS,
                           packages: [],
                           dependencies: [
-                            .external(name: "StreamChatSwiftUI"),
-                            .external(name: "HMSSDK")
+//                            .external(name: "StreamChatSwiftUI"),
+//                            .external(name: "HMSSDK")
                           ],
                           additionalTargets:
                             uiTarget +
