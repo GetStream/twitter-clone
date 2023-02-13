@@ -76,7 +76,7 @@ public final class TwitterCloneAuth: ObservableObject {
     let usersUrl: URL
 
     @Published
-    public private(set) var authUser: AuthUser?
+    public var authUser: AuthUser?
     
     public func logout() {
         os_log("Logout triggered")

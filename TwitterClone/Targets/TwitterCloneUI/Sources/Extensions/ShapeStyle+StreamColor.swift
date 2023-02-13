@@ -10,4 +10,12 @@ public extension ShapeStyle where Self == Color {
     static var streamGreen: Color {
         Color(red: 0.125, green: 0.88, blue: 0.439)
     }
+    
+    static var spacesViolet: Color {
+        Color(red: 0.125, green: 0.88, blue: 0.439)
+    }
+    
+    static var spacesBlue: Color {
+        Color(red: 0.00, green: 0.37, blue: 1.00)
+    }
 }

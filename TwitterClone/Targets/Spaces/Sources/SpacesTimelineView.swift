@@ -8,8 +8,6 @@
 
 import SwiftUI
 import TwitterCloneUI
-import HomeUI
-import Profile
 
 public struct SpacesTimelineView: View {
     public init() {}
@@ -19,7 +17,7 @@ public struct SpacesTimelineView: View {
     
     public var body: some View {
         NavigationStack {
-            VStack{
+            VStack {
                 ScrollView {
                     VStack(alignment: .leading) {
                         Text("Happening Now")
@@ -49,7 +47,6 @@ public struct SpacesTimelineView: View {
                         Text("People you follow will be tuning in")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
-                        
                         
                         Button {
                             isShowingSpacesWelcome.toggle()
@@ -96,15 +93,15 @@ public struct SpacesTimelineView: View {
                         .padding(.horizontal, 12)
                 }
                 
-                SpacesTabBarView()
-                    .frame(height: 48)
+//                SpacesTabBarView()
+//                    .frame(height: 48)
             }
         }
     }
 }
 
-struct SpacesTimelineView_Previews: PreviewProvider {
-    static var previews: some View {
-        SpacesTimelineView()
-    }
-}
+//struct SpacesTimelineView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SpacesTimelineView()
+//    }
+//}

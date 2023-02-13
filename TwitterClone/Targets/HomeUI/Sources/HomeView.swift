@@ -11,6 +11,7 @@ import Search
 import Profile
 import TimelineUI
 import DirectMessages
+import Spaces
 
 public struct HomeView: View {
     @StateObject
@@ -68,7 +69,7 @@ public struct HomeView: View {
                             Image(systemName: "magnifyingglass")
                         }
                     
-                    Text("")
+                    SpacesTimelineView()
                         .tabItem {
                             Image(systemName: "waveform.and.mic")
                         }

@@ -23,7 +23,6 @@ public struct SpacesWelcomeView: View {
                 )
                 .padding()
             
-            
             Text("Welcome to TwitterClone Spaces")
                 .font(.title2)
                 .bold()

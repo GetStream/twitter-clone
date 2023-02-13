@@ -29,6 +29,7 @@ let messagesTarget =
                                     [
                                         .external(name: "StreamChatSwiftUI"),
                                         .target(name: authName),
+                                        .target(name: feedsName),
                                         .target(name: uiName)
                                     ])
 let profileTarget =
@@ -38,7 +39,8 @@ let profileTarget =
                                     .target(name: authName),
                                     .target(name: authUiName),
                                     .target(name: messagesName),
-                                    .target(name: uiName)
+                                    .target(name: uiName),
+                                    .external(name: "RevenueCat")
                                  ])
 let searchTarget =
     Project.makeFrameworkTargets(name: searchName,
@@ -63,6 +65,7 @@ let homeUiTarget =
                                     .target(name: profileName),
                                     .target(name: timelineUiName),
                                     .target(name: messagesName),
+                                    .target(name: spacesName),
                                     .target(name: uiName)
                                  ])
 

@@ -22,7 +22,7 @@ public struct SpacesStartListeningView: View {
         NavigationStack {
             
             VStack {
-                HStack{
+                HStack {
                     VStack(alignment: .leading) {
                         Text("Swift and Coffee")
                             .font(.headline)
@@ -55,7 +55,6 @@ public struct SpacesStartListeningView: View {
                         }
                     }
                 }
-                
                 
                 VStack {
                     Button {

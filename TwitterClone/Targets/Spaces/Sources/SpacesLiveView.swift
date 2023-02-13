@@ -7,8 +7,7 @@
 //
 
 import SwiftUI
-import TimelineUI
-import AuthUI
+import TwitterCloneUI
 
 public struct SpacesLiveView: View {
     public init() {}
@@ -81,8 +80,8 @@ public struct SpacesLiveView: View {
     }
 }
 
-struct SpacesLiveView_Previews: PreviewProvider {
-    static var previews: some View {
-        SpacesLiveView()
-    }
-}
+//struct SpacesLiveView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SpacesLiveView()
+//    }
+//}

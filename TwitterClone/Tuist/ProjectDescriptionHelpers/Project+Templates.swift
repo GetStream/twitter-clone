@@ -27,7 +27,7 @@ extension Project {
         let sources = Target(name: name,
                 platform: platform,
                 product: .framework,
-                bundleId: "io.getstream.twitterclone.\(name)",
+                bundleId: "io.getstream.\(name)",
                 infoPlist: .default,
                 sources: ["Targets/\(name)/Sources/**"],
                 resources: ["Targets/\(name)/Resources/**"],

@@ -7,18 +7,19 @@
 //
 
 import SwiftUI
-import TimelineUI
-import AuthUI
+import TwitterCloneUI
 
 public struct SpacesScheduledView: View {
     public init() {}
     
     func getTomorrowDate() -> String {
         let today = Date()
-        let future = Calendar.current.date(byAdding: .day, value: 25, to: today)
+        guard let future = Calendar.current.date(byAdding: .day, value: 25, to: today) else {
+            return "-"
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
-        return dateFormatter.string(from: future!)
+        return dateFormatter.string(from: future)
     }
     
     public var body: some View {
@@ -46,7 +47,6 @@ public struct SpacesScheduledView: View {
                 .bold()
                 .padding(.horizontal)
             
-            
             ZStack { // For the sake of bottom padding
                 Button {
                     
@@ -58,7 +58,6 @@ public struct SpacesScheduledView: View {
                         .cornerRadius(24)
                 }
             }.padding(.bottom)
-            
             
             HStack {
                 Image("profile10")
