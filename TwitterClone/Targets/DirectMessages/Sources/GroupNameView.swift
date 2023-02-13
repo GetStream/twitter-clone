@@ -99,23 +99,20 @@ struct GroupControlsView: View {
                     .renderingMode(.template)
                     .foregroundColor(Color(colors.textLowEmphasis))
             }
-
-            NavigationLink(
-                isActive: $viewModel.showGroupConversation,
-                destination: {
-                    if let controller = viewModel.channelController {
-                        ChatChannelView(
-                            viewFactory: DemoAppFactory.shared,
-                            channelController: controller
-                        )
-                        .onDisappear {
-                            isNewChatShown = false
-                        }
-                    } else {
-                        EmptyView()
+            
+            NavigationLink(isActive: $viewModel.showGroupConversation) {
+                if let controller = viewModel.channelController {
+                    ChatChannelView(
+                        viewFactory: DemoAppFactory.shared,
+                        channelController: controller
+                    )
+                    .onDisappear {
+                        isNewChatShown = false
                     }
+                } else {
+                    EmptyView()
                 }
-            ) {
+            } label: {
                 EmptyView()
             }
             .isDetailLink(false)
