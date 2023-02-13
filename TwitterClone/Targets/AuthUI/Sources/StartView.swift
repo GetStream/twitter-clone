@@ -36,7 +36,9 @@ public struct StartView: View {
                 .padding(.top)
                 .buttonStyle(.bordered)
                 // .fullScreenCover(isPresented: $isShown, content: SignUp.init)
-                .sheet(isPresented: $isShown, content: SignUp.init)
+                .sheet(isPresented: $isShown) {
+                    SignUp()
+                }
 
                 // Button with image and label
                 HStack {
