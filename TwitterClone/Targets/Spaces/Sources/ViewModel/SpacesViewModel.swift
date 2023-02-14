@@ -7,8 +7,13 @@
 //
 
 import HMSSDK
+import Chat
+import StreamChat
+import StreamChatSwiftUI
 
 public class SpacesViewModel: ObservableObject {
+    
+    @Injected(\.chatClient) var chatClient
     
     @Published var ownTrack: HMSAudioTrack?
     @Published var otherTracks: Set<HMSAudioTrack> = []
@@ -19,16 +24,25 @@ public class SpacesViewModel: ObservableObject {
     
     var hmsSDK = HMSSDK.build()
     
-    func joinSpace() {
-        isInSpace = true
-        
-        // TODO: how to get the token? (we could use chatclient)
-        let token = ""
-        // TODO: how to get the name correctly
-        // TODO: how to join audio only
-        let config = HMSConfig(userName: "Stefan", authToken: token)
-        
-        hmsSDK.join(config: config, delegate: self)
+    @MainActor
+    func joinSpace() async {
+        do {
+            // TODO: Use real channel Ids
+            let channelCid = "messaging:call-test-channel"
+            let channelId = try ChannelId(cid: channelCid)
+            let call = try await chatClient.createCall(with: UUID().uuidString, in: channelId)
+            // TODO: how to get the token? (we could use chatclient)
+            let token = call.token
+            // TODO: how to get the name correctly
+            // TODO: how to join audio only
+            let config = HMSConfig(userName: "Stefan", authToken: token)
+            
+            hmsSDK.join(config: config, delegate: self)
+            isInSpace = true
+        } catch {
+            print(error.localizedDescription)
+            isInSpace = false
+        }
     }
     
     func leaveSpace() {

@@ -85,7 +85,9 @@ public struct SpacesStartListeningView: View {
                     if viewModel.isInSpace {
                         viewModel.leaveSpace()
                     } else {
-                        viewModel.joinSpace()
+                        Task {
+                            await viewModel.joinSpace()
+                        }
                     }
                 } label: {
                     ZStack {
