@@ -96,7 +96,7 @@ struct PostRowView: View {
                             ProgressView()
                         }
                     }
-                    .frame(width: .infinity, height: 180)
+                    .frame(width: nil, height: 180)
                     .cornerRadius(16)
                     .accessibilityLabel("Tweet with photo")
                     .accessibilityAddTraits(.isButton)

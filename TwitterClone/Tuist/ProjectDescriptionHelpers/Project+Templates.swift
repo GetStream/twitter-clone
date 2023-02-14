@@ -54,6 +54,7 @@ extension Project {
             "NSAppleMusicUsageDescription": "Please allow access to media.",
             "NSCameraUsageDescription": "Please allow access to the Camera to add photo&apos;s to posts.",
             "NSPhotoLibraryUsageDescription": "Please allow access to the Photo library to add photo&apos;s to posts.",
+            "UIApplicationSceneManifest": ["UISceneConfigurations":[:]]
             ]
         
         let swiftlintTargetAction = TargetScript.pre(path: .relativeToRoot("bin/swiftlint.sh"), name: "Swiftlint.", basedOnDependencyAnalysis: false)
@@ -67,6 +68,7 @@ extension Project {
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/Sources/**"],
             resources: ["Targets/\(name)/Resources/**"],
+            entitlements: "TwitterClone.entitlements",
             scripts: [swiftlintTargetAction],
             dependencies: dependencies,
             launchArguments: [LaunchArgument(name: "NETWORK_PAYLOAD_LOGGING_ENABLED", isEnabled: false)]
