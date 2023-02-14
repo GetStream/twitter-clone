@@ -1,0 +1,54 @@
+{
+  "identifier" : "150A0774",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1671513140",
+    "_developerTeamID" : "EHV7XZLAHA",
+    "_lastSynchronizedDate" : 698061159.71583295
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21216391",
+      "localizations" : [
+
+      ],
+      "name" : "Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "8.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6445706337",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Get a neat badge.",
+              "displayName" : "Blue",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "blue",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Blue",
+          "subscriptionGroupID" : "21216391",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

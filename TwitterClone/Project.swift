@@ -146,4 +146,4 @@ let project = Project.app(name: "TwitterClone",
                             spacesTarget +
                             feedsTarget +
                             networkKitTarget,
-                          additionalFiles: ["graph.png", "../README.md"])
+                          additionalFiles: ["graph.png", "../README.md", "TwitterCloneStoreKitTesting.storekit"])
