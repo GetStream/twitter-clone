@@ -8,6 +8,7 @@
 
 import SwiftUI
 import StreamChatSwiftUI
+import Chat
 
 public struct DirectMessagesView: View {
     

@@ -21,9 +21,20 @@ let spacesName = "Spaces"
 let timelineUiName = "TimelineUI"
 let homeUiName = "HomeUI"
 let feedsName = "Feeds"
+let chatName = "Chat"
 
 let messagesTarget =
     Project.makeFrameworkTargets(name: messagesName,
+                                 platform: .iOS,
+                                 dependencies:
+                                    [
+                                        .target(name: authName),
+                                        .target(name: feedsName),
+                                        .target(name: chatName),
+                                        .target(name: uiName)
+                                    ])
+let chatTarget =
+    Project.makeFrameworkTargets(name: chatName,
                                  platform: .iOS,
                                  dependencies:
                                     [
@@ -32,6 +43,7 @@ let messagesTarget =
                                         .target(name: feedsName),
                                         .target(name: uiName)
                                     ])
+
 let profileTarget =
     Project.makeFrameworkTargets(name: profileName,
                                  platform: .iOS,
@@ -66,6 +78,7 @@ let homeUiTarget =
                                     .target(name: timelineUiName),
                                     .target(name: messagesName),
                                     .target(name: spacesName),
+                                    .target(name: chatName),
                                     .target(name: uiName)
                                  ])
 
@@ -85,6 +98,7 @@ let spacesTarget =
                                  dependencies: [
                                     .target(name: uiName),
                                     .target(name: authName),
+                                    .target(name: chatName),
                                     .external(name: "HMSSDK")
                                  ])
 let feedsTarget =
@@ -144,6 +158,7 @@ let project = Project.app(name: "TwitterClone",
                             homeUiTarget +
                             timelineUiTarget +
                             spacesTarget +
+                            chatTarget +
                             feedsTarget +
                             networkKitTarget,
                           additionalFiles: ["graph.png", "../README.md", "TwitterCloneStoreKitTesting.storekit"])

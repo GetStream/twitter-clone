@@ -11,12 +11,13 @@ import TwitterCloneUI
 import AuthUI
 import Auth
 import Feeds
+import Chat
 import DirectMessages
 
 public struct SettingsView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @EnvironmentObject var auth: TwitterCloneAuth
-    @EnvironmentObject var chatModel: DirectMessagesModel
+    @EnvironmentObject var chatModel: ChatModel
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject var mediaPickerViewModel = MediaPickerViewModel()

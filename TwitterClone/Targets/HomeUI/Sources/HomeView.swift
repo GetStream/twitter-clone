@@ -12,13 +12,14 @@ import Profile
 import TimelineUI
 import DirectMessages
 import Spaces
+import Chat
 
 public struct HomeView: View {
     @StateObject
     var feedsClient: FeedsClient
     
     @StateObject
-    var chatModel = DirectMessagesModel()
+    var chatModel = ChatModel()
     
     @EnvironmentObject
     var auth: TwitterCloneAuth

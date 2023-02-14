@@ -14,7 +14,7 @@ import Feeds
 import NetworkKit
 
 @MainActor
-public class DirectMessagesModel: ObservableObject {
+public class ChatModel: ObservableObject {
     // This is the `StreamChat` reference we need to add
     internal var streamChat: StreamChat
     

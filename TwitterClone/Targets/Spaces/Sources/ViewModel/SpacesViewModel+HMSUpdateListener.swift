@@ -43,25 +43,25 @@ extension SpacesViewModel: HMSUpdateListener {
     
     public func on(track: HMSTrack, update: HMSTrackUpdate, for peer: HMSPeer) {
         switch update {
-            case .trackAdded:
-                if let audioTrack = track as? HMSAudioTrack {
-                    if peer.isLocal {
-                        ownTrack = audioTrack
-                    } else {
-                        otherTracks.insert(audioTrack)
-                    }
+        case .trackAdded:
+            if let audioTrack = track as? HMSAudioTrack {
+                if peer.isLocal {
+                    ownTrack = audioTrack
+                } else {
+                    otherTracks.insert(audioTrack)
                 }
-            case .trackRemoved:
-                if let audioTrack = track as? HMSAudioTrack {
-                    if peer.isLocal {
-                        ownTrack = nil
-                    } else {
-                        otherTracks.remove(audioTrack)
-                    }
-                }
-            default:
-                break
             }
+        case .trackRemoved:
+            if let audioTrack = track as? HMSAudioTrack {
+                if peer.isLocal {
+                    ownTrack = nil
+                } else {
+                    otherTracks.remove(audioTrack)
+                }
+            }
+        default:
+            break
+        }
     }
     
     public func on(error: Error) {
@@ -83,6 +83,4 @@ extension SpacesViewModel: HMSUpdateListener {
     public func onReconnected() {
         // Do something here
     }
-    
-    
 }

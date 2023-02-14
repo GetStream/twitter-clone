@@ -6,7 +6,7 @@ import StreamChat
 import StreamChatSwiftUI
 import SwiftUI
 
-class DemoAppFactory: ViewFactory {
+public class DemoAppFactory: ViewFactory {
 
     @Injected(\.chatClient) public var chatClient
 
@@ -14,7 +14,7 @@ class DemoAppFactory: ViewFactory {
 
     public static let shared = DemoAppFactory()
 
-    func makeChannelListHeaderViewModifier(title: String) -> some ChannelListHeaderViewModifier {
+    public func makeChannelListHeaderViewModifier(title: String) -> some ChannelListHeaderViewModifier {
         CustomChannelModifier(title: title)
     }
 }
