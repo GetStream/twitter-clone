@@ -9,6 +9,9 @@
 import SwiftUI
 
 public struct SpacesStartListeningView: View {
+    
+    @ObservedObject public private(set) var viewModel: SpacesViewModel
+    
     let spacesProfileImage = ["zoey", "jeroen", "nash", "amos", "stefan", "martin", "profile10", "carla", "fra", "thierry", "profile2", "profile3", "cooper", "profile4", "george"]
     let spacesRole = ["🔉 Host", "🔇 Co-host", "🔇 Speaker", "Listener", "Listener", "Listener", "🔇 Speaker", "Listener", "🔇 Speaker", "🔇 Speaker", "Listener", "Listener", "Listener", "Listener", "Listener"]
     let spacesParticipant = ["@zoey", "Jeroen", "@nash", "@amos", "stefan", "Martin", "profile10", "Carla", "Fra", "Thierry", "profile2", "@Profile3", "@cooper", "profile4", "george"]
@@ -16,7 +19,9 @@ public struct SpacesStartListeningView: View {
     let gridColumns = [GridItem(.adaptive(minimum: 80))]
     var vSpacing: CGFloat = 24.0
     
-    public init() {}
+    public init(viewModel: SpacesViewModel) {
+        self.viewModel = viewModel
+    }
     
     public var body: some View {
         NavigationStack {
@@ -77,7 +82,11 @@ public struct SpacesStartListeningView: View {
                 .padding()
                 
                 Button {
-                    //
+                    if viewModel.isInSpace {
+                        viewModel.leaveSpace()
+                    } else {
+                        viewModel.joinSpace()
+                    }
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 24)
@@ -88,7 +97,7 @@ public struct SpacesStartListeningView: View {
                                     gradient: Gradient(
                                         colors: [.spacesBlue, .spacesViolet]), startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
-                        Text("Start listening")
+                        Text(viewModel.isInSpace ? "Stop listening" : "Start listening")
                             .foregroundColor(.white)
                     }
                 }
@@ -126,6 +135,6 @@ public struct SpacesStartListeningView: View {
 
 struct SpacesStartListeningView_Previews: PreviewProvider {
     static var previews: some View {
-        SpacesStartListeningView()
+        SpacesStartListeningView(viewModel: SpacesViewModel())
     }
 }

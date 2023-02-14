@@ -13,7 +13,6 @@ public struct SpacesTimelineView: View {
     public init() {}
     @State private var searchSpaces = "Search spaces"
     @State private var isShowingSpacesWelcome = false
-    @State private var isShowingSpacesStartListening = false
     
     public var body: some View {
         NavigationStack {
@@ -27,16 +26,7 @@ public struct SpacesTimelineView: View {
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                         
-                        Button {
-                            isShowingSpacesStartListening.toggle()
-                        } label: {
-                            SpacesLiveView()
-                        }
-                        .buttonStyle(.plain)
-                        .sheet(isPresented: $isShowingSpacesStartListening) {
-                            SpacesStartListeningView()
-                                .presentationDetents([.fraction(0.9)])
-                        }
+                        SpacesLiveView()
                     }
                     .padding(.horizontal)
                     
@@ -100,8 +90,8 @@ public struct SpacesTimelineView: View {
     }
 }
 
-//struct SpacesTimelineView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SpacesTimelineView()
-//    }
-//}
+struct SpacesTimelineView_Previews: PreviewProvider {
+    static var previews: some View {
+        SpacesTimelineView()
+    }
+}
