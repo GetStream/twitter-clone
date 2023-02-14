@@ -12,39 +12,51 @@ import SwiftUI
 import TwitterCloneUI
 import Profile
 
+class PostRowViewViewModel: ObservableObject {
+    var item: EnrichedPostActivity
+    
+    @Published
+    var liked: Bool
+    
+    init(item: EnrichedPostActivity) {
+        liked = false
+        self.item = item
+    }
+}
+
 struct PostRowView: View {
 
-    var item: EnrichedPostActivity
+    var model: PostRowViewViewModel
     
     @State private var isShowingActivityProfile = false
 
     var body: some View {
         HStack(alignment: .top) {
-            ProfileImage(imageUrl: item.actor.profilePicture, action: {
+            ProfileImage(imageUrl: model.item.actor.profilePicture, action: {
                 self.isShowingActivityProfile.toggle()
             })
-            .accessibilityLabel("Profile of \(item.actor.fullname)")
+            .accessibilityLabel("Profile of \(model.item.actor.fullname)")
             .accessibilityAddTraits(.isButton)
             .sheet(isPresented: $isShowingActivityProfile, content: {
                 ProfileFollower(contentView: {
-                    AnyView(ProfileInfoAndTweets(userId: item.actor.userId, profilePicture: item.actor.profilePicture))
+                    AnyView(ProfileInfoAndTweets(userId: model.item.actor.userId, profilePicture: model.item.actor.profilePicture))
                 })
             })
 
             VStack(alignment: .leading) {
                 HStack(alignment: .top) {
-                    Text(item.actor.fullname)
+                    Text(model.item.actor.fullname)
                         .fontWeight(.bold)
                         .lineLimit(1)
                         .layoutPriority(1)
 
-                    Text(item.actor.username)
+                    Text(model.item.actor.username)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .lineLimit(1)
                         .layoutPriority(1)
 
-                    Text("* " + item.postAge)
+                    Text("* " + model.item.postAge)
                         .font(.subheadline)
                         .lineLimit(1)
                         .foregroundColor(.secondary)
@@ -66,11 +78,11 @@ struct PostRowView: View {
                 }
 
                 HStack(alignment: .bottom) {
-                    Text(item.object)
+                    Text(model.item.object)
                         .layoutPriority(2)
                 }.font(.subheadline)
 
-                if let tweetPhoto = item.tweetPhoto {
+                if let tweetPhoto = model.item.tweetPhoto {
                     AsyncImage(url: URL(string: tweetPhoto)) { loading in
                         if let image = loading.image {
                             image
@@ -92,12 +104,18 @@ struct PostRowView: View {
 
                 HStack {
                     Image(systemName: "message")
-                    Text("\(item.numberOfComments ?? "x")")
+                    Text("\(model.item.numberOfComments ?? "x")")
                     Spacer()
                     Image(systemName: "arrow.2.squarepath")
                     Spacer()
-                    Image(systemName: "heart")
-                    Text("\(item.numberOfLikes ?? "0")")
+                    Button {
+                        model.liked.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "heart")
+                            Text("\(model.item.numberOfLikes ?? "0")")
+                        }
+                    }
                     Spacer()
                     Image(systemName: "square.and.arrow.up.on.square")
                 }

@@ -50,7 +50,14 @@ public struct ForYouFeedsView: View {
 
     public var body: some View {
         List(viewModel.activities) { item in
-            PostRowView(item: item)
+            let model = PostRowViewViewModel(item: item)
+            PostRowView(model: model).onReceive(model.$liked) { liked in
+                if liked {
+                    Task {
+                        try await feedClient.addLike(item.id)
+                    }
+                }
+            }
         } // LIST STYLES
         .listStyle(.plain)
         .task {

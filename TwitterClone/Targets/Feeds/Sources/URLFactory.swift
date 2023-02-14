@@ -12,6 +12,7 @@ import NetworkKit
 
 internal enum FeedsURL {
     case images
+    case reaction(activityId: String? = nil)
     case followers(userId: String)
     case follows(userId: String)
     case user(userId: String? = nil)
@@ -57,6 +58,7 @@ internal class URLFactory {
             // Note: we are GETting the enriched timeline feed which includes actor information.
             newURL.append(path: "enrich/feed/timeline")
             newURL.append(path: userId)
+            newURL.append(queryItems: [URLQueryItem(name: "withRecentReactions", value: "true")])
         case .follows(let userId):
             newURL.append(path: "feed/timeline")
            newURL.append(path: userId)
@@ -70,6 +72,11 @@ internal class URLFactory {
             newURL.append(path: userId)
             newURL.append(path: "follows")
             newURL.append(path: "user:" + target)
+        case .reaction(activityId: let activityId):
+            newURL.append(path: "reaction")
+            if let activityId {
+                newURL.append(path: activityId)
+            }
         }
         newURL.appendApiKey()
         return newURL

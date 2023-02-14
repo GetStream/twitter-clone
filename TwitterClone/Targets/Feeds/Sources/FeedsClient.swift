@@ -28,6 +28,42 @@ private struct FollowParamModel: Encodable {
     }
 }
 
+private struct ReplyReactionParamModel: Encodable {
+    let kind = ReactionType.reply
+    let activityId: String
+    let reply: String
+    
+    enum CodingKeys: String, CodingKey {
+        case kind
+        case activityId = "activity_id"
+        case data
+        case reply
+    }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(kind.rawValue, forKey: .kind)
+        try container.encode(activityId, forKey: .activityId)
+        var dataContainer = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
+        try dataContainer.encode(reply, forKey: .reply)
+    }
+}
+
+private struct LikeReactionParamModel: Encodable {
+    let kind = ReactionType.like
+    let activityId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case kind
+        case activityId = "activity_id"
+        case data
+    }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(kind.rawValue, forKey: .kind)
+        try container.encode(activityId, forKey: .activityId)
+    }
+}
+
 private struct UnfollowParamModel: Encodable {
     let keep_history: Bool
 }
@@ -49,6 +85,11 @@ public struct PagingModel: Encodable {
 public struct FileResultModel: Decodable {
     let duration: String
     let file: String
+}
+
+public enum ReactionType: String {
+    case like
+    case reply
 }
 
 public enum FeedError: Error {
@@ -312,6 +353,50 @@ public class FeedsClient: ObservableObject {
         var request = URLRequest(url: urlFactory.url(forPath: .userFeed(userId: userId)))
         request.httpMethod = "POST"
         request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(activity)
+
+        // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (_, response) = try await session.data(for: request)
+
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+    }
+    
+    public func addReaction(_ activityId: String, reactionType: ReactionType, reply: String) async throws {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let reaction = ReplyReactionParamModel(activityId: activityId, reply: reply)
+
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: urlFactory.url(forPath: .reaction(activityId: nil)))
+        request.httpMethod = "POST"
+        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(reaction)
+
+        // Headers
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("jwt", forHTTPHeaderField: "Stream-Auth-Type")
+        request.addValue(feedToken, forHTTPHeaderField: "Authorization")
+
+        let (_, response) = try await session.data(for: request)
+
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+    }
+    
+    public func addLike(_ activityId: String) async throws {
+        let session = TwitterCloneNetworkKit.restSession
+        
+        let reaction = LikeReactionParamModel(activityId: activityId)
+
+        let feedToken = authUser.feedToken
+        var request = URLRequest(url: urlFactory.url(forPath: .reaction(activityId: nil)))
+        request.httpMethod = "POST"
+        request.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(reaction)
 
         // Headers
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
