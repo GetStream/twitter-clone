@@ -28,6 +28,8 @@ let messagesTarget =
                                  platform: .iOS,
                                  dependencies:
                                     [
+                                        .external(name: "StreamChatSwiftUI"),
+                                        .external(name: "StreamChat"),
                                         .target(name: authName),
                                         .target(name: feedsName),
                                         .target(name: chatName),
@@ -39,6 +41,7 @@ let chatTarget =
                                  dependencies:
                                     [
                                         .external(name: "StreamChatSwiftUI"),
+                                        .external(name: "StreamChat"),
                                         .target(name: authName),
                                         .target(name: feedsName),
                                         .target(name: uiName)
@@ -96,6 +99,8 @@ let spacesTarget =
     Project.makeFrameworkTargets(name: spacesName,
                                  platform: .iOS,
                                  dependencies: [
+                                    .external(name: "StreamChatSwiftUI"),
+                                    .external(name: "StreamChat"),
                                     .target(name: uiName),
                                     .target(name: authName),
                                     .target(name: chatName),

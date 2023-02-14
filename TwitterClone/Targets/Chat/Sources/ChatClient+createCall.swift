@@ -9,7 +9,7 @@
 import StreamChat
 
 public extension ChatClient {
-    public func createCall(with id: String, in channelId: ChannelId) async throws -> CallWithToken {
+    func createCall(with id: String, in channelId: ChannelId) async throws -> CallWithToken {
         try await withCheckedThrowingContinuation({ continuation in
             channelController(for: channelId).createCall(id: id, type: "video") { result in
                 continuation.resume(with: result)

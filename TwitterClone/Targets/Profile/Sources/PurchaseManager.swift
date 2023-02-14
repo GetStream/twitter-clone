@@ -12,7 +12,7 @@ import Auth
 
 public class PurchaseManager: ObservableObject {
     public init() {
-        Purchases.logLevel = .debug
+//        Purchases.logLevel = .debug
     }
     
     public func configure(userId: String?) {
