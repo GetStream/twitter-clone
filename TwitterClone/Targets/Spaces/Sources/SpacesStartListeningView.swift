@@ -18,6 +18,8 @@ public struct SpacesStartListeningView: View {
     
     let gridColumns = [GridItem(.adaptive(minimum: 80))]
     var vSpacing: CGFloat = 24.0
+    @State private var isCanceled = false
+    @State private var isShowingRecordingAwarenessInfo = false
     
     public init(viewModel: SpacesViewModel) {
         self.viewModel = viewModel
@@ -103,16 +105,21 @@ public struct SpacesStartListeningView: View {
                             .foregroundColor(.white)
                     }
                 }
+                .sheet(isPresented: $isShowingRecordingAwarenessInfo) {
+                    SpacesRecordingAwareness()
+                        .presentationDetents([.fraction(0.7)])
+                }
                 
             }
             .padding()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        
+                        isCanceled.toggle()
                     } label: {
                         Image(systemName: "xmark")
                     }
+                    .fullScreenCover(isPresented: $isCanceled, content: SpacesTimelineView.init)
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {

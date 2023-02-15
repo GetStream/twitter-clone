@@ -1,16 +1,13 @@
 //
 //  SpacesLiveView.swift
 //  Spaces
-//
-//  Created by amos.gyamfi@getstream.io on 8.2.2023.
-//  Copyright © 2023 Stream.io Inc. All rights reserved.
-//
 
 import SwiftUI
 import TwitterCloneUI
 
 public struct SpacesLiveView: View {
     public init() {}
+    @Environment(\.colorScheme) var colorScheme
     
     @StateObject var viewModel = SpacesViewModel()
     
@@ -90,7 +87,8 @@ public struct SpacesLiveView: View {
             SpacesStartListeningView(viewModel: viewModel)
                 .presentationDetents([.fraction(0.9)])
         }
-
+        .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))
+        .cornerRadius(12)
     }
 }
 

@@ -11,13 +11,16 @@ import SwiftUI
 public struct SpacesCircularButton: View {
     public init() {}
     
+    @Environment(\.colorScheme) var colorScheme
+    
     public var body: some View {
         Button {
             
         } label: {
             ZStack {
-                Circle()
+                LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom)
                     .frame(width: 46, height: 46)
+                    .clipShape(Circle())
                 Image(systemName: "mic.badge.plus")
                     .symbolRenderingMode(.multicolor)
                     .font(.title3)
