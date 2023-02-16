@@ -13,20 +13,25 @@ public struct SpacesCircularButton: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    @State private var showingSheet = false
+    
     public var body: some View {
         Button {
-            
+            showingSheet = true
         } label: {
-            ZStack { // optimized for both dark and light modes
-                LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom)
-                    .frame(width: 46, height: 46)
-                    .clipShape(Circle())
-                Image(systemName: "mic.badge.plus")
-                    .symbolRenderingMode(.multicolor)
-                    .font(.title3)
-                    .bold()
-                    .foregroundColor(.white)
-            }
+            Image(systemName: "mic.badge.plus")
+                .symbolRenderingMode(.multicolor)
+                .font(.title3)
+                .bold()
+                .foregroundColor(.white)
+                .frame(width: 46, height: 46)
+                .background(
+                    LinearGradient.blueish(for: colorScheme),
+                    in: Circle()
+                )
+        }
+        .sheet(isPresented: $showingSheet) {
+            CreateSpaceView()
         }
     }
 }
