@@ -20,10 +20,10 @@ public struct SpacesTimelineView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         Text("Happening Now")
-                            .font(.title2)
+                            .font(.title3)
                             .bold()
                         Text("Spaces going on right now")
-                            .font(.subheadline)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                         
                         SpacesLiveView()
@@ -32,10 +32,10 @@ public struct SpacesTimelineView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Get these in your calendar")
-                            .font(.title2)
+                            .font(.title3)
                             .bold()
                         Text("People you follow will be tuning in")
-                            .font(.subheadline)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                         
                         Button {
@@ -54,7 +54,7 @@ public struct SpacesTimelineView: View {
                     
                     VStack(alignment: .leading) {
                         Text("Trending")
-                            .font(.subheadline)
+                            .font(.title3)
                             .bold()
                         SpacesLiveView()
                     }

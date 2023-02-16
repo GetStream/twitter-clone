@@ -11,6 +11,7 @@ import TwitterCloneUI
 
 public struct SpacesListeningNowView: View {
     public init() {}
+    @Environment(\.colorScheme) var colorScheme
     
     let spacesProfileImage = ["zoey", "jeroen", "nash", "amos", "stefan", "martin", "profile10", "carla", "fra", "thierry", "profile2", "profile3", "cooper", "profile4", "george"]
     let spacesRole = ["🔉 Host", "🔇 Co-host", "🔇 Speaker", "Listener", "Listener", "Listener", "🔇 Speaker", "Listener", "🔇 Speaker", "🔇 Speaker", "Listener", "Listener", "Listener", "Listener", "Listener"]
@@ -179,7 +180,7 @@ public struct SpacesListeningNowView: View {
                     .font(.caption)
                     .foregroundColor(.white)
                     .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
-                    .background(.spacesViolet)
+                    .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))
                     .cornerRadius(16)
                 }
             }.padding()

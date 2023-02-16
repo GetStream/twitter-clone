@@ -17,7 +17,7 @@ public struct SpacesCircularButton: View {
         Button {
             
         } label: {
-            ZStack {
+            ZStack { // optimized for both dark and light modes
                 LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom)
                     .frame(width: 46, height: 46)
                     .clipShape(Circle())

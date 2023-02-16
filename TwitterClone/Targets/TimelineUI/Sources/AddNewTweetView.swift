@@ -35,12 +35,10 @@ public struct AddNewTweetView: View {
                     ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
                     TextField("What's happening?", text: $isShowingComposeArea, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
-                        .lineLimit(10)
+                        .lineLimit(3, reservesSpace: true)
                         .font(.caption)
-                        .padding()
                         .keyboardType(.twitter)
                 }
-                .padding()
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button("Cancel") {
@@ -160,6 +158,7 @@ public struct AddNewTweetView: View {
 
                 Spacer()
             }
+            .padding()
         }
     }
 }

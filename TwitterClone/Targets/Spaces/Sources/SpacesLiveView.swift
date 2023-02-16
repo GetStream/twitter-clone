@@ -20,8 +20,11 @@ public struct SpacesLiveView: View {
             VStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     SoundIndicatorView()
-                        .scaleEffect(0.5)
+                        .scaleEffect(0.3)
                     Text("LIVE")
+                        .font(.subheadline)
+                        .bold()
+                        .foregroundColor(.white)
                     
                     Spacer()
                     
@@ -29,7 +32,7 @@ public struct SpacesLiveView: View {
                         
                     } label: {
                         Image(systemName: "ellipsis")
-                            .font(.title2)
+                            .font(.title3)
                             .bold()
                             .foregroundColor(.white)
                     }
@@ -37,9 +40,10 @@ public struct SpacesLiveView: View {
                 .padding()
                 
                 Text("The iOS Talk Show 👩‍💻")
-                    .font(.title2)
+                    .font(.title3)
                     .bold()
                     .padding(.horizontal)
+                    .foregroundColor(.white)
                 
                 HStack {
                     HStack(spacing: -20) {
@@ -63,23 +67,29 @@ public struct SpacesLiveView: View {
                             .zIndex(1)
                     }
                     Text("89 listening")
+                        .font(.caption)
+                        .foregroundColor(.white)
                 }.padding(.horizontal)
                 
                 HStack {
                     Image("profile5")
                         .padding()
                     Text("Jeroen Lenarts")
+                        .font(.footnote)
                     Image(systemName: "checkmark.seal.fill")
                     Text("Host")
+                        .font(.footnote)
                         .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
                         .background(.streamBlue)
                         .cornerRadius(4)
                     
                     Spacer()
                 }
-                .background(.streamBlue.opacity(0.5))
+                .foregroundColor(.white)
+                .background(colorScheme == .light ? .lowerBarLight : .lowerBarDark)
             }
-            .background(.streamBlue.opacity(0.5))
+            .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))
             .cornerRadius(12)
         }
         .buttonStyle(.plain)
@@ -87,7 +97,6 @@ public struct SpacesLiveView: View {
             SpacesStartListeningView(viewModel: viewModel)
                 .presentationDetents([.fraction(0.9)])
         }
-        .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))
         .cornerRadius(12)
     }
 }

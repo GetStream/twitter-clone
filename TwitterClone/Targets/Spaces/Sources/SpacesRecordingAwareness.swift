@@ -23,6 +23,7 @@ public struct SpacesRecordingAwareness: View {
                 .bold()
                 .multilineTextAlignment(.center)
             Text("Let the Space live on")
+                .font(.footnote)
                 .foregroundColor(.secondary)
                 .padding(.bottom)
             

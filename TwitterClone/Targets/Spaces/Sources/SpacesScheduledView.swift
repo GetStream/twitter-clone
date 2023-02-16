@@ -11,6 +11,7 @@ import TwitterCloneUI
 
 public struct SpacesScheduledView: View {
     public init() {}
+    @Environment(\.colorScheme) var colorScheme
     
     func getTomorrowDate() -> String {
         let today = Date()
@@ -27,7 +28,9 @@ public struct SpacesScheduledView: View {
             HStack {
                 Image(systemName: "calendar")
                 Text(getTomorrowDate())
+                    .font(.subheadline)
                 Text(" * 3k going")
+                    .font(.subheadline)
                 
                 Spacer()
                 
@@ -35,16 +38,18 @@ public struct SpacesScheduledView: View {
                     
                 } label: {
                     Image(systemName: "ellipsis")
-                        .font(.title2)
+                        .font(.title3)
                         .bold()
                         .foregroundColor(.white)
                 }
             }
+            .foregroundColor(.white)
             .padding()
             
             Text("Become an iOS Developer 👨🏾‍💻")
-                .font(.title2)
+                .font(.title3)
                 .bold()
+                .foregroundColor(.white)
                 .padding(.horizontal)
             
             ZStack { // For the sake of bottom padding
@@ -53,9 +58,9 @@ public struct SpacesScheduledView: View {
                 } label: {
                     Text("Set reminder")
                         .bold()
-                        .padding(EdgeInsets(top: 16, leading: 100, bottom: 16, trailing: 100))
+                        .padding(EdgeInsets(top: 8, leading: 50, bottom: 8, trailing: 50))
                         .background(.white)
-                        .cornerRadius(24)
+                        .cornerRadius(20)
                 }
             }.padding(.bottom)
             
@@ -63,17 +68,21 @@ public struct SpacesScheduledView: View {
                 Image("profile10")
                     .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 4))
                 Text("Akua Serwaa")
+                    .font(.footnote)
                 Image(systemName: "checkmark.seal.fill")
                 Text("Host")
+                    .font(.footnote)
                     .padding(.horizontal, 8)
+                    .padding(.vertical, 2)
                     .background(.streamBlue)
                     .cornerRadius(4)
                 
                 Spacer()
             }
-            .background(.streamBlue.opacity(0.5))
+            .foregroundColor(.white)
+            .background(colorScheme == .light ? .lowerBarLight : .lowerBarDark)
         }
-        .background(.streamBlue.opacity(0.5))
+        .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))
         .cornerRadius(12)
     }
 }
