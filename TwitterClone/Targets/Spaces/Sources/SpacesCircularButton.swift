@@ -9,9 +9,13 @@
 import SwiftUI
 
 public struct SpacesCircularButton: View {
-    public init() {}
+    public init(spacesViewModel: SpacesViewModel) {
+        self.spacesViewModel = spacesViewModel
+    }
     
     @Environment(\.colorScheme) var colorScheme
+    
+    @ObservedObject var spacesViewModel: SpacesViewModel
     
     @State private var showingSheet = false
     
@@ -31,13 +35,13 @@ public struct SpacesCircularButton: View {
                 )
         }
         .sheet(isPresented: $showingSheet) {
-            CreateSpaceView()
+            CreateSpaceView(spacesViewModel: spacesViewModel)
         }
     }
 }
 
 struct SpacesCircularButton_Previews: PreviewProvider {
     static var previews: some View {
-        SpacesCircularButton()
+        SpacesCircularButton(spacesViewModel: .preview)
     }
 }

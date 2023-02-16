@@ -13,6 +13,8 @@ struct CreateSpaceView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) var dismiss
     
+    @ObservedObject var spacesViewModel: SpacesViewModel
+    
     @State private var title = ""
     @State private var description = ""
     @State private var date = Date()
@@ -40,7 +42,13 @@ struct CreateSpaceView: View {
                 }
                 
                 Button {
-                    // TODO
+                    spacesViewModel.createSpace(
+                        title: title,
+                        description: description,
+                        happeningNow: happeningNow,
+                        date: date
+                    )
+                    dismiss()
                 } label: {
                     Text(happeningNow ? "Start" : "Schedule")
                 }
@@ -71,6 +79,6 @@ struct CreateSpaceView: View {
 
 struct CreateSpaceView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateSpaceView()
+        CreateSpaceView(spacesViewModel: .preview)
     }
 }

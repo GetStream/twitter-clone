@@ -6,12 +6,15 @@ import SwiftUI
 import TwitterCloneUI
 
 public struct SpacesLiveView: View {
-    public init() {}
     @Environment(\.colorScheme) var colorScheme
     
-    @StateObject var viewModel = SpacesViewModel()
+    @ObservedObject var viewModel: SpacesViewModel
     
     @State private var isShowingSpacesStartListening = false
+    
+    public init(spacesViewModel: SpacesViewModel) {
+        self.viewModel = spacesViewModel
+    }
     
     public var body: some View {
         Button {
@@ -103,6 +106,6 @@ public struct SpacesLiveView: View {
 
 struct SpacesLiveView_Previews: PreviewProvider {
     static var previews: some View {
-        SpacesLiveView()
+        SpacesLiveView(spacesViewModel: .preview)
     }
 }

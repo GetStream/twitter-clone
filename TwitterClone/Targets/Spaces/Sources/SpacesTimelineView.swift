@@ -10,9 +10,13 @@ import SwiftUI
 import TwitterCloneUI
 
 public struct SpacesTimelineView: View {
-    public init() {}
+    
+    @StateObject var spacesViewModel = SpacesViewModel()
+    
     @State private var searchSpaces = "Search spaces"
     @State private var isShowingSpacesWelcome = false
+    
+    public init() {}
     
     public var body: some View {
         NavigationStack {
@@ -26,7 +30,7 @@ public struct SpacesTimelineView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                         
-                        SpacesLiveView()
+                        SpacesLiveView(spacesViewModel: spacesViewModel)
                     }
                     .padding(.horizontal)
                     
@@ -56,7 +60,7 @@ public struct SpacesTimelineView: View {
                         Text("Trending")
                             .font(.title3)
                             .bold()
-                        SpacesLiveView()
+                        SpacesLiveView(spacesViewModel: spacesViewModel)
                     }
                     .padding()
                     
@@ -77,7 +81,7 @@ public struct SpacesTimelineView: View {
                     }
                 }
 
-                SpacesCircularButton()
+                SpacesCircularButton(spacesViewModel: spacesViewModel)
                     .shadow(radius: 10)
                     .padding()
                 

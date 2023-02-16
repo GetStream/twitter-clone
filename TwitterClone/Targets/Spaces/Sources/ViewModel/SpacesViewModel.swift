@@ -65,4 +65,38 @@ public class SpacesViewModel: ObservableObject {
         isAudioMuted.toggle()
         hmsSDK.localPeer?.localAudioTrack()?.setMute(isAudioMuted)
     }
+    
+    // TODO: make this return a Result<> with different error types for the errors and display that to users
+    func createSpace(title: String, description: String, happeningNow: Bool, date: Date) {
+        // create new channel
+        guard let userId = chatClient.currentUserId else {
+            print("ERROR: chat client doesn't have a userId")
+            return
+        }
+        
+        guard let channelController = try? chatClient.channelController(
+            createChannelWithId: ChannelId(type: .messaging, id: UUID().uuidString),
+            name: title,
+            members: [userId],
+            isCurrentUserMember: true,
+            messageOrdering: .bottomToTop,
+            // Potantially invite other users who could be part of it
+            invites: [],
+            extraData: [
+                "spaceChannel": .bool(true),
+                "description": .string(description),
+                "spaceState": .string(happeningNow ? SpaceState.running.rawValue : SpaceState.planned.rawValue)
+            ]
+        ) else {
+            print("Channel creation failed")
+            return
+        }
+        
+        // TODO: listen to errors and act accordingly
+        channelController.synchronize { error in
+            if let error {
+                print("Synchronize error: \(error.localizedDescription)")
+            }
+        }
+    }
 }
