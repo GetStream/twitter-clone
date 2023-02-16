@@ -13,6 +13,8 @@ public struct SpacesTimelineView: View {
     
     @StateObject var spacesViewModel = SpacesViewModel()
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @State private var searchSpaces = "Search spaces"
     @State private var isShowingSpacesWelcome = false
     
@@ -22,6 +24,23 @@ public struct SpacesTimelineView: View {
         NavigationStack {
             ZStack(alignment: .bottomTrailing) {
                 ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text("Real spaces")
+                            .font(.title3)
+                            .bold()
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(spacesViewModel.spaces) { space in
+                                    VStack {
+                                        SpaceCard(space: space)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    
                     VStack(alignment: .leading) {
                         Text("Happening Now")
                             .font(.title3)

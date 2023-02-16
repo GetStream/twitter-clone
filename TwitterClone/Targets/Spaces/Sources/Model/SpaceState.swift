@@ -10,4 +10,23 @@ import Foundation
 
 enum SpaceState: String {
     case planned = "Planned", running = "Running", finished = "Finished"
+    
+    var cardString: String {
+        switch self {
+        case .planned:
+            return "Planned"
+        case .running:
+            return "Live"
+        case .finished:
+            return "Ended"
+        }
+    }
+}
+
+extension SpaceState {
+    
+    static func from(_ string: String) -> SpaceState? {
+        return SpaceState(rawValue: string)
+    }
+    
 }

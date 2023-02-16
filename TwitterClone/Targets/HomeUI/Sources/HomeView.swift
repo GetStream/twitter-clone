@@ -117,10 +117,6 @@ public struct HomeView: View {
         .environmentObject(chatModel)
         .task {
             do {
-                // TODO: very temporary
-                if let token = try? Token(rawValue: feedsClient.authUser.chatToken) {
-                    chatModel.connectStefan(with: token)
-                }
                 let feedUser = try await feedsClient.user()
                 profileInfoViewModel.feedUser = feedUser
                 try chatModel.connectUser(authUser: feedsClient.authUser, feedUser: feedUser)

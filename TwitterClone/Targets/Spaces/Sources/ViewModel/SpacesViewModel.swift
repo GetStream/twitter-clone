@@ -24,6 +24,32 @@ public class SpacesViewModel: ObservableObject {
     
     var hmsSDK = HMSSDK.build()
     
+    @Published var spaces: [Space] = []
+    
+    init() {
+        let query = ChannelListQuery(
+            filter: .and([
+                .equal(.type, to: .messaging),
+                .containMembers(userIds: [chatClient.currentUserId ?? "stefan"])
+            ])
+        )
+        
+        let controller = chatClient.channelListController(query: query)
+        
+        controller.synchronize { error in
+            if let error = error {
+                // TODO: proper error handling
+                print("Error querying channels: \(error.localizedDescription)")
+            }
+            
+            self.spaces = Array(controller.channels)
+                .filter({ channel in
+                    channel.extraData.keys.contains("spaceChannel")
+                })
+                .map { Space.from($0) }
+        }
+    }
+    
     @MainActor
     func joinSpace() async {
         do {
@@ -85,7 +111,8 @@ public class SpacesViewModel: ObservableObject {
             extraData: [
                 "spaceChannel": .bool(true),
                 "description": .string(description),
-                "spaceState": .string(happeningNow ? SpaceState.running.rawValue : SpaceState.planned.rawValue)
+                "spaceState": .string(happeningNow ? SpaceState.running.rawValue : SpaceState.planned.rawValue),
+                "startTime": .string(date.ISO8601Format())
             ]
         ) else {
             print("Channel creation failed")

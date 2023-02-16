@@ -59,15 +59,4 @@ public class ChatModel: ObservableObject {
             }
         }
     }
-    
-    // TODO: this is a temporary function to get spaces running, please DELETE ME
-    public func connectStefan(with token: Token) {
-        chatClient.connectUser(
-            userInfo: UserInfo(id: "stefan", name: "stefan"),
-            token: token) { error in
-                if let error {
-                    log.error("Connecting Stefan failed: \(error)")
-                }
-            }
-    }
 }
