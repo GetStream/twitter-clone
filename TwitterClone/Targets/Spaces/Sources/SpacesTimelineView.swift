@@ -30,7 +30,7 @@ public struct SpacesTimelineView: View {
                             .bold()
                         
                         ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
+                            HStack(spacing: 20) {
                                 ForEach(spacesViewModel.spaces) { space in
                                     VStack {
                                         SpaceCard(space: space)

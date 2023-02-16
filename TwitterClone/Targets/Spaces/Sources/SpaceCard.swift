@@ -19,44 +19,63 @@ struct SpaceCard: View {
         Button {
 //            isShowingSpacesStartListening.toggle()
         } label: {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 0) {
-                    SoundIndicatorView()
-                        .scaleEffect(0.3)
+                    if space.state == .running {
+                        SoundIndicatorView()
+                            .scaleEffect(0.3)
+                    }
                     Text(space.state.cardString)
                         .font(.subheadline)
                         .bold()
-                        .foregroundColor(.white)
+                        .foregroundColor(.white.opacity(0.7))
                     
                     Spacer()
+                }
+                .padding(.top)
+                .padding(.horizontal)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(space.name)
+                        .font(.title3)
+                        .bold()
+                        .padding(.horizontal)
+                        .foregroundColor(.white)
                     
-                    Button {
+                    Text(space.description)
+                        .font(.caption)
+                        .lineLimit(3)
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.horizontal)
+                }
+                
+                if space.state == .running {
+                    HStack {
+                        HStack(spacing: -20) {
+                            ForEach(space.listeners.prefix(3), id: \.self) { listener in
+                                // TODO: show image of users
+                            }
+                        }
+                        Text("\(space.listeners.count) listening")
+                            .font(.caption)
+                            .foregroundColor(.white)
+                    }.padding()
+                } else if space.state == .planned {
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
+                        Text("Planned: ")
+                            .font(.subheadline)
+                            .foregroundColor(.white.opacity(0.7))
                         
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .font(.title3)
-                            .bold()
+                        Text(space.startDate.formatted())
+                            .font(.headline)
                             .foregroundColor(.white)
                     }
+                    .padding()
+                } else if space.state == .finished {
+                    Text("This space has finished")
+                        .font(.headline)
+                        .padding()
                 }
-                .padding()
-                
-                Text(space.name)
-                    .font(.title3)
-                    .bold()
-                    .padding(.horizontal)
-                    .foregroundColor(.white)
-                
-                HStack {
-                    HStack(spacing: -20) {
-                        ForEach(space.listeners.prefix(3), id: \.self) { listener in
-                            // TODO: show image of users
-                        }
-                    }
-                    Text("\(space.listeners.count) listening")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                }.padding(.horizontal)
                 
                 HStack {
                     Image("profile5")
@@ -64,14 +83,13 @@ struct SpaceCard: View {
                     Text(space.host)
                         .font(.footnote)
                     Image(systemName: "checkmark.seal.fill")
-                    Text("Host")
-                        .font(.footnote)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(.streamBlue)
-                        .cornerRadius(4)
                     
                     Spacer()
+                    
+                    Text("Host")
+                        .font(.footnote)
+                        .foregroundColor(.white.opacity(0.5))
+                        .padding(.trailing)
                 }
                 .foregroundColor(.white)
                 .background(colorScheme == .light ? .lowerBarLight : .lowerBarDark)
@@ -85,6 +103,7 @@ struct SpaceCard: View {
 //                .presentationDetents([.fraction(0.9)])
 //        }
         .cornerRadius(12)
+        .frame(width: 280)
     }
 }
 

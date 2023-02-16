@@ -28,10 +28,7 @@ public class SpacesViewModel: ObservableObject {
     
     init() {
         let query = ChannelListQuery(
-            filter: .and([
-                .equal(.type, to: .messaging),
-                .containMembers(userIds: [chatClient.currentUserId ?? "stefan"])
-            ])
+            filter: .equal(.type, to: .livestream)
         )
         
         let controller = chatClient.channelListController(query: query)
@@ -101,7 +98,7 @@ public class SpacesViewModel: ObservableObject {
         }
         
         guard let channelController = try? chatClient.channelController(
-            createChannelWithId: ChannelId(type: .messaging, id: UUID().uuidString),
+            createChannelWithId: ChannelId(type: .livestream, id: UUID().uuidString),
             name: title,
             members: [userId],
             isCurrentUserMember: true,

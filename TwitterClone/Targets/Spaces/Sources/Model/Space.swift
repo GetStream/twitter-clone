@@ -16,6 +16,7 @@ struct Space: Identifiable {
     let state: SpaceState
     let startDate: Date
     let host: String
+    let hostId: UserId
     var listeners: [String] = []
     var speakers: [String] = []
 }
@@ -30,9 +31,10 @@ extension Space {
         let state = SpaceState(rawValue: stateString) ?? .planned
         let dateString = chatChannel.extraData["startTime"]?.stringValue ?? Date().ISO8601Format()
         let date = ISO8601DateFormatter().date(from: dateString) ?? Date()
-        let host = chatChannel.extraData["hostName"]?.stringValue ?? "Unknown"
+        let host = chatChannel.createdBy?.name ?? "Unknown"
+        let hostId = chatChannel.createdBy?.id ?? UserId()
         
-        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host)
+        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId)
     }
     
 }
@@ -45,7 +47,8 @@ extension Space {
         description: "This is a preview description for a space.",
         state: .planned,
         startDate: Date(),
-        host: "Stefan"
+        host: "Stefan",
+        hostId: UserId()
     )
     
 }
