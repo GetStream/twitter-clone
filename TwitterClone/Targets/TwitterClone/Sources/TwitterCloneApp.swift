@@ -21,7 +21,7 @@ struct TwitterCloneApp: App {
     }
     
     // swiftlint:disable:next force_try
-    @StateObject var auth = try! TwitterCloneAuth(baseUrl: "http://localhost:8080")
+    @StateObject var auth = try! TwitterCloneAuth(baseUrl: "https://lobster-app-et3dy.ondigitalocean.app")
     @StateObject var purchaseManager = PurchaseManager()
     
     var body: some Scene {
