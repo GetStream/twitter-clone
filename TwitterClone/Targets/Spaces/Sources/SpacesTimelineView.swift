@@ -16,7 +16,7 @@ public struct SpacesTimelineView: View {
     
     public var body: some View {
         NavigationStack {
-            VStack {
+            ZStack(alignment: .bottomTrailing) {
                 ScrollView {
                     VStack(alignment: .leading) {
                         Text("Happening Now")
@@ -76,12 +76,10 @@ public struct SpacesTimelineView: View {
                             .bold()
                     }
                 }
-                
-                HStack {
-                    Spacer()
-                    SpacesCircularButton()
-                        .padding(.horizontal, 12)
-                }
+
+                SpacesCircularButton()
+                    .shadow(radius: 10)
+                    .padding()
                 
 //                SpacesTabBarView()
 //                    .frame(height: 48)
