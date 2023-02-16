@@ -163,7 +163,7 @@ public struct SpacesListeningNowView: View {
                     } label: {
                         Image("heartPlusIcon")
                     }
-                    .sheet(isPresented: $isShowingReactionsMenu)  {
+                    .sheet(isPresented: $isShowingReactionsMenu) {
                         SpacesReactionsMenu()
                             .presentationDetents([.fraction(0.25)])
                             .clearModalBackground()

@@ -14,7 +14,7 @@ public struct SpacesReactionsMenu: View {
     
     public var body: some View {
         Grid {
-            GridRow{
+            GridRow {
                 Image("darkHandsUp")
                     .resizable()
                     .scaledToFit()
@@ -38,7 +38,7 @@ public struct SpacesReactionsMenu: View {
                     .frame(width: 32, height: 32)
             }
             
-            GridRow{
+            GridRow {
                 Image("happyEmoji")
                     .resizable()
                     .scaledToFit()
