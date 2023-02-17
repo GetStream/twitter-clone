@@ -20,7 +20,7 @@ public class SpacesViewModel: ObservableObject {
     
     @Published var isAudioMuted = false
     
-    @Published private(set) var isInSpace = false
+    @Published var isInSpace = false
     
     var hmsSDK = HMSSDK.build()
     
@@ -74,14 +74,8 @@ public class SpacesViewModel: ObservableObject {
                 controller.addMembers(userIds: [currentUserId])
             }
             
+            await joinCall(with: id, in: channelId)
             
-//            let call = try await chatClient.createCall(with: UUID().uuidString, in: channelId)
-//            let token = call.token
-            
-            // TODO: how to join audio only
-//            let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
-            
-//            hmsSDK.join(config: config, delegate: self)
             isInSpace = true
             watchChannel(id: id)
         } catch {
@@ -101,19 +95,8 @@ public class SpacesViewModel: ObservableObject {
                 controller.removeMembers(userIds: [currentUserId])
             }
         }
-//        hmsSDK.leave { [weak self] success, error in
-//            guard success, error != nil else {
-//                self?.ownTrack = nil
-//                self?.otherTracks = []
-//                self?.isInSpace = false
-//                return
-//            }
-//
-//            if let error {
-//                print(error.localizedDescription)
-//                self?.isInSpace = false
-//            }
-//        }
+        
+        leaveCall(with: id)
         isInSpace = false
     }
     
@@ -122,18 +105,12 @@ public class SpacesViewModel: ObservableObject {
         do {
             let channelId = try ChannelId(cid: "livestream:\(id)")
             
-//            let call = try await chatClient.createCall(with: id, in: channelId)
-//            let token = call.token
             
-            updateChannel(with: channelId, to: .running)
+            await startCall(with: id, in: channelId)
             
-            // TODO: how to join audio only
-            // TODO: deactivate to focus on channel updates
-//            let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
-//            hmsSDK.join(config: config, delegate: self)
-            self.selectedSpace?.state = .running
-            isInSpace = true
             watchChannel(id: id)
+            updateChannel(with: channelId, to: .running)
+            isInSpace = true
         } catch {
             print(error.localizedDescription)
             isInSpace = false
@@ -149,14 +126,7 @@ public class SpacesViewModel: ObservableObject {
         channelWatcher?.stopWatching()
         // TODO: should we lock the room?
         // TODO: deactivate to focus on channel updates for now
-        self.selectedSpace?.state = .planned
-        self.isInSpace = false
-//        hmsSDK.endRoom(lock: false, reason: "Host ended the room") { [weak self] success, error in
-//            if let error {
-//                print("Error ending the space: \(error.localizedDescription)")
-//            }
-//            self?.isInSpace = false
-//        }
+        endCall()
     }
     
     func toggleAudioMute() {
