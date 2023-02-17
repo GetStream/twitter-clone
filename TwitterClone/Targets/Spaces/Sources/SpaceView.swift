@@ -88,7 +88,7 @@ struct SpaceView: View {
                         if viewModel.isHost {
                             viewModel.endSpace(with: space.id)
                         } else {
-                            viewModel.leaveSpace()
+                            viewModel.leaveSpace(id: space.id)
                         }
                     } else {
                         if viewModel.isHost {

@@ -13,20 +13,8 @@ extension SpacesViewModel {
     
     func watchChannel(id: String) {
         let channelId = ChannelId(type: .livestream, id: id)
-        
-        self.channelWatcher = chatClient.channelController(for: channelId)
-        
-        channelWatcher?.synchronize({ [weak self] error in
-            if let error = error {
-                print("Error trying to watch channel: \(error.localizedDescription)")
-            }
-            
-            if let channel = self?.channelWatcher?.channel {
-                let updatedSpace = Space.from(channel)
-                self?.selectedSpace?.speakers = updatedSpace.speakers
-                self?.selectedSpace?.listeners = updatedSpace.listeners
-            }
-        })
+        self.eventsController = chatClient.channelEventsController(for: channelId)
+        eventsController?.delegate = self
     }
     
     func updateChannel(with id: ChannelId, to state: SpaceState) {
@@ -43,6 +31,17 @@ extension SpacesViewModel {
         } else {
             print("No selected space.")
         }
+    }
+    
+}
+
+extension SpacesViewModel: EventsControllerDelegate {
+    
+    public func eventsController(_ controller: EventsController, didReceiveEvent event: Event) {
+        // TODO switch through event type to see which type of event it was (see ChannelEvent and MemberEvent files in Stream Chat to make listening more fine-grained
+        guard let event = event as? ChannelUpdatedEvent else { return }
+        
+        self.selectedSpace = Space.from(event.channel)
     }
     
 }

@@ -42,7 +42,7 @@ struct CreateSpaceView: View {
                 }
                 
                 Button {
-                    spacesViewModel.createSpace(
+                    spacesViewModel.createChannelForSpace(
                         title: title,
                         description: description,
                         happeningNow: happeningNow,

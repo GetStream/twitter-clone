@@ -17,8 +17,9 @@ struct Space: Identifiable {
     let startDate: Date
     let host: String
     let hostId: UserId
-    var listeners: [ChatChannelMember] = []
+    var speakerIdList: [String]
     var speakers: [ChatChannelMember] = []
+    var listeners: [ChatChannelMember] = []
 }
 
 extension Space {
@@ -33,25 +34,31 @@ extension Space {
         let date = ISO8601DateFormatter().date(from: dateString) ?? Date()
         let host = chatChannel.createdBy?.name ?? "Unknown"
         let hostId = chatChannel.createdBy?.id ?? UserId()
+        let speakerList = chatChannel.extraData["speakerIdList"]?.arrayValue as? [String] ?? [hostId]
         
-        // TODO: get listeners and speakers
+        let speakers = chatChannel.lastActiveMembers.filter { speakerList.contains(String($0.id)) }
+        let listeners = chatChannel.lastActiveMembers.filter { !speakers.contains($0) }
         
-        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId)
+        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId, speakerIdList: speakerList, speakers: speakers, listeners: listeners)
     }
     
 }
 
 extension Space {
     
-    static var preview: Space = Space(
-        id: "testid",
-        name: "Test Space",
-        description: "This is a preview description for a space.",
-        state: .planned,
-        startDate: Date(),
-        host: "Stefan",
-        hostId: UserId()
-    )
+    static var preview: Space {
+        let userId = UserId()
+        return Space(
+            id: "testid",
+            name: "Test Space",
+            description: "This is a preview description for a space.",
+            state: .planned,
+            startDate: Date(),
+            host: "Stefan",
+            hostId: userId,
+            speakerIdList: [String(userId)]
+        )
+    }
     
 }
 

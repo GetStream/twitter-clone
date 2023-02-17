@@ -28,6 +28,7 @@ public class SpacesViewModel: ObservableObject {
     @Published var selectedSpace: Space?
     
     var channelWatcher: ChatChannelController?
+    var eventsController: EventsController?
     
     init() {
         let query = ChannelListQuery(
@@ -65,14 +66,22 @@ public class SpacesViewModel: ObservableObject {
     func joinSpace(id: String) async {
         do {
             // TODO: add user to channel as guest
-            let channelId = try ChannelId(cid: id)
-            let call = try await chatClient.createCall(with: UUID().uuidString, in: channelId)
-            let token = call.token
+            let channelId = try ChannelId(cid: "livestream:\(id)")
+            
+            // add user to the channel members
+            let controller = chatClient.channelController(for: channelId)
+            if let currentUserId = chatClient.currentUserId {
+                controller.addMembers(userIds: [currentUserId])
+            }
+            
+            
+//            let call = try await chatClient.createCall(with: UUID().uuidString, in: channelId)
+//            let token = call.token
             
             // TODO: how to join audio only
-            let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
+//            let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
             
-            hmsSDK.join(config: config, delegate: self)
+//            hmsSDK.join(config: config, delegate: self)
             isInSpace = true
             watchChannel(id: id)
         } catch {
@@ -81,10 +90,38 @@ public class SpacesViewModel: ObservableObject {
         }
     }
     
+    func leaveSpace(id: String) {
+        // TODO: add completion handler
+        channelWatcher?.stopWatching()
+        
+        if let channelId = try? ChannelId(cid: "livestream:\(id)") {
+            let controller = chatClient.channelController(for: channelId)
+            
+            if let currentUserId = chatClient.currentUserId {
+                controller.removeMembers(userIds: [currentUserId])
+            }
+        }
+//        hmsSDK.leave { [weak self] success, error in
+//            guard success, error != nil else {
+//                self?.ownTrack = nil
+//                self?.otherTracks = []
+//                self?.isInSpace = false
+//                return
+//            }
+//
+//            if let error {
+//                print(error.localizedDescription)
+//                self?.isInSpace = false
+//            }
+//        }
+        isInSpace = false
+    }
+    
     @MainActor
     func startSpace(id: String) async {
         do {
             let channelId = try ChannelId(cid: "livestream:\(id)")
+            
 //            let call = try await chatClient.createCall(with: id, in: channelId)
 //            let token = call.token
             
@@ -122,31 +159,13 @@ public class SpacesViewModel: ObservableObject {
 //        }
     }
     
-    func leaveSpace() {
-        // TODO: add completion handler
-        channelWatcher?.stopWatching()
-        hmsSDK.leave { [weak self] success, error in
-            guard success, error != nil else {
-                self?.ownTrack = nil
-                self?.otherTracks = []
-                self?.isInSpace = false
-                return
-            }
-            
-            if let error {
-                print(error.localizedDescription)
-                self?.isInSpace = false
-            }
-        }
-    }
-    
     func toggleAudioMute() {
         isAudioMuted.toggle()
         hmsSDK.localPeer?.localAudioTrack()?.setMute(isAudioMuted)
     }
     
     // TODO: make this return a Result<> with different error types for the errors and display that to users
-    func createSpace(title: String, description: String, happeningNow: Bool, date: Date) {
+    func createChannelForSpace(title: String, description: String, happeningNow: Bool, date: Date) {
         // create new channel
         guard let userId = chatClient.currentUserId else {
             print("ERROR: chat client doesn't have a userId")
@@ -165,7 +184,8 @@ public class SpacesViewModel: ObservableObject {
                 "spaceChannel": .bool(true),
                 "description": .string(description),
                 "spaceState": .string(happeningNow ? SpaceState.running.rawValue : SpaceState.planned.rawValue),
-                "startTime": .string(date.ISO8601Format())
+                "startTime": .string(date.ISO8601Format()),
+                "speakerIdList": .array([.string(String(userId))])
             ]
         ) else {
             print("Channel creation failed")

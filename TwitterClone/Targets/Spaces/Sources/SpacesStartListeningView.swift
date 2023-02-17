@@ -84,7 +84,7 @@ public struct SpacesStartListeningView: View {
                 
                 Button {
                     if viewModel.isInSpace {
-                        viewModel.leaveSpace()
+                        viewModel.leaveSpace(id: "messaging:call-test-channel")
                     } else {
                         Task {
                             await viewModel.joinSpace(id: "messaging:call-test-channel")
