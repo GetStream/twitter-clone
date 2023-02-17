@@ -59,6 +59,9 @@ struct SpaceView: View {
         return false
     }
     
+    let columns = [GridItem(.adaptive(minimum: 80))]
+    let gridSpacing: CGFloat = 20
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -66,6 +69,36 @@ struct SpaceView: View {
                     .font(.headline)
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                
+                LazyVGrid(columns: columns, alignment: .leading, spacing: gridSpacing) {
+                    ForEach(space.speakers, id: \.id) { speaker in
+                        VStack {
+                            ImageFromUrl(url: speaker.imageURL, size: 50)
+                            
+                            Text(speaker.name ?? "Unknown")
+                                .font(.caption)
+                                .bold()
+                            
+                            Text(String(space.hostId) == String(speaker.id) ? "Host" : "Speaker")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    ForEach(space.listeners, id: \.id) { listener in
+                        VStack {
+                            ImageFromUrl(url: listener.imageURL, size: 50)
+                            
+                            Text(listener.name ?? "Unknown")
+                                .font(.caption)
+                                .bold()
+                            
+                            Text("Listener")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
                 
                 Spacer()
                 
@@ -124,6 +157,17 @@ struct SpaceView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
+                    }
+                }
+                if space.state == .running {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Text("LIVE")
+                            .italic()
+                            .bold()
+                            .foregroundColor(.white)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
+                            .background(LinearGradient.spaceish, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                     }
                 }
             }
