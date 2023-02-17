@@ -13,18 +13,18 @@ struct Space: Identifiable {
     let id: String
     let name: String
     let description: String
-    let state: SpaceState
+    var state: SpaceState
     let startDate: Date
     let host: String
     let hostId: UserId
-    var listeners: [String] = []
-    var speakers: [String] = []
+    var listeners: [ChatChannelMember] = []
+    var speakers: [ChatChannelMember] = []
 }
 
 extension Space {
     
     static func from(_ chatChannel: ChatChannel) -> Space {
-        let id = chatChannel.id
+        let id = chatChannel.cid.id
         let name = chatChannel.name ?? "Unknown"
         let description = chatChannel.extraData["description"]?.stringValue ?? "Unknown"
         let stateString = chatChannel.extraData["spaceState"]?.stringValue ?? ""
@@ -33,6 +33,8 @@ extension Space {
         let date = ISO8601DateFormatter().date(from: dateString) ?? Date()
         let host = chatChannel.createdBy?.name ?? "Unknown"
         let hostId = chatChannel.createdBy?.id ?? UserId()
+        
+        // TODO: get listeners and speakers
         
         return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId)
     }
@@ -50,5 +52,18 @@ extension Space {
         host: "Stefan",
         hostId: UserId()
     )
+    
+}
+
+extension Space {
+    
+    func createExtraData() -> [String: RawJSON] {
+        return [
+            "spaceChannel": .bool(true),
+            "description": .string(description),
+            "spaceState": .string(state.rawValue),
+            "startTime": .string(startDate.ISO8601Format())
+        ]
+    }
     
 }
