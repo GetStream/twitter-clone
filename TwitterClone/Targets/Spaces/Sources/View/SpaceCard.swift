@@ -18,7 +18,7 @@ struct SpaceCard: View {
     
     var body: some View {
         Button {
-            viewModel.selectedSpace = space
+            viewModel.spaceTapped(space: space)
         } label: {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 0) {

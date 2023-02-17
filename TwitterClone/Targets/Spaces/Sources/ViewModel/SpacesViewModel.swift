@@ -27,7 +27,6 @@ public class SpacesViewModel: ObservableObject {
     @Published var spaces: [Space] = []
     @Published var selectedSpace: Space?
     
-    var channelWatcher: ChatChannelController?
     var eventsController: EventsController?
     
     init() {
@@ -62,6 +61,11 @@ public class SpacesViewModel: ObservableObject {
         return userId == hostId
     }
     
+    func spaceTapped(space: Space) {
+        watchChannel(id: space.id)
+        selectedSpace = space
+    }
+    
     @MainActor
     func joinSpace(id: String) async {
         do {
@@ -74,10 +78,9 @@ public class SpacesViewModel: ObservableObject {
                 controller.addMembers(userIds: [currentUserId])
             }
             
-            await joinCall(with: id, in: channelId)
+//            await joinCall(with: id, in: channelId)
             
             isInSpace = true
-            watchChannel(id: id)
         } catch {
             print(error.localizedDescription)
             isInSpace = false
@@ -85,8 +88,7 @@ public class SpacesViewModel: ObservableObject {
     }
     
     func leaveSpace(id: String) {
-        // TODO: add completion handler
-        channelWatcher?.stopWatching()
+        // TODO: stop observing channel updates
         
         if let channelId = try? ChannelId(cid: "livestream:\(id)") {
             let controller = chatClient.channelController(for: channelId)
@@ -96,7 +98,7 @@ public class SpacesViewModel: ObservableObject {
             }
         }
         
-        leaveCall(with: id)
+//        leaveCall(with: id)
         isInSpace = false
     }
     
@@ -105,10 +107,8 @@ public class SpacesViewModel: ObservableObject {
         do {
             let channelId = try ChannelId(cid: "livestream:\(id)")
             
+//            await startCall(with: id, in: channelId)
             
-            await startCall(with: id, in: channelId)
-            
-            watchChannel(id: id)
             updateChannel(with: channelId, to: .running)
             isInSpace = true
         } catch {
@@ -122,11 +122,10 @@ public class SpacesViewModel: ObservableObject {
             // TODO temporary
             updateChannel(with: channelId, to: .planned)
         }
-        // TODO: add completion handler
-        channelWatcher?.stopWatching()
+        // TODO: stop observing channel updates
         // TODO: should we lock the room?
         // TODO: deactivate to focus on channel updates for now
-        endCall()
+//        endCall()
     }
     
     func toggleAudioMute() {
