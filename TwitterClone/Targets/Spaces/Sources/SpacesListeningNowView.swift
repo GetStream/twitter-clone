@@ -12,6 +12,9 @@ import TwitterCloneUI
 public struct SpacesListeningNowView: View {
     public init() {}
     @Environment(\.colorScheme) var colorScheme
+    @State private var requestSent = false
+    @State private var isShowingGuests = false
+    let bottomBarHeights = stride(from: 0.5, through: 1.0, by: 0.1).map { PresentationDetent.fraction($0) }
     
     let spacesProfileImage = ["zoey", "jeroen", "nash", "amos", "stefan", "martin", "profile10", "carla", "fra", "thierry", "profile2", "profile3", "cooper", "profile4", "george"]
     let spacesRole = ["🔉 Host", "🔇 Co-host", "🔇 Speaker", "Listener", "Listener", "Listener", "🔇 Speaker", "Listener", "🔇 Speaker", "🔇 Speaker", "Listener", "Listener", "Listener", "Listener", "Listener"]
@@ -23,10 +26,13 @@ public struct SpacesListeningNowView: View {
     let heartPlus = UIImage(named: "heart_plus")
     
     @State private var isShowingReactionsMenu = false
+    @State private var wantToSpeak = false
+    @State private var isShowingNewComment = false
     
     public var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
+
                 Text("LIVE").font(.caption).foregroundColor(.spacesViolet) + Text(" * 177 listening").font(.caption)
                 Text("While we wait for more content 🥰")
                     .font(.headline)
@@ -62,7 +68,7 @@ public struct SpacesListeningNowView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(role: .destructive) {
+                    Button {
                         // Dismiss sheet to browse
                     } label: {
                         Image(systemName: "chevron.down")
@@ -139,6 +145,7 @@ public struct SpacesListeningNowView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button {
                         // Request to speak
+                        wantToSpeak.toggle()
                     } label: {
                         VStack {
                             ZStack {
@@ -148,14 +155,24 @@ public struct SpacesListeningNowView: View {
                                 Text("🎙️")
                             }
                             Text("Request")
+                                .font(.caption)
                         }
+                    }
+                    .sheet(isPresented: $wantToSpeak) {
+                        SpacesRequestToSpeak()
+                            .presentationDetents([.fraction(0.4)])
                     }
                     
                     Button {
-                        //
+                        isShowingGuests.toggle()
                     } label: {
                         Image(systemName: "person.2")
                             .bold()
+                    }
+                    .sheet(isPresented: $isShowingGuests) {
+                        SpacesGuestsView()
+                            //.presentationDetents([.fraction(0.5)])
+                            .presentationDetents(Set(bottomBarHeights))
                     }
                     
                     Button {
@@ -172,7 +189,7 @@ public struct SpacesListeningNowView: View {
                     Spacer()
                     
                     Button {
-                        // Leave the joined Spaces
+                        isShowingNewComment.toggle()
                     } label: {
                         Image(systemName: "bubble.left")
                         Text("6")
@@ -182,6 +199,10 @@ public struct SpacesListeningNowView: View {
                     .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
                     .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))
                     .cornerRadius(16)
+                    .sheet(isPresented: $isShowingNewComment) {
+                        SpacesAddCommentView()
+                            .presentationDetents([.fraction(0.7)])
+                    }
                 }
             }.padding()
         }
