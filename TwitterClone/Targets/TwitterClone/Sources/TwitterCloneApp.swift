@@ -22,14 +22,17 @@ struct TwitterCloneApp: App {
     
     // swiftlint:disable:next force_try
     @StateObject var auth = try! TwitterCloneAuth(baseUrl: "https://lobster-app-et3dy.ondigitalocean.app")
-    @StateObject var purchaseManager = PurchaseManager()
+    @StateObject var purchaseManager = PurchaseViewModel()
     
     var body: some Scene {
         WindowGroup {
             if let authUser = auth.authUser {
-                HomeView(authUser: authUser).environmentObject(auth).onReceive(auth.$authUser) { authUser in
-                    purchaseManager.configure(userId: authUser?.userId)
-                }
+                HomeView(authUser: authUser)
+                    .environmentObject(auth)
+                    .environmentObject(purchaseManager)
+                    .onReceive(auth.$authUser) { authUser in
+                        purchaseManager.configure(userId: authUser?.userId)
+                    }
             } else {
                 StartView().environmentObject(auth)
             }

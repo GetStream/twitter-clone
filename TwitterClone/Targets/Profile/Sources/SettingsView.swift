@@ -13,11 +13,13 @@ import Auth
 import Feeds
 import Chat
 import DirectMessages
+import RevenueCat
 
 public struct SettingsView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @EnvironmentObject var auth: TwitterCloneAuth
     @EnvironmentObject var chatModel: ChatModel
+    @EnvironmentObject var purchaseViewModel: PurchaseViewModel
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject var mediaPickerViewModel = MediaPickerViewModel()
@@ -82,18 +84,17 @@ public struct SettingsView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $isEditingPassword, content: EditPassword.init)
-                
-                NavigationLink {
-                    SubscribeBlue()
-                } label: {
-                    Button {
-                    } label: {
-                        Text("Get Blue")
-                        Image(systemName: "checkmark.seal.fill")
+
+                if purchaseViewModel.isSubscriptionActive {
+                    Text("You are subscribed")
+                        .padding(.top)
+                } else {
+                    if let packages = purchaseViewModel.offerings?.current?.availablePackages {
+                        ForEach(packages) { package in
+                            SubscribeBlue(package: package)
+                        }
                     }
-                    .buttonStyle(.bordered)
                 }
-                .padding(.top)
             }
             .listStyle(.plain)
             .navigationTitle("")

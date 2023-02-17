@@ -7,9 +7,13 @@
 //
 
 import SwiftUI
+import RevenueCat
 
 public struct SubscribeBlue: View {
-    public init() {}
+    var package: Package
+    public init(package: Package) {
+        self.package = package
+    }
     
     public var body: some View {
         NavigationStack {
@@ -66,24 +70,26 @@ public struct SubscribeBlue: View {
                         
                     }
                 }
-                NavigationLink {
-                    //
-                } label: {
-                    Button {
-                    } label: {
-                        Text("Subscribe for $2.99/month")
-                        Image(systemName: "checkmark.seal.fill")
+                Button {
+                    Purchases.shared.purchase(package: package) { transaction, customerInfo, error, userCancelled in
+                        if customerInfo?.entitlements.all["your_entitlement_id"]?.isActive == true {
+                            print("Bought")
+                        }
                     }
-                    .buttonStyle(.bordered)
-                    .padding(.top, 32)
+
+                } label: {
+                    Text("Subscribe for $2.99/month")
+                    Image(systemName: "checkmark.seal.fill")
                 }
+                .buttonStyle(.bordered)
+                .padding(.top, 32)
             }
         }
     }
 }
 
-struct SubscribeBlue_Previews: PreviewProvider {
-    static var previews: some View {
-        SubscribeBlue()
-    }
-}
+//struct SubscribeBlue_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SubscribeBlue()
+//    }
+//}
