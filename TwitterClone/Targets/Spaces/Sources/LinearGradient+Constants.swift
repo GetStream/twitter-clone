@@ -14,4 +14,10 @@ extension LinearGradient {
         LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom)
     }
     
+    static var spaceish: LinearGradient = LinearGradient(
+        gradient: Gradient(colors: [.spacesBlue, .spacesViolet]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+    
 }
