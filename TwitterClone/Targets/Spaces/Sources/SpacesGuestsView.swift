@@ -47,7 +47,7 @@ public struct SpacesGuestsView: View {
                 
                 // MARK: Display the content under each picker
                 if selection == 0 {
-                    List{
+                    List {
                         VStack(alignment: .leading) {
                             HStack {
                                 Image("profile1")

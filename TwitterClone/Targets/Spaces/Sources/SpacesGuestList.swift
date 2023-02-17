@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SpacesGuestList: View {
     var body: some View {
-        List{
+        List {
             VStack(alignment: .leading) {
                 HStack {
                     Image("profile1")

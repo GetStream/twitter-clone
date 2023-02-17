@@ -27,7 +27,7 @@ public struct SpeakingRequestedNotification: View {
             .foregroundColor(.white)
             .padding(.horizontal)
         }
-        .offset(y: requestSent ? UIScreen.main.bounds.height/9 - 500: -UIScreen.main.bounds.height)
+        .offset(y: requestSent ? UIScreen.main.bounds.height / 9 - 500 : -UIScreen.main.bounds.height)
         .onAppear {
             withAnimation(.spring()) {
                 requestSent.toggle()
