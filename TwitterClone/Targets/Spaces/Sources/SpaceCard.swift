@@ -13,11 +13,12 @@ struct SpaceCard: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    @ObservedObject var viewModel: SpacesViewModel
     var space: Space
     
     var body: some View {
         Button {
-//            isShowingSpacesStartListening.toggle()
+            viewModel.selectedSpace = space
         } label: {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 0) {
@@ -74,6 +75,7 @@ struct SpaceCard: View {
                 } else if space.state == .finished {
                     Text("This space has finished")
                         .font(.headline)
+                        .foregroundColor(.white.opacity(0.7))
                         .padding()
                 }
                 
@@ -98,10 +100,10 @@ struct SpaceCard: View {
             .cornerRadius(12)
         }
         .buttonStyle(.plain)
-//        .sheet(isPresented: $isShowingSpacesStartListening) {
-//            SpacesStartListeningView(viewModel: viewModel)
-//                .presentationDetents([.fraction(0.9)])
-//        }
+        .sheet(item: $viewModel.selectedSpace, content: { _ in
+            SpaceView(viewModel: viewModel)
+                .presentationDetents([.fraction(0.9)])
+        })
         .cornerRadius(12)
         .frame(width: 280)
     }
@@ -109,6 +111,6 @@ struct SpaceCard: View {
 
 struct SpaceCard_Previews: PreviewProvider {
     static var previews: some View {
-        SpaceCard(space: .preview)
+        SpaceCard(viewModel: .preview, space: .preview)
     }
 }

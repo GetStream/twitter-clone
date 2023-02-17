@@ -20,11 +20,14 @@ public class SpacesViewModel: ObservableObject {
     
     @Published var isAudioMuted = false
     
-    @Published var isInSpace = false
+    @Published private(set) var isInSpace = false
     
     var hmsSDK = HMSSDK.build()
     
     @Published var spaces: [Space] = []
+    @Published var selectedSpace: Space?
+    
+    var channelWatcher: ChatChannelController?
     
     init() {
         let query = ChannelListQuery(
@@ -41,34 +44,87 @@ public class SpacesViewModel: ObservableObject {
             
             self.spaces = Array(controller.channels)
                 .filter({ channel in
+                    channel.type == .livestream
+                })
+                .filter({ channel in
                     channel.extraData.keys.contains("spaceChannel")
                 })
                 .map { Space.from($0) }
         }
     }
     
+    var isHost: Bool {
+        guard let userId = chatClient.currentUserId, let hostId = selectedSpace?.hostId else {
+            return false
+        }
+        
+        return userId == hostId
+    }
+    
     @MainActor
-    func joinSpace() async {
+    func joinSpace(id: String) async {
         do {
-            // TODO: Use real channel Ids
-            let channelCid = "messaging:call-test-channel"
-            let channelId = try ChannelId(cid: channelCid)
+            // TODO: add user to channel as guest
+            let channelId = try ChannelId(cid: id)
             let call = try await chatClient.createCall(with: UUID().uuidString, in: channelId)
-            // TODO: how to get the token? (we could use chatclient)
             let token = call.token
-            // TODO: how to get the name correctly
+            
             // TODO: how to join audio only
-            let config = HMSConfig(userName: "Stefan", authToken: token)
+            let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
             
             hmsSDK.join(config: config, delegate: self)
             isInSpace = true
+            watchChannel(id: id)
         } catch {
             print(error.localizedDescription)
             isInSpace = false
         }
     }
     
+    @MainActor
+    func startSpace(id: String) async {
+        do {
+            let channelId = try ChannelId(cid: "livestream:\(id)")
+//            let call = try await chatClient.createCall(with: id, in: channelId)
+//            let token = call.token
+            
+            updateChannel(with: channelId, to: .running)
+            
+            // TODO: how to join audio only
+            // TODO: deactivate to focus on channel updates
+//            let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
+//            hmsSDK.join(config: config, delegate: self)
+            self.selectedSpace?.state = .running
+            isInSpace = true
+            watchChannel(id: id)
+        } catch {
+            print(error.localizedDescription)
+            isInSpace = false
+        }
+    }
+    
+    func endSpace(with id: String) {
+        if let channelId = try? ChannelId(cid: "livestream:\(id)") {
+            // TODO temporary
+            updateChannel(with: channelId, to: .planned)
+        }
+        // TODO: add completion handler
+        channelWatcher?.stopWatching()
+        // TODO: should we lock the room?
+        // TODO: deactivate to focus on channel updates for now
+        self.selectedSpace?.state = .planned
+        self.isInSpace = false
+//        hmsSDK.endRoom(lock: false, reason: "Host ended the room") { [weak self] success, error in
+//            if let error {
+//                print("Error ending the space: \(error.localizedDescription)")
+//            }
+//            self?.isInSpace = false
+//        }
+    }
+    
     func leaveSpace() {
+        // TODO: add completion handler
+        channelWatcher?.stopWatching()
         hmsSDK.leave { [weak self] success, error in
             guard success, error != nil else {
                 self?.ownTrack = nil

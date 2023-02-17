@@ -33,7 +33,7 @@ public struct SpacesTimelineView: View {
                             HStack(spacing: 20) {
                                 ForEach(spacesViewModel.spaces) { space in
                                     VStack {
-                                        SpaceCard(space: space)
+                                        SpaceCard(viewModel: spacesViewModel, space: space)
                                     }
                                 }
                             }

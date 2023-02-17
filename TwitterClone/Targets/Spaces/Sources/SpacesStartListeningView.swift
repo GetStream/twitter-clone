@@ -87,7 +87,7 @@ public struct SpacesStartListeningView: View {
                         viewModel.leaveSpace()
                     } else {
                         Task {
-                            await viewModel.joinSpace()
+                            await viewModel.joinSpace(id: "messaging:call-test-channel")
                         }
                     }
                 } label: {
