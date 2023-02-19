@@ -11,15 +11,6 @@ import HMSSDK
 extension SpacesViewModel: HMSUpdateListener {
     public func on(join room: HMSRoom) {
         // Do something here
-        for peer in room.peers {
-            if let audioTrack = peer.audioTrack {
-                if peer.isLocal {
-                    ownTrack = audioTrack
-                } else {
-                    otherTracks.insert(audioTrack)
-                }
-            }
-        }
     }
     
     public func on(room: HMSRoom, update: HMSRoomUpdate) {
@@ -27,18 +18,7 @@ extension SpacesViewModel: HMSUpdateListener {
     }
     
     public func on(peer: HMSPeer, update: HMSPeerUpdate) {
-        switch update {
-        case .peerJoined:
-            if let audioTrack = peer.audioTrack {
-                otherTracks.insert(audioTrack)
-            }
-        case .peerLeft:
-            if let audioTrack = peer.audioTrack {
-                otherTracks.remove(audioTrack)
-            }
-        default:
-            break
-        }
+        // Do something here
     }
     
     public func on(track: HMSTrack, update: HMSTrackUpdate, for peer: HMSPeer) {

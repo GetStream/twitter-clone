@@ -54,6 +54,7 @@ extension Project {
             "NSAppleMusicUsageDescription": "Please allow access to media.",
             "NSCameraUsageDescription": "Please allow access to the Camera to add photo&apos;s to posts.",
             "NSPhotoLibraryUsageDescription": "Please allow access to the Photo library to add photo&apos;s to posts.",
+            "NSMicrophoneUsageDescription": "Please allow access to the Mic to talk in audio spaces",
             "UIApplicationSceneManifest": ["UISceneConfigurations":[:]]
             ]
         
