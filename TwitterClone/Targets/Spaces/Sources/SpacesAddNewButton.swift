@@ -23,16 +23,10 @@ public struct SpacesAddNewButton: View {
         Button {
             showingSheet = true
         } label: {
-            Image(systemName: "spacesNewIcon")
-                .symbolRenderingMode(.multicolor)
-                .font(.title3)
-                .bold()
-                .foregroundColor(.white)
+            Image("spacesNewIcon")
+                .resizable()
+                .scaledToFit()
                 .frame(width: 46, height: 46)
-                .background(
-                    LinearGradient.blueish(for: colorScheme),
-                    in: Circle()
-                )
                 /*ZStack { // optimized for both dark and light modes
                  LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom)
                  .frame(width: 46, height: 46)
