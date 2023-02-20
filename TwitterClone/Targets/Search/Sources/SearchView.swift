@@ -73,11 +73,11 @@ public struct SearchView: View {
     public var body: some View {
         NavigationView {
             List(viewModel.users) { user in
-                VStack(alignment: .leading) {
+                HStack {
                     Text(user.username)
                         .font(.headline)
-                    
                     Text(user.userId)
+                    Spacer()
                     if viewModel.isFollowing(user: user) {
                         Button("Unfollow") {
                             viewModel.unfollow(user: user)
@@ -88,10 +88,11 @@ public struct SearchView: View {
                         Button("Follow") {
                             viewModel.follow(user: user)
                         }
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(.bordered)
                     }
                 }
             }
+            .listStyle(.plain)
             .navigationTitle("Search Users")
             .searchable(text: $viewModel.searchText)
             .autocapitalization(.none)

@@ -13,7 +13,9 @@ public struct SpacesWelcomeView: View {
     
     public var body: some View {
         VStack {
-            Image(systemName: "waveform.and.mic")
+            Image("spacesLogo")
+                .padding()
+            /*Image(systemName: "waveform.and.mic")
                 .font(.largeTitle)
                 .bold()
                 .foregroundStyle(
@@ -22,6 +24,7 @@ public struct SpacesWelcomeView: View {
                             colors: [.spacesBlue, .spacesViolet]), startPoint: .top, endPoint: .bottom)
                 )
                 .padding()
+             */
             
             Text("Welcome to TwitterClone Spaces")
                 .font(.title2)

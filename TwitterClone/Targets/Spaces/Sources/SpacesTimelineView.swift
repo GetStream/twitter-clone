@@ -87,6 +87,7 @@ public struct SpacesTimelineView: View {
                         .padding()
                 }
                 .searchable(text: $searchSpaces)
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         ProfileImage(imageUrl: "https://picsum.photos/id/550/200/200", action: {})
@@ -103,6 +104,12 @@ public struct SpacesTimelineView: View {
                 SpacesCircularButton(spacesViewModel: spacesViewModel)
                     .shadow(radius: 10)
                     .padding()
+                
+                HStack {
+                    Spacer()
+                    SpacesAddNewButton()
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 16))
+                }
                 
 //                SpacesTabBarView()
 //                    .frame(height: 48)

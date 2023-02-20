@@ -33,14 +33,9 @@ public struct SpacesAddCommentView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack {
-                        Image(systemName: "waveform.and.mic")
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundStyle(
-                                LinearGradient(
-                                    gradient: Gradient(
-                                        colors: [.spacesBlue, .spacesViolet]), startPoint: .top, endPoint: .bottom)
-                            )
+                        Image("spacesLogo")
+                            .padding(.top, 48)
+                           
                         HStack {
                             Text("Spaces")
                                 .font(.subheadline)

@@ -30,13 +30,15 @@ public struct HomeView: View {
     
     @State
     private var isAddingTweet = false
-        
+    
     @State private var isShowingProfile = false
-
+    
     public init(authUser: AuthUser) {
         _feedsClient = StateObject(wrappedValue: FeedsClient.productionClient(authUser: authUser))
     }
-
+    
+    @State private var spacesTapped = false
+    
     public var body: some View {
         NavigationStack {
             VStack {
@@ -73,7 +75,20 @@ public struct HomeView: View {
                     
                     SpacesTimelineView()
                         .tabItem {
-                            Image(systemName: "waveform.and.mic")
+                            ZStack{
+                                if !spacesTapped {
+                                    Image("spacesTabBarIcon1")
+                                        .resizable()
+                                        .scaledToFit()
+                                } else {
+                                    Image("spacesTabBarIcon2")
+                                        .resizable()
+                                        .scaledToFit()
+                                }
+                            }
+                            .onTapGesture {
+                                spacesTapped.toggle()
+                            }
                         }
                     
                     Text("")
@@ -99,7 +114,7 @@ public struct HomeView: View {
                     .sheet(isPresented: $isShowingProfile, content: {
                         MyProfile(contentView: { AnyView(MyProfileInfoAndTweets(feedsClient: feedsClient))
                         })
-                            .environmentObject(feedsClient)
+                        .environmentObject(feedsClient)
                     })
                 }
                 
