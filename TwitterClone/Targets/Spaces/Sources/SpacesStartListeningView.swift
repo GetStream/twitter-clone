@@ -42,22 +42,27 @@ public struct SpacesStartListeningView: View {
                     Spacer()
                 }
                 
-                LazyVGrid(columns: gridColumns, spacing: vSpacing) {
-                    ForEach(0..<spacesProfileImage.count, id: \.self) { index in
-                        VStack {
-                            Image(spacesProfileImage[index])
-                                .resizable()
-                                .clipShape(Circle())
-                                .scaledToFit()
-                                .frame(width: 54, height: 54)
-                            
-                            Text(spacesParticipant[index])
-                                .font(.caption)
-                                .bold()
-                            
-                            Text(spacesRole[index])
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
+                
+                GeometryReader { _ in
+                    ScrollView {
+                        LazyVGrid(columns: gridColumns, spacing: vSpacing) {
+                            ForEach(0..<spacesProfileImage.count, id: \.self) { index in
+                                VStack {
+                                    Image(spacesProfileImage[index])
+                                        .resizable()
+                                        .clipShape(Circle())
+                                        .scaledToFit()
+                                        .frame(width: 54, height: 54)
+                                    
+                                    Text(spacesParticipant[index])
+                                        .font(.caption)
+                                        .bold()
+                                    
+                                    Text(spacesRole[index])
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
                         }
                     }
                 }

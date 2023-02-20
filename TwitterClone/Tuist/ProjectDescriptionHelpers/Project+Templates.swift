@@ -55,6 +55,7 @@ extension Project {
             "NSCameraUsageDescription": "Please allow access to the Camera to add photo&apos;s to posts.",
             "NSPhotoLibraryUsageDescription": "Please allow access to the Photo library to add photo&apos;s to posts.",
             "NSMicrophoneUsageDescription": "Please allow access to the Mic to talk in audio spaces",
+            "NSLocalNetworkUsageDescription": "Please allow access to local network to enable audio calling",
             "UIApplicationSceneManifest": ["UISceneConfigurations":[:]]
             ]
         
