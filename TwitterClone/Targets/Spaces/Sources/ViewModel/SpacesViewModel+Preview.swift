@@ -10,6 +10,6 @@ import Foundation
 
 extension SpacesViewModel {
     
-    static var preview: SpacesViewModel = SpacesViewModel()
+    static var preview = SpacesViewModel()
     
 }
