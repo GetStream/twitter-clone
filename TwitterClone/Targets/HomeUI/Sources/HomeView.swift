@@ -75,7 +75,7 @@ public struct HomeView: View {
                     
                     SpacesTimelineView()
                         .tabItem {
-                            ZStack{
+                            ZStack {
                                 if !spacesTapped {
                                     Image("spacesTabBarIcon1")
                                         .resizable()

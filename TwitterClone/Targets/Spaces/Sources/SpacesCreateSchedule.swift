@@ -44,7 +44,7 @@ public struct SpacesCreateSchedule: View {
                     }
                 }
                 
-                ToolbarItemGroup(placement: .navigationBarTrailing){
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button {
                         //
                     } label: {

@@ -101,13 +101,13 @@ public struct SpacesTimelineView: View {
                     }
                 }
 
-                SpacesCircularButton(spacesViewModel: spacesViewModel)
-                    .shadow(radius: 10)
-                    .padding()
+//                SpacesCircularButton(spacesViewModel: spacesViewModel)
+//                    .shadow(radius: 10)
+//                    .padding()
                 
                 HStack {
                     Spacer()
-                    SpacesAddNewButton()
+                    SpacesAddNewButton(spacesViewModel: spacesViewModel)
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 16))
                 }
                 

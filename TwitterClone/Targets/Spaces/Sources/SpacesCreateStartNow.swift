@@ -22,7 +22,7 @@ public struct SpacesCreateStartNow: View {
     public var body: some View {
         NavigationStack {
             Form {
-                Section{
+                Section {
                     TextField("What do you want to talk about?", text: $isShowingNameField, axis: .vertical)
                     
                 } header: {
@@ -54,7 +54,7 @@ public struct SpacesCreateStartNow: View {
                         .font(.subheadline)
                 }
                 
-                ToolbarItemGroup(placement: .keyboard){
+                ToolbarItemGroup(placement: .keyboard) {
                     Button {
                         //
                     } label: {
