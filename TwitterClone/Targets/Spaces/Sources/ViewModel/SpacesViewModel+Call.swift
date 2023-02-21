@@ -20,7 +20,7 @@ extension SpacesViewModel {
         }
         let token = call.token
         
-        // TODO: how to join audio only
+        // The fact that we join audio-only is handled in the 100ms dashboard
         let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
         hmsSDK.join(config: config, delegate: self)
         return call.call.hms?.roomId

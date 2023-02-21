@@ -69,7 +69,6 @@ public class SpacesViewModel: ObservableObject {
     @MainActor
     func joinSpace(id: String) async {
         do {
-            // TODO: add user to channel as guest
             let channelId = try ChannelId(cid: "livestream:\(id)")
             
             // add user to the channel members
@@ -78,9 +77,13 @@ public class SpacesViewModel: ObservableObject {
                 controller.addMembers(userIds: [currentUserId])
             }
             
-//            await joinCall(with: id, in: channelId)
-            
-            isInSpace = true
+            if let callId = selectedSpace?.callId {
+                await joinCall(with: callId, in: channelId)
+                
+                isInSpace = true
+            } else {
+                // handle error
+            }
         } catch {
             print(error.localizedDescription)
             isInSpace = false

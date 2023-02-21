@@ -42,7 +42,7 @@ extension Space {
         let speakers = chatChannel.lastActiveMembers.filter { speakerList.contains(String($0.id)) }
         let listeners = chatChannel.lastActiveMembers.filter { !speakers.contains($0) }
         
-        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId, speakerIdList: speakerList, speakers: speakers, listeners: listeners)
+        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId, speakerIdList: speakerList, speakers: speakers, listeners: listeners, callId: callId)
     }
     
 }

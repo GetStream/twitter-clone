@@ -12,6 +12,7 @@ struct SpaceView: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.scenePhase) var scenePhase
     
     @ObservedObject var viewModel: SpacesViewModel
     
@@ -168,6 +169,15 @@ struct SpaceView: View {
                             .padding(.vertical, 4)
                             .padding(.horizontal, 8)
                             .background(LinearGradient.spaceish, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
+                    }
+                }
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .inactive || newPhase == .background {
+                    if viewModel.isHost {
+                        viewModel.endSpace(with: space.id)
+                    } else {
+                        viewModel.leaveSpace(id: space.id)
                     }
                 }
             }
