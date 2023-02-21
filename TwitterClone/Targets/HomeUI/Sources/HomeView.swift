@@ -37,8 +37,6 @@ public struct HomeView: View {
         _feedsClient = StateObject(wrappedValue: FeedsClient.productionClient(authUser: authUser))
     }
     
-    @State private var spacesTapped = false
-    
     public var body: some View {
         NavigationStack {
             VStack {
@@ -75,20 +73,7 @@ public struct HomeView: View {
                     
                     SpacesTimelineView()
                         .tabItem {
-                            ZStack {
-                                if !spacesTapped {
-                                    Image("spacesTabBarIcon1")
-                                        .resizable()
-                                        .scaledToFit()
-                                } else {
-                                    Image("spacesTabBarIcon2")
-                                        .resizable()
-                                        .scaledToFit()
-                                }
-                            }
-                            .onTapGesture {
-                                spacesTapped.toggle()
-                            }
+                            Image("spacesTabBarIcon")
                         }
                     
                     Text("")
