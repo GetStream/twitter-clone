@@ -17,10 +17,15 @@ extension SpacesViewModel {
         eventsController?.delegate = self
     }
     
-    func updateChannel(with id: ChannelId, to state: SpaceState) {
+    func updateChannel(with id: ChannelId, to state: SpaceState, callId: String? = nil) {
         if let selectedSpace {
             var spaceExtraData = selectedSpace.createExtraData()
             spaceExtraData["spaceState"] = .string(state.rawValue)
+            
+            if let callId {
+                spaceExtraData["callId"] = .string(callId)
+            }
+            
             let channelController = chatClient.channelController(for: id)
             channelController.updateChannel(
                 name: selectedSpace.name,

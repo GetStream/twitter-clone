@@ -20,6 +20,7 @@ struct Space: Identifiable {
     var speakerIdList: [String]
     var speakers: [ChatChannelMember] = []
     var listeners: [ChatChannelMember] = []
+    var callId: String?
 }
 
 extension Space {
@@ -35,6 +36,8 @@ extension Space {
         let host = chatChannel.createdBy?.name ?? "Unknown"
         let hostId = chatChannel.createdBy?.id ?? UserId()
         let speakerList = chatChannel.extraData["speakerIdList"]?.arrayValue as? [String] ?? [hostId]
+        
+        let callId = chatChannel.extraData["callId"]?.stringValue
         
         let speakers = chatChannel.lastActiveMembers.filter { speakerList.contains(String($0.id)) }
         let listeners = chatChannel.lastActiveMembers.filter { !speakers.contains($0) }

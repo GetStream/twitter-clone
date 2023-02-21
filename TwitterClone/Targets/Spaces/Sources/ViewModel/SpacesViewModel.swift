@@ -107,9 +107,9 @@ public class SpacesViewModel: ObservableObject {
         do {
             let channelId = try ChannelId(cid: "livestream:\(id)")
             
-//            await startCall(with: id, in: channelId)
+            let callId = await startCall(with: id, in: channelId)
             
-            updateChannel(with: channelId, to: .running)
+            updateChannel(with: channelId, to: .running, callId: callId)
             isInSpace = true
         } catch {
             print(error.localizedDescription)

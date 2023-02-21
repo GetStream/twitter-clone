@@ -12,17 +12,18 @@ import HMSSDK
 
 extension SpacesViewModel {
     
-    func startCall(with id: String, in channelId: ChannelId) async {
+    func startCall(with id: String, in channelId: ChannelId) async -> String? {
         guard let call = try? await chatClient.createCall(with: id, in: channelId) else {
             // TODO: proper error handling
             print("Couldn't start call with id '\(id)' in channel '\(channelId.id)'.")
-            return
+            return nil
         }
         let token = call.token
         
         // TODO: how to join audio only
         let config = HMSConfig(userName: chatClient.currentUserController().currentUser?.name ?? "Unknown", authToken: token)
         hmsSDK.join(config: config, delegate: self)
+        return call.call.hms?.roomId
     }
     
     func joinCall(with id: String, in channelId: ChannelId) async {
