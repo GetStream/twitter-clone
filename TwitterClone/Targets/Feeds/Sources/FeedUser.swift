@@ -102,12 +102,28 @@ public struct FeedUser: Refable, Codable {
 
     }
 
+    static fileprivate func parseDate(_ container: KeyedDecodingContainer<FeedUser.CodingKeys>, key: FeedUser.CodingKeys) throws -> Date {
+        let dateStr = try container.decode(String.self, forKey: key)
+        let customDateFormatter = Formatter.customDateFormatter
+        if let date = customDateFormatter.date(from: dateStr) {
+            return date
+        } else if let date = Formatter.customISO8601DateFormatter.date(from: dateStr) {
+            return date
+        } else {
+            return try Date(timeIntervalSince1970: container.decode(Double.self, forKey: .updatedAt))
+        }
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.userId = try container.decode(String.self, forKey: .userId)
-        self.createdAt = try container.decode(Date.self, forKey: .createdAt)
-        self.updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        dateFormatter.timeZone = .gmt
 
+        self.createdAt = try FeedUser.parseDate(container, key: .createdAt)
+        self.updatedAt = try FeedUser.parseDate(container, key: .updatedAt)
+        
         let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
         self.firstname = try dataContainer.decodeIfPresent(String.self, forKey: .firstname) ?? ""
         self.lastname = try dataContainer.decodeIfPresent(String.self, forKey: .lastname) ?? ""

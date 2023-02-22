@@ -66,7 +66,7 @@ public struct HomeView: View {
                     }.tabItem {
                         Image(systemName: "house")
                     }
-                    SearchView(feedsClient: feedsClient, auth: auth)
+                    NewSearchView(feedsClient: feedsClient, auth: auth)
                         .tabItem {
                             Image(systemName: "magnifyingglass")
                         }

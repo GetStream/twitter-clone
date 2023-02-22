@@ -77,14 +77,14 @@ public final class TwitterCloneNetworkKit {
 }
 
 extension Formatter {
-   static var customDateFormatter: DateFormatter = {
+   public static var customDateFormatter: DateFormatter = {
        let dateFormatter = DateFormatter()
        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
        dateFormatter.timeZone = .gmt
        return dateFormatter
    }()
 
-    static var customISO8601DateFormatter: ISO8601DateFormatter = {
+    public static var customISO8601DateFormatter: ISO8601DateFormatter = {
       let formatter = ISO8601DateFormatter()
       formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
       return formatter
