@@ -10,7 +10,8 @@ import Auth
 import InstantSearchCore
 import InstantSearchSwiftUI
 
-class AlgoliaController {
+@MainActor
+class AlgoliaController: ObservableObject {
     let searcher: HitsSearcher
     let searchBoxInteractor: SearchBoxInteractor
     let searchBoxController: SearchBoxObservableController
@@ -82,7 +83,7 @@ class AlgoliaController {
 
 public struct NewSearchView: View {
     
-    let algoliaController: AlgoliaController
+    @StateObject var algoliaController: AlgoliaController
     
     @ObservedObject var searchBoxController: SearchBoxObservableController
     @ObservedObject var hitsController: HitsObservableController<FeedUser>
@@ -90,7 +91,8 @@ public struct NewSearchView: View {
     @State private var isEditing = false
     
     public init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
-        self.algoliaController = AlgoliaController(feedsClient: feedsClient, auth: auth)
+        let algoliaController = AlgoliaController(feedsClient: feedsClient, auth: auth)
+        _algoliaController = StateObject(wrappedValue: algoliaController)
         _searchBoxController = ObservedObject(wrappedValue: algoliaController.searchBoxController)
         _hitsController = ObservedObject(wrappedValue: algoliaController.hitsController)
     }
@@ -107,17 +109,19 @@ public struct NewSearchView: View {
                             .font(.headline)
                         Text(user.userId)
                         Spacer()
-                        if algoliaController.isFollowing(user: user) {
-                            Button("Unfollow") {
-                                algoliaController.unfollow(user: user)
+                        if user.userId != algoliaController.auth.authUser?.userId {
+                            if algoliaController.isFollowing(user: user) {
+                                Button("Unfollow") {
+                                    algoliaController.unfollow(user: user)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                
+                            } else {
+                                Button("Follow") {
+                                    algoliaController.follow(user: user)
+                                }
+                                .buttonStyle(.bordered)
                             }
-                            .buttonStyle(.borderedProminent)
-                            
-                        } else {
-                            Button("Follow") {
-                                algoliaController.follow(user: user)
-                            }
-                            .buttonStyle(.bordered)
                         }
                     }
                 }
