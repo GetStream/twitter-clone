@@ -30,7 +30,7 @@ public class PurchaseViewModel: ObservableObject {
         Purchases.configure(with: configuration)
         
         Purchases.shared.getCustomerInfo { customerInfo, error in
-            self.isSubscriptionActive = customerInfo?.entitlements.all["pro"]?.isActive == true
+            self.isSubscriptionActive = customerInfo?.entitlements.all["blue"]?.isActive == true
             if let error {
                 print(error)
             }

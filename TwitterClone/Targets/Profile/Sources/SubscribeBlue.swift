@@ -72,7 +72,7 @@ public struct SubscribeBlue: View {
                 }
                 Button {
                     Purchases.shared.purchase(package: package) { transaction, customerInfo, error, userCancelled in
-                        if customerInfo?.entitlements.all["your_entitlement_id"]?.isActive == true {
+                        if customerInfo?.entitlements.all["blue"]?.isActive == true {
                             print("Bought")
                         }
                     }
