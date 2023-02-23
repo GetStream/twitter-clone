@@ -42,7 +42,6 @@ public struct SpacesStartListeningView: View {
                     Spacer()
                 }
                 
-                
                 GeometryReader { _ in
                     ScrollView {
                         LazyVGrid(columns: gridColumns, spacing: vSpacing) {

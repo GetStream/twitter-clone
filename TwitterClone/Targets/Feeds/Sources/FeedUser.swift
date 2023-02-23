@@ -102,7 +102,7 @@ public struct FeedUser: Refable, Codable {
 
     }
 
-    static fileprivate func parseDate(_ container: KeyedDecodingContainer<FeedUser.CodingKeys>, key: FeedUser.CodingKeys) throws -> Date {
+    private static func parseDate(_ container: KeyedDecodingContainer<FeedUser.CodingKeys>, key: FeedUser.CodingKeys) throws -> Date {
         let dateStr = try container.decode(String.self, forKey: key)
         let customDateFormatter = Formatter.customDateFormatter
         if let date = customDateFormatter.date(from: dateStr) {

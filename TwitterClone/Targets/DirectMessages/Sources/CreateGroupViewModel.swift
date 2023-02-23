@@ -22,7 +22,6 @@ class CreateGroupViewModel: ObservableObject, ChatUserSearchControllerDelegate {
     @Published var chatUsers = [ChatUser]()
     @Published var selectedUsers = [ChatUser]()
     @Published var groupName = ""
-    @Published var showGroupConversation = false
     @Published var errorShown = false
 
     private lazy var searchController: ChatUserSearchController = chatClient.userSearchController()
@@ -77,8 +76,6 @@ class CreateGroupViewModel: ObservableObject, ChatUserSearchControllerDelegate {
             channelController.synchronize { [weak self] error in
                 if error != nil {
                     self?.errorShown = true
-                } else {
-                    self?.showGroupConversation = true
                 }
             }
 

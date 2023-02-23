@@ -101,7 +101,9 @@ public struct NewSearchView: View {
         VStack(spacing: 7) {
             SearchBar(text: $searchBoxController.query,
                       isEditing: $isEditing,
-                      onSubmit: algoliaController.submit)
+                      onSubmit: {
+                algoliaController.submit()
+            })
             HitsList(hitsController) { user, _ in
                 if let user {
                     HStack {
@@ -129,6 +131,9 @@ public struct NewSearchView: View {
             } noResults: {
                 Text("No Results")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .task {
+                algoliaController.submit()
             }
         }
         .navigationBarTitle("Algolia & SwiftUI")

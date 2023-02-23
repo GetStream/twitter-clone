@@ -100,7 +100,7 @@ struct GroupControlsView: View {
                     .foregroundColor(Color(colors.textLowEmphasis))
             }
             
-            NavigationLink(isActive: $viewModel.showGroupConversation) {
+            NavigationLink {
                 if let controller = viewModel.channelController {
                     ChatChannelView(
                         viewFactory: DemoAppFactory.shared,
