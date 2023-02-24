@@ -178,17 +178,17 @@ class UserSearchViewModel: ObservableObject {
             }
         }
     }
-        
+    
     func runSearch() {
         Task {
             let users: [UserReference]
             let feedFollowers: [FeedFollower]
             self.users.removeAll()
             followedUserFeedIds.removeAll()
-
+            
             users = try await auth.users(matching: searchText)
             feedFollowers = try await feedsClient.following()
-                                                         
+            
             self.users.append(contentsOf: users)
             feedFollowers.forEach { followedUserFeedIds.insert($0.targetId) }
         }
@@ -199,41 +199,67 @@ public struct SearchView: View {
     @StateObject var viewModel: UserSearchViewModel
     
     public init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
-       _viewModel = StateObject(wrappedValue: UserSearchViewModel(feedsClient: feedsClient, auth: auth))
+        _viewModel = StateObject(wrappedValue: UserSearchViewModel(feedsClient: feedsClient, auth: auth))
     }
-
+    
     public var body: some View {
         NavigationView {
-            List(viewModel.users) { user in
+            VStack {
                 HStack {
-                    Text(user.username)
-                        .font(.headline)
-                    Text(user.userId)
+                    Text("Recent searchers")
+                        .font(.title3)
+                        .bold()
+                    
                     Spacer()
-                    if viewModel.isFollowing(user: user) {
-                        Button("Unfollow") {
-                            viewModel.unfollow(user: user)
-                        }
-                        .buttonStyle(.borderedProminent)
-
-                    } else {
-                        Button("Follow") {
-                            viewModel.follow(user: user)
-                        }
-                        .buttonStyle(.bordered)
+                    
+                    Button {
+                        // Clear recent searches
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .symbolRenderingMode(.hierarchical)
+                            .font(.title3)
+                            .bold()
                     }
                 }
+                
+                ScrollView(.horizontal) {
+                    RecentSearchesView()
+                }
+                .padding(.top, -24)
+                
+                List(viewModel.users) { user in
+                    HStack {
+                        Text(user.username)
+                            .font(.headline)
+                        Text(user.userId)
+                        Spacer()
+                        if viewModel.isFollowing(user: user) {
+                            Button("Unfollow") {
+                                viewModel.unfollow(user: user)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            
+                        } else {
+                            Button("Follow") {
+                                viewModel.follow(user: user)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                .listStyle(.plain)
+                .navigationTitle("Search Users")
+                .navigationBarTitleDisplayMode(.inline)
+                .searchable(text: $viewModel.searchText)
+                .autocapitalization(.none)
+                .task {
+                    viewModel.runSearch()
+                }
+                .onSubmit(of: .search) {
+                    viewModel.runSearch()
+                }
             }
-            .listStyle(.plain)
-            .navigationTitle("Search Users")
-            .searchable(text: $viewModel.searchText)
-            .autocapitalization(.none)
-            .task {
-                viewModel.runSearch()
-            }
-            .onSubmit(of: .search) {
-                viewModel.runSearch()
-            }
+            
         }
     }
 }

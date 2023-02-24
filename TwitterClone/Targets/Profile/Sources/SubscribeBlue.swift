@@ -15,6 +15,8 @@ public struct SubscribeBlue: View {
         self.package = package
     }
     
+    @State private var isShowingConfirmSheet = false
+    
     public var body: some View {
         NavigationStack {
             VStack {

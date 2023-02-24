@@ -32,16 +32,6 @@ public struct EditUserName: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(role: .cancel) {
-                        self.isShowingsettings.toggle()
-                    } label: {
-                        Text("Cancel")
-                    }
-                    .fullScreenCover(isPresented: $isShowingsettings, content: SettingsView.init)
-                    
-                }
-                
                 ToolbarItem(placement: .principal) {
                     Text("Edit username")
                 }

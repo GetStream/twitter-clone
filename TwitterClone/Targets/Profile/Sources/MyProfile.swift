@@ -17,16 +17,16 @@ public struct MyProfile: View {
     public init (contentView: @escaping (() -> AnyView)) {
         self.contentView = contentView
     }
+    
+    @Environment(\.dismiss) var dismiss
 
     public var body: some View {
         NavigationStack {
             VStack {
                 contentView()
             } // All views
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("")
-            .toolbarBackground(.streamBlue.opacity(0.1), for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
             .padding()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -34,7 +34,16 @@ public struct MyProfile: View {
                     NavigationLink {
                         SettingsView()
                     } label: {
-                        Image(systemName: "gear.circle.fill")
+                        Image(systemName: "gearshape.2")
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        // Dismiss sheet
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                     }
                 }
             }

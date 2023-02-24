@@ -26,7 +26,7 @@ public struct SpacesAddNewButton: View {
             Image("spacesNewIcon")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 46, height: 46)
+                .frame(width: 64, height: 64)
                 /*ZStack { // optimized for both dark and light modes
                  LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom)
                  .frame(width: 46, height: 46)

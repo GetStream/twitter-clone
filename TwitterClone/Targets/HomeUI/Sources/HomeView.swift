@@ -1,7 +1,5 @@
 //
 //  HomeView.swift
-//  TTwin
-//
 
 import SwiftUI
 import TwitterCloneUI
@@ -54,7 +52,7 @@ public struct HomeView: View {
                                     Image("newTweetButton")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 46, height: 46)
+                                        .frame(width: 64, height: 64)
                                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 16))
                                 }
                                 .sheet(isPresented: $isAddingTweet, content: {
@@ -63,7 +61,8 @@ public struct HomeView: View {
                                 })
                             }
                         }
-                    }.tabItem {
+                    }
+                    .tabItem {
                         Image(systemName: "house")
                     }
                     NewSearchView(feedsClient: feedsClient, auth: auth)

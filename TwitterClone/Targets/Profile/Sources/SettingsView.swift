@@ -58,32 +58,32 @@ public struct SettingsView: View {
                         .labelsHidden()
                 }
                 
-                Button {
-                    self.isEditingUserName.toggle()
+                NavigationLink {
+                    EditUserName()
                 } label: {
-                    HStack {
-                        Text("Change your username")
-                        Spacer()
-                        Text("@stefanjblos")
-                        Image(systemName: "chevron.right")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
+                    Button {
+                        self.isEditingUserName.toggle()
+                    } label: {
+                        HStack {
+                            Text("Change your username")
+                            Spacer()
+                            Text("@stefanjblos")
+                        }
                     }
                 }
-                .fullScreenCover(isPresented: $isEditingUserName, content: EditUserName.init)
                 
-                Button {
-                    self.isEditingPassword.toggle()
+                NavigationLink {
+                    EditPassword()
                 } label: {
-                    HStack {
-                        Text("Change your password")
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
+                    Button {
+                        self.isEditingPassword.toggle()
+                    } label: {
+                        HStack {
+                            Text("Change your password")
+                            Spacer()
+                        }
                     }
                 }
-                .fullScreenCover(isPresented: $isEditingPassword, content: EditPassword.init)
 
                 if purchaseViewModel.isSubscriptionActive {
                     Text("You are subscribed")

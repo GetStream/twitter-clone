@@ -73,18 +73,13 @@ public struct EditProfileView: View {
                             .foregroundColor(.streamBlue)
                             .labelsHidden()
                     }
-//                    HStack {
-//                        Text("Website")
-//                        TextField("website", text: $feedUser.website)
-//                            .foregroundColor(.streamBlue)
-//                            .labelsHidden()
-//                    }
                     
                 }
+                .font(.footnote)
                 .listStyle(.plain)
             }
             .padding()
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationTitle("")
             .toolbarBackground(.streamBlue.opacity(0.1), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
@@ -94,8 +89,8 @@ public struct EditProfileView: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Ok") {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
                         Task {
                             if let mimeType = mediaPickerViewModel.mimetype, let imageData = mediaPickerViewModel.imageData {
                                 let profileImageUrl = try await feedsClient.uploadImage(fileName: "profile_image",

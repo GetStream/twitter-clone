@@ -42,16 +42,6 @@ public struct EditPassword: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(role: .cancel) {
-                        self.isShowingEditPassword.toggle()
-                    } label: {
-                        Text("Cancel")
-                    }
-                    .fullScreenCover(isPresented: $isShowingEditPassword, content: SettingsView.init)
-                    
-                }
-                
                 ToolbarItem(placement: .principal) {
                     VStack {
                         Text("Edit password")
