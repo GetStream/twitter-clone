@@ -20,6 +20,10 @@ var swiftPackageManagerDependencies = SwiftPackageManagerDependencies(
         "Nuke": .framework,
         "NukeUI": .framework,
         "InstantSearchSwiftUI": .framework,
+        "InstantSearchCore": .framework,
+        "InstantSearchTelemetry": .framework,
+        "InstantSearchInsights": .framework,
+        "AlgoliaSearchClient": .framework,
     ]
 )
 
