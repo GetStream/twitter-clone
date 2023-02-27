@@ -19,7 +19,7 @@ public struct BlueCustomThemes: View {
                 
                 VStack {
                     HStack {
-                        VStack{
+                        VStack {
                             Button {
                                 //
                             } label: {
@@ -37,7 +37,7 @@ public struct BlueCustomThemes: View {
                                 .foregroundColor(Color(.systemGreen))
                         }
                         
-                        VStack{
+                        VStack {
                             Button {
                                 //
                             } label: {
@@ -55,7 +55,7 @@ public struct BlueCustomThemes: View {
                                 .foregroundColor(Color(.systemGray))
                         }
                         
-                        VStack{
+                        VStack {
                             Button {
                                 //
                             } label: {
@@ -75,7 +75,7 @@ public struct BlueCustomThemes: View {
                     }
                     
                     HStack {
-                        VStack{
+                        VStack {
                             Button {
                                 //
                             } label: {
@@ -111,7 +111,7 @@ public struct BlueCustomThemes: View {
                                 .foregroundColor(Color(.systemGray))
                         }
                         
-                        VStack{
+                        VStack {
                             Button {
                                 //
                             } label: {

@@ -38,7 +38,6 @@ public class SpacesViewModel: ObservableObject {
         
         controller.synchronize { error in
             if let error = error {
-                // TODO: proper error handling
                 print("Error querying channels: \(error.localizedDescription)")
             }
             

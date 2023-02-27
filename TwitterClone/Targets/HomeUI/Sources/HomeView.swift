@@ -121,7 +121,6 @@ public struct HomeView: View {
                 try chatModel.connectUser(authUser: feedsClient.authUser, feedUser: feedUser)
                 try await feedsClient.follow(target: feedsClient.authUser.userId, activityCopyLimit: 10)
             } catch {
-                // TODO better error handling
                 print(error)
             }
         }

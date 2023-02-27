@@ -53,8 +53,6 @@ public struct ConfirmBlueSubscription: View {
                         }
                     }
                     .font(.caption)
-                   
-                    
                 }
                 
                 Button {
@@ -76,11 +74,11 @@ public struct ConfirmBlueSubscription: View {
                 }
                 .padding(.top, 64)
                 .alert("You're all set. The purchase was successful", isPresented: $showingSuccessful) {
-                            Button("OK") {
-                                showingBlueHome.toggle()
-                            }
-                            .fullScreenCover(isPresented: $showingBlueHome, content: BlueHomeView.init)
-                        }
+                    Button("OK") {
+                        showingBlueHome.toggle()
+                    }
+                    .fullScreenCover(isPresented: $showingBlueHome, content: BlueHomeView.init)
+                }
             }
             .padding()
             .toolbar {
@@ -100,7 +98,7 @@ public struct ConfirmBlueSubscription: View {
                         Text("Cancel")
                     }
                 }
-        }
+            }
         }
     }
 }

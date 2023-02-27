@@ -99,45 +99,45 @@ public struct BlueHomeView: View {
                         
                         Spacer()
                     }
-                    }
-                    .listStyle(.plain)
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            VStack {
-                                Text("TwitterClone Blue")
-                                    .font(.title3)
-                                    .bold()
-                                Text("@stefabjblos")
-                                    .font(.caption)
-                            }
-                        }
-                    }
-                    .tabItem {
-                        Image(systemName: "house")
-                    }
-                    
-                    Text("")
-                        .tabItem {
-                            Image("spacesTabBarIcon1")
-                        }
-                    
-                    Text("")
-                        .tabItem {
-                            Image(systemName: "bell")
-                        }
-                        .badge(10)
-                    
-                    Text("")
-                        .tabItem {
-                            Image(systemName: "text.bubble")
-                        }
                 }
-                .padding()
-                .navigationTitle("")
-                .navigationBarTitleDisplayMode(.inline)
+                .listStyle(.plain)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        VStack {
+                            Text("TwitterClone Blue")
+                                .font(.title3)
+                                .bold()
+                            Text("@stefabjblos")
+                                .font(.caption)
+                        }
+                    }
+                }
+                .tabItem {
+                    Image(systemName: "house")
+                }
+                
+                Text("")
+                    .tabItem {
+                        Image("spacesTabBarIcon1")
+                    }
+                    
+                Text("")
+                    .tabItem {
+                        Image(systemName: "bell")
+                    }
+                    .badge(10)
+                    
+                Text("")
+                    .tabItem {
+                        Image(systemName: "text.bubble")
+                    }
             }
+            .padding()
+            .navigationTitle("")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
+}
     
     struct BlueHomeView_Previews: PreviewProvider {
         static var previews: some View {

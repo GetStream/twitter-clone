@@ -51,7 +51,6 @@ public class ChatModel: ObservableObject {
                             imageURL: feedUserProfilePictureUrl),
                 token: token
         ) { error in
-            // TODO improve error handling
             if let error {
                 // Some very basic error handling only logging the error.
                 log.error("connecting the user failed \(error)")

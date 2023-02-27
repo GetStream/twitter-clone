@@ -41,7 +41,7 @@ extension SpacesViewModel {
     }
     
     func leaveCall(with id: String) {
-        hmsSDK.leave { [weak self] success, error in
+        hmsSDK.leave { [weak self] _, error in
             if let error {
                 print(error.localizedDescription)
                 self?.isInSpace = false
@@ -55,7 +55,7 @@ extension SpacesViewModel {
     
     func endCall() {
         // Do we need to lock the room?
-        hmsSDK.endRoom(lock: false, reason: "Host ended the room") { [weak self] success, error in
+        hmsSDK.endRoom(lock: false, reason: "Host ended the room") { [weak self] _, error in
             if let error {
                 print("Error ending the space: \(error.localizedDescription)")
             }
