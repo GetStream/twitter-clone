@@ -69,7 +69,7 @@ struct PostRowView: View {
                         .buttonStyle(.borderless)
                         .contextMenu {
                             Button(role: .destructive) {
-                                // TODO implement activity deletion
+                                // TODO: implement activity deletion
                                 print("Delete")
                             } label: {
                                 Label("Delete activity", systemImage: "trash")
@@ -102,25 +102,25 @@ struct PostRowView: View {
                     .accessibilityAddTraits(.isButton)
                 }
 
-                HStack {
-                    Image(systemName: "message")
-                    Text("\(model.item.numberOfComments ?? "x")")
-                    Spacer()
-                    Image(systemName: "arrow.2.squarepath")
-                    Spacer()
-                    Button {
-                        model.liked.toggle()
-                    } label: {
-                        HStack {
-                            Image(systemName: "heart")
-                            Text("\(model.item.numberOfLikes ?? "0")")
-                        }
-                    }
-                    Spacer()
-                    Image(systemName: "square.and.arrow.up.on.square")
-                }
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+//                HStack {
+//TODO: replies                    Image(systemName: "message")
+//                    Text("\(model.item.numberOfComments ?? "x")")
+//                    Spacer()
+//TODO: retweets                    Image(systemName: "arrow.2.squarepath")
+//                    Spacer()
+//                    Button {
+//TODO: likes                        model.liked.toggle()
+//                    } label: {
+//                        HStack {
+//                            Image(systemName: "heart")
+//                            Text("\(model.item.numberOfLikes ?? "0")")
+//                        }
+//                    }
+//                    Spacer()
+//TODO: share tweet                    Image(systemName: "square.and.arrow.up.on.square")
+//                }
+//                .font(.subheadline)
+//                .foregroundColor(.secondary)
             }
         }
     }
