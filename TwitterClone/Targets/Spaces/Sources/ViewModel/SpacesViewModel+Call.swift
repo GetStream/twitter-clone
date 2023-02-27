@@ -54,6 +54,7 @@ extension SpacesViewModel {
     }
     
     func endCall() {
+        // TODO: remove participants from the channel
         // Do we need to lock the room?
         hmsSDK.endRoom(lock: false, reason: "Host ended the room") { [weak self] _, error in
             if let error {

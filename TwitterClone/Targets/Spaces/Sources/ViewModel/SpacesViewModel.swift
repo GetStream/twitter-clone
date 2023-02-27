@@ -76,13 +76,9 @@ public class SpacesViewModel: ObservableObject {
                 controller.addMembers(userIds: [currentUserId])
             }
             
-            if let callId = selectedSpace?.callId {
-                await joinCall(with: callId, in: channelId)
-                
-                isInSpace = true
-            } else {
-                // handle error
-            }
+            await joinCall(with: id, in: channelId)
+            
+            isInSpace = true
         } catch {
             print(error.localizedDescription)
             isInSpace = false

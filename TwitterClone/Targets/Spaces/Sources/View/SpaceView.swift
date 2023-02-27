@@ -153,7 +153,13 @@ struct SpaceView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        // TODO: disconnect from space
+                        if viewModel.isHost, let selectedSpaceId = viewModel.selectedSpace?.id {
+                            viewModel.endSpace(with: selectedSpaceId)
+                        } else {
+                            if let selectedSpaceId = viewModel.selectedSpace?.id {
+                                viewModel.leaveSpace(id: selectedSpaceId)
+                            }
+                        }
                         
                         dismiss()
                     } label: {
