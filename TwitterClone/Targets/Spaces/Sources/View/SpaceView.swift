@@ -161,6 +161,7 @@ struct SpaceView: View {
                             }
                         }
                         
+                        viewModel.spaceCloseTapped()
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")

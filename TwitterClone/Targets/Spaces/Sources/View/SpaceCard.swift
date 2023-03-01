@@ -18,7 +18,7 @@ struct SpaceCard: View {
     
     var body: some View {
         Button {
-            viewModel.spaceTapped(space: space)
+            viewModel.spaceCardTapped(space: space)
         } label: {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 0) {
@@ -101,7 +101,9 @@ struct SpaceCard: View {
             .cornerRadius(12)
         }
         .buttonStyle(.plain)
-        .sheet(item: $viewModel.selectedSpace, content: { _ in
+        .sheet(item: $viewModel.selectedSpace, onDismiss: {
+            viewModel.spaceCloseTapped()
+        }, content: { _ in
             SpaceView(viewModel: viewModel)
                 .presentationDetents([.fraction(0.9)])
         })

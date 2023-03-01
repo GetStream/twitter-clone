@@ -60,9 +60,14 @@ public class SpacesViewModel: ObservableObject {
         return userId == hostId
     }
     
-    func spaceTapped(space: Space) {
+    func spaceCardTapped(space: Space) {
         watchChannel(id: space.id)
         selectedSpace = space
+    }
+    
+    func spaceCloseTapped() {
+        // TODO: unwatch Channel
+        selectedSpace = nil
     }
     
     @MainActor
