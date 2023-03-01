@@ -13,21 +13,26 @@ import HMSSDK
 extension SpacesViewModel {
     
     func startCall(with id: String, in channelId: ChannelId) async -> String? {
+        /// We initialize the call with the given `id` as the name and connect it to the `channelId`.
+        /// In error case, we return `nil` here and show an error message.
         guard let call = try? await chatClient.createCall(with: id, in: channelId) else {
-        
             setInfoMessage(text: "Couldn't start call with id '\(id)' in channel '\(channelId.id)'.", type: .error)
             return nil
         }
-        let token = call.token
         
-        // The fact that we join audio-only is handled in the 100ms dashboard
         if let userName = chatClient.currentUserController().currentUser?.name, let userId = chatClient.currentUserController().currentUser?.id {
+            /// We take the `userName` and the `userId` to create a config for the `hmsSDK` and join the call.
+            /// We set the `userId` as the `metadata` of the channel, in order to later connect the users from the
+            /// call data with the users we have in the channel (useful for raising hands, showing who's currently speaking, etc.)
+            /// The fact that we join audio-only is handled in the 100ms dashboard.
             let config = HMSConfig(
                 userName: userName,
-                authToken: token,
+                authToken: call.token,
                 metadata: userId
             )
             hmsSDK.join(config: config, delegate: self)
+            
+            /// If everything worked, we return the `roomId` to save it to the channelData
             return call.call.hms?.roomId
         } else {
             setInfoMessage(text: "Couldn't get user name and ID", type: .error)
@@ -36,20 +41,23 @@ extension SpacesViewModel {
     }
     
     func joinCall(with id: String, in channelId: ChannelId) async {
+        /// We initialize a call. Even though it says `createCall`, due to us using the same `id` and `channelId` the backend
+        /// will know that a call exists and only create a new token to join the existing call.
         guard let call = try? await chatClient.createCall(with: id, in: channelId) else {
             setInfoMessage(text: "Couldn't join call with id '\(id)' in channel '\(channelId.id)'.", type: .error)
             return
         }
-        let token = call.token
         
-        // For Metadata:
-        // ID and Raise Hand (JSON Encoded)
         if let userName = chatClient.currentUserController().currentUser?.name, let userId = chatClient.currentUserController().currentUser?.id {
+            /// We create a config, to have `username`, `token`,  and `metadata` set. The metadata contains the `userId` from chat.
+            /// By using the chat `userId` in the metadata we can connect users we have in the HMSSDK to the ones from our database.
             let config = HMSConfig(
                 userName: userName,
-                authToken: token,
+                authToken: call.token,
                 metadata: userId
             )
+            
+            /// Joining the call with the created config.
             hmsSDK.join(config: config, delegate: self)
         } else {
             setInfoMessage(text: "Couldn't get user name and ID", type: .error)
@@ -57,6 +65,8 @@ extension SpacesViewModel {
     }
     
     func leaveCall(with id: String) {
+        /// When leaving a call we simply call the `.leave` function and reset the tracks that we
+        /// have saved for each of the peers in the call.
         hmsSDK.leave { [weak self] _, error in
             if let error {
                 print(error.localizedDescription)
@@ -65,6 +75,8 @@ extension SpacesViewModel {
             
             self?.ownTrack = nil
             self?.otherTracks = []
+            
+            /// In the end we update the state.
             self?.isInSpace = false
         }
     }
@@ -81,6 +93,12 @@ extension SpacesViewModel {
             if let error {
                 self?.setInfoMessage(text: "Error ending the space: \(error.localizedDescription)", type: .error)
             }
+            
+            /// Reset track data of self and other peers.
+            self?.ownTrack = nil
+            self?.otherTracks = []
+            
+            /// Update the state in the end.
             self?.isInSpace = false
         }
     }
