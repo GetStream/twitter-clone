@@ -43,8 +43,9 @@ extension SpacesViewModel {
 extension SpacesViewModel: EventsControllerDelegate {
     
     public func eventsController(_ controller: EventsController, didReceiveEvent event: Event) {
-        // TODO switch through event type to see which type of event it was (see ChannelEvent and MemberEvent files in Stream Chat to make listening more fine-grained
-        guard let event = event as? ChannelUpdatedEvent else { return }
+        /// We should be more fine-grained when listening to events here. This is more like a brute-force method.
+        /// Examples can be found with the `ChannelEvent` and `MemberEvent` in StreamChat.
+        guard let event = event as? ChannelUpdatedEvent, selectedSpace != nil else { return }
         
         self.selectedSpace = Space.from(event.channel)
     }
