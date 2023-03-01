@@ -54,7 +54,7 @@ struct SpaceCard: View {
                     HStack {
                         HStack(spacing: -20) {
                             ForEach(space.listeners.prefix(3), id: \.self) { listener in
-                                // TODO: show image of users
+                                ImageFromUrl(url: listener.imageURL, size: 30)
                             }
                         }
                         Text("\(space.listeners.count) listening")
@@ -80,8 +80,8 @@ struct SpaceCard: View {
                 }
                 
                 HStack {
-                    Image("profile5")
-                        .padding()
+                    ImageFromUrl(url: URL(string: space.hostImageUrl), size: 30)
+                    
                     Text(space.host)
                         .font(.footnote)
                     Image(systemName: "checkmark.seal.fill")
@@ -94,6 +94,7 @@ struct SpaceCard: View {
                         .padding(.trailing)
                 }
                 .foregroundColor(.white)
+                .padding()
                 .background(colorScheme == .light ? .lowerBarLight : .lowerBarDark)
             }
             .background(LinearGradient(gradient: Gradient(colors: [colorScheme == .light ? .streamLightStart : .streamDarkStart, colorScheme == .light ? .streamLightEnd : .streamDarkEnd]), startPoint: .top, endPoint: .bottom))

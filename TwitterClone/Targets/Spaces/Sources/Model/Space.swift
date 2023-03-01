@@ -17,6 +17,7 @@ struct Space: Identifiable {
     let startDate: Date
     let host: String
     let hostId: UserId
+    var hostImageUrl: String
     var speakerIdList: [String]
     var speakers: [ChatChannelMember] = []
     var listeners: [ChatChannelMember] = []
@@ -35,6 +36,7 @@ extension Space {
         let date = ISO8601DateFormatter().date(from: dateString) ?? Date()
         let host = chatChannel.createdBy?.name ?? "Unknown"
         let hostId = chatChannel.createdBy?.id ?? UserId()
+        let hostImageUrl = chatChannel.createdBy?.imageURL?.absoluteString ?? ""
         let speakerList = chatChannel.extraData["speakerIdList"]?.arrayValue as? [String] ?? [hostId]
         
         let callId = chatChannel.extraData["callId"]?.stringValue
@@ -42,7 +44,7 @@ extension Space {
         let speakers = chatChannel.lastActiveMembers.filter { speakerList.contains(String($0.id)) }
         let listeners = chatChannel.lastActiveMembers.filter { !speakers.contains($0) }
         
-        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId, speakerIdList: speakerList, speakers: speakers, listeners: listeners, callId: callId)
+        return Space(id: id, name: name, description: description, state: state, startDate: date, host: host, hostId: hostId, hostImageUrl: hostImageUrl, speakerIdList: speakerList, speakers: speakers, listeners: listeners, callId: callId)
     }
     
 }
@@ -59,6 +61,7 @@ extension Space {
             startDate: Date(),
             host: "Stefan",
             hostId: userId,
+            hostImageUrl: "https://getstream.io/static/237f45f28690696ad8fff92726f45106/c59de/thierry.webp",
             speakerIdList: [String(userId)]
         )
     }
