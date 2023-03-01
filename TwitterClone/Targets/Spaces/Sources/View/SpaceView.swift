@@ -72,6 +72,13 @@ struct SpaceView: View {
                         ForEach(space.speakers, id: \.id) { speaker in
                             VStack {
                                 ImageFromUrl(url: speaker.imageURL, size: 50)
+                                    .padding(4)
+                                    .overlay {
+                                        if viewModel.speakerIds.contains(speaker.id) {
+                                            Circle()
+                                                .stroke(LinearGradient.spaceish, lineWidth: 4)
+                                        }
+                                    }
                                 
                                 Text(speaker.name ?? "Unknown")
                                     .font(.caption)
@@ -86,6 +93,13 @@ struct SpaceView: View {
                         ForEach(space.listeners, id: \.id) { listener in
                             VStack {
                                 ImageFromUrl(url: listener.imageURL, size: 50)
+                                    .padding(4)
+                                    .overlay {
+                                        if viewModel.speakerIds.contains(listener.id) {
+                                            Circle()
+                                                .stroke(LinearGradient.spaceish, lineWidth: 4)
+                                        }
+                                    }
                                 
                                 Text(listener.name ?? "Unknown")
                                     .font(.caption)

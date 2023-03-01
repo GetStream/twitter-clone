@@ -19,6 +19,7 @@ public class SpacesViewModel: ObservableObject {
     @Published var ownTrack: HMSAudioTrack?
     @Published var otherTracks: Set<HMSAudioTrack> = []
     @Published var isAudioMuted = false
+    @Published var speakerIds: Set<String> = []
     var hmsSDK = HMSSDK.build()
         
     // Space-related properties
