@@ -18,12 +18,8 @@ struct SpaceView: View {
     
     var space: Space
     
-    init(viewModel: SpacesViewModel) {
-        guard let space = viewModel.selectedSpace else {
-            // TODO: more gracious error handling
-            fatalError("SpaceView didn't receive a space!")
-        }
-        self.space = space
+    init(selectedSpace: Space, viewModel: SpacesViewModel) {
+        self.space = selectedSpace
         self.viewModel = viewModel
     }
     
@@ -164,7 +160,10 @@ struct SpaceView: View {
                         viewModel.spaceCloseTapped()
                         dismiss()
                     } label: {
-                        Image(systemName: "xmark")
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .foregroundStyle(LinearGradient.spaceish)
                     }
                 }
                 if space.state == .running {
@@ -179,6 +178,15 @@ struct SpaceView: View {
                     }
                 }
             }
+            .sheet(item: $viewModel.infoMessage, content: { infoMessage in
+                InfoMessageView(infoMessage: infoMessage)
+                    .presentationDetents([.fraction(0.2), .fraction(0.6)])
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            viewModel.infoMessage = nil
+                        }
+                    }
+            })
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .inactive || newPhase == .background {
                     if viewModel.isHost {
@@ -194,6 +202,6 @@ struct SpaceView: View {
 
 struct SpaceView_Previews: PreviewProvider {
     static var previews: some View {
-        SpaceView(viewModel: .preview)
+        SpaceView(selectedSpace: .preview, viewModel: .preview)
     }
 }

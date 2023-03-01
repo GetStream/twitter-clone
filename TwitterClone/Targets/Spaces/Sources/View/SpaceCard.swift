@@ -103,8 +103,8 @@ struct SpaceCard: View {
         .buttonStyle(.plain)
         .sheet(item: $viewModel.selectedSpace, onDismiss: {
             viewModel.spaceCloseTapped()
-        }, content: { _ in
-            SpaceView(viewModel: viewModel)
+        }, content: { selectedSpace in
+            SpaceView(selectedSpace: selectedSpace, viewModel: viewModel)
                 .presentationDetents([.fraction(0.9)])
         })
         .cornerRadius(12)

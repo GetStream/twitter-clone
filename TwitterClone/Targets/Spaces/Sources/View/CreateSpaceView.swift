@@ -61,13 +61,10 @@ struct CreateSpaceView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.white)
-                            .frame(width: 36, height: 36)
-                            .background(
-                                LinearGradient.blueish(for: colorScheme),
-                                in: Circle()
-                            )
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .foregroundStyle(LinearGradient.spaceish)
                     }
 
                 }
