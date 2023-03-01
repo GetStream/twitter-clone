@@ -114,6 +114,28 @@ struct SpaceView: View {
                     
                     Spacer()
                     
+                    Divider()
+                        .padding(.bottom)
+                    
+                    if viewModel.selectedSpace?.state == .running {
+                        HStack {
+                            Spacer()
+                            
+                            if viewModel.isSpeaker {
+                                Button {
+                                    viewModel.toggleAudioMute()
+                                } label: {
+                                    Image(systemName: viewModel.isAudioMuted ? "speaker.slash.circle" : "speaker.circle")
+                                        .resizable()
+                                        .frame(width: 38, height: 38)
+                                        .foregroundStyle(LinearGradient.spaceish)
+                                }
+                                
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    
                     Text("\(space.listeners.count) total listeners")
                         .padding(.vertical, 4)
                         .padding(.horizontal, 12)

@@ -42,6 +42,14 @@ public class SpacesViewModel: ObservableObject {
         return userId == hostId
     }
     
+    var isSpeaker: Bool {
+        guard let userId = chatClient.currentUserId, let space = selectedSpace else {
+            return false
+        }
+        
+        return space.speakerIdList.contains(userId)
+    }
+    
     init() {
         let query = ChannelListQuery(
             filter: .equal(.type, to: .livestream)
