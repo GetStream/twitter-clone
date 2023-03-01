@@ -144,12 +144,6 @@ struct SpaceView: View {
                     .padding(.horizontal)
                     .disabled(buttonDisabled)
                     .opacity(buttonDisabled ? 0.4 : 1)
-                    
-                    Button {
-                        viewModel.infoMessage = InfoMessage(text: "This is a test info message, I'll be closing in a second.", type: .error)
-                    } label: {
-                        Text("Show info message")
-                    }
                 }
                 
                 if let infoMessage = viewModel.infoMessage {
