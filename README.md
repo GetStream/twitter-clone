@@ -1,3 +1,5 @@
+![Features highlight](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/featuresPreview.gif)
+
 # Node backend
 Please run the Node sample backend from this Git repository: [GetStream/stream-node-simple-integration-sample](https://github.com/getstream/stream-node-simple-integration-sample/)
 
