@@ -98,113 +98,8 @@ public struct NewSearchView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 7) {
-            SearchBar(text: $searchBoxController.query,
-                      isEditing: $isEditing,
-                      onSubmit: {
-                algoliaController.submit()
-            })
-            HitsList(hitsController) { user, _ in
-                if let user {
-                    HStack {
-                        Text(user.username)
-                            .font(.headline)
-                        Text(user.userId)
-                        Spacer()
-                        if user.userId != algoliaController.auth.authUser?.userId {
-                            if algoliaController.isFollowing(user: user) {
-                                Button("Unfollow") {
-                                    algoliaController.unfollow(user: user)
-                                }
-                                .buttonStyle(.borderedProminent)
-                                
-                            } else {
-                                Button("Follow") {
-                                    algoliaController.follow(user: user)
-                                }
-                                .buttonStyle(.bordered)
-                            }
-                        }
-                    }
-                }
-
-            } noResults: {
-                Text("No Results")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            .task {
-                algoliaController.submit()
-            }
-        }
-        .navigationBarTitle("Algolia & SwiftUI")
-    }
-}
-
-@MainActor
-class UserSearchViewModel: ObservableObject {
-    var feedsClient: FeedsClient
-    var auth: TwitterCloneAuth
-    
-    @Published var users = [UserReference]()
-    @Published var searchText: String = ""
-    @Published var followedUserFeedIds = Set<String>()
-    
-    init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
-        self.feedsClient = feedsClient
-        self.auth = auth
-    }
-    
-    func isFollowing(user: UserReference) -> Bool {
-        return followedUserFeedIds.contains("user:" + user.userId)
-    }
-    func unfollow(user: UserReference) {
-        Task {
-            do {
-                try await feedsClient.unfollow(target: user.userId, keepHistory: true)
-                followedUserFeedIds.remove("user:" + user.userId)
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    func follow(user: UserReference) {
-        Task {
-            do {
-                try await feedsClient.follow(target: user.userId, activityCopyLimit: 100)
-                followedUserFeedIds.insert("user:" + user.userId)
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    func runSearch() {
-        Task {
-            let users: [UserReference]
-            let feedFollowers: [FeedFollower]
-            self.users.removeAll()
-            followedUserFeedIds.removeAll()
-            
-            users = try await auth.users(matching: searchText)
-            feedFollowers = try await feedsClient.following()
-            
-            self.users.append(contentsOf: users)
-            feedFollowers.forEach { followedUserFeedIds.insert($0.targetId) }
-        }
-    }
-}
-
-public struct SearchView: View {
-    @StateObject var viewModel: UserSearchViewModel
-    
-    public init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
-        _viewModel = StateObject(wrappedValue: UserSearchViewModel(feedsClient: feedsClient, auth: auth))
-    }
-    
-    public var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 7) {
                 HStack {
                     Text("Recent searchers")
                         .font(.title3)
@@ -227,45 +122,47 @@ public struct SearchView: View {
                 }
                 .padding(.top, -24)
                 
-                List(viewModel.users) { user in
-                    HStack {
-                        Text(user.username)
-                            .font(.headline)
-                        Text(user.userId)
-                        Spacer()
-                        if viewModel.isFollowing(user: user) {
-                            Button("Unfollow") {
-                                viewModel.unfollow(user: user)
+                SearchBar(text: $searchBoxController.query,
+                          isEditing: $isEditing,
+                          onSubmit: {
+                    algoliaController.submit()
+                })
+                .autocapitalization(.none)
+                HitsList(hitsController) { user, _ in
+                    if let user {
+                        HStack {
+                            Text(user.username)
+                                .font(.headline)
+                            Text(user.userId)
+                            Spacer()
+                            if user.userId != algoliaController.auth.authUser?.userId {
+                                if algoliaController.isFollowing(user: user) {
+                                    Button("Unfollow") {
+                                        algoliaController.unfollow(user: user)
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    
+                                } else {
+                                    Button("Follow") {
+                                        algoliaController.follow(user: user)
+                                    }
+                                    .buttonStyle(.bordered)
+                                }
                             }
-                            .buttonStyle(.borderedProminent)
-                            
-                        } else {
-                            Button("Follow") {
-                                viewModel.follow(user: user)
-                            }
-                            .buttonStyle(.bordered)
                         }
                     }
+                    
+                } noResults: {
+                    Text("No Results")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 .listStyle(.plain)
-                .navigationTitle("Search Users")
                 .navigationBarTitleDisplayMode(.inline)
-                .searchable(text: $viewModel.searchText)
-                .autocapitalization(.none)
                 .task {
-                    viewModel.runSearch()
-                }
-                .onSubmit(of: .search) {
-                    viewModel.runSearch()
+                    algoliaController.submit()
                 }
             }
-            
+            .navigationBarTitle("Algolia & SwiftUI")
         }
     }
 }
-
-// struct SearchView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SearchView()
-//    }
-// }
