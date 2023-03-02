@@ -8,26 +8,32 @@
 
 import SwiftUI
 import TwitterCloneUI
+import Profile
 
 public struct RecordAudioView: View {
     @State private var isCanceled = false
     @State private var isRecording = false
     @State private var isShowingRecordingAlert = false
-    public init() {}
+    @Environment(\.presentationMode) var presentationMode
+    var profileInfoViewModel: ProfileInfoViewModel
+    
+    public init(profileInfoViewModel: ProfileInfoViewModel) {
+        self.profileInfoViewModel = profileInfoViewModel
+    }
     
     public var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
         
-                ProfileImage(imageUrl: "https://picsum.photos/id/429/200/200", action: {})
+                ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
                     .overlay(Circle().stroke(lineWidth: 2))
                     .scaleEffect(2)
                 
                 Spacer()
                 
                 Text("What's happening?")
-                Text("Hit rocord")
+                Text("Hit record")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                 
@@ -67,9 +73,8 @@ public struct RecordAudioView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
-                        self.isCanceled.toggle()
+                        presentationMode.wrappedValue.dismiss()
                     }
-                    .fullScreenCover(isPresented: $isCanceled, content: AddNewTweetView.init)
                 }
             }
         }

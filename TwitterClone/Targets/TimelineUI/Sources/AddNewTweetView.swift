@@ -8,6 +8,7 @@
 
 import SwiftUI
 import TwitterCloneUI
+import Profile
 import Auth
 import PhotosUI
 import os.log
@@ -26,13 +27,18 @@ public struct AddNewTweetView: View {
     @State var selectedItems: [PhotosPickerItem] = []
     @State var selectedPhotosData = [Data]()
     
-    public init () {}
+    var profileInfoViewModel: ProfileInfoViewModel
+    
+    public init(profileInfoViewModel: ProfileInfoViewModel) {
+        self.profileInfoViewModel = profileInfoViewModel
+    }
     
     public var body: some View {
         NavigationStack {
             VStack {
                 HStack(alignment: .top) {
-                    ProfileImage(imageUrl: "https://picsum.photos/id/64/200", action: {})
+                    
+                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
                     TextField("What's happening?", text: $isShowingComposeArea, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .lineLimit(3, reservesSpace: true)
@@ -122,7 +128,9 @@ public struct AddNewTweetView: View {
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
-                        .fullScreenCover(isPresented: $isRecording, content: RecordAudioView.init)
+                        .fullScreenCover(isPresented: $isRecording) {
+                            RecordAudioView(profileInfoViewModel: profileInfoViewModel)
+                        }
                     }
                     
                     ToolbarItem(placement: .keyboard) {
