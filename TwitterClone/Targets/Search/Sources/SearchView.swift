@@ -81,7 +81,7 @@ class AlgoliaController: ObservableObject {
       
 }
 
-public struct NewSearchView: View {
+public struct SearchView: View {
     
     @StateObject var algoliaController: AlgoliaController
     
