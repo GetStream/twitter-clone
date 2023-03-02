@@ -10,9 +10,10 @@ import SwiftUI
 import TwitterCloneUI
 
 public struct NowRecordingAudioView: View {
-    @State private var isCanceled = false
     @State private var isRecording = false
     @State private var isDone = false
+    @Environment(\.dismiss) var dismiss
+    
     public init() {}
     
     // Recording
@@ -51,10 +52,8 @@ public struct NowRecordingAudioView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
-                        self.isCanceled.toggle()
+                        dismiss()
                     }
-                    // Show RecordAudioView.init instead of NowRecordingAudioView.init
-                    .sheet(isPresented: $isCanceled, content: NowRecordingAudioView.init)
                 }
                 
                 ToolbarItem(placement: .principal) {

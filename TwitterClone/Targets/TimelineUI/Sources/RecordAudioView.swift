@@ -11,7 +11,6 @@ import TwitterCloneUI
 import Profile
 
 public struct RecordAudioView: View {
-    @State private var isCanceled = false
     @State private var isRecording = false
     @State private var isShowingRecordingAlert = false
     @Environment(\.presentationMode) var presentationMode

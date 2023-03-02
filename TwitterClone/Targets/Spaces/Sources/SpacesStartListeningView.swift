@@ -11,8 +11,8 @@ import SwiftUI
 public struct SpacesStartListeningView: View {
     
     @ObservedObject public private(set) var viewModel: SpacesViewModel
-    @State private var isCanceled = false
     @State private var isShowingRecordingAwarenessInfo = false
+    @Environment(\.dismiss) var dismiss
     
     let spacesProfileImage = ["zoey", "jeroen", "nash", "amos", "stefan", "martin", "profile10", "carla", "fra", "thierry", "profile2", "profile3", "cooper", "profile4", "george"]
     let spacesRole = ["🔉 Host", "🔇 Co-host", "🔇 Speaker", "Listener", "Listener", "Listener", "🔇 Speaker", "Listener", "🔇 Speaker", "🔇 Speaker", "Listener", "Listener", "Listener", "Listener", "Listener"]
@@ -117,13 +117,9 @@ public struct SpacesStartListeningView: View {
             .toolbar(content: {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        isCanceled.toggle()
+                        dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                    }
-                    .fullScreenCover(isPresented: $isCanceled) {
-                        // TODO: this shouldn't create a new SpacesTimelineView object
-                        SpacesTimelineView()
                     }
                 }
                 
