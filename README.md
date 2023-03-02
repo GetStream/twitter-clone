@@ -1,3 +1,4 @@
+## Key Features
 ![Features highlight](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/featuresPreview.gif)
 
 # Node backend
