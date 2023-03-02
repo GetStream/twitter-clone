@@ -73,7 +73,7 @@ public struct SettingsView: View {
                 }
                 
                 NavigationLink {
-                    EditPassword()
+                    EditPassword(auth: auth)
                 } label: {
                     Button {
                         self.isEditingPassword.toggle()

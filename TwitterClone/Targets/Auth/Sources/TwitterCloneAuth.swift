@@ -143,8 +143,14 @@ public final class TwitterCloneAuth: ObservableObject {
         return authUser
     }
     
-    public func changePassword(username: String, password: String, newPassword: String) async throws {
-        let credential = ChangeCredential(username: username, password: password, newPassword: newPassword)
+    public func changePassword(password: String, newPassword: String) async throws {
+        guard let authUser = self.authUser else {
+            throw AuthError.noLoadedAuthUser
+        }
+
+        let userId = authUser.userId
+        
+        let credential = ChangeCredential(username: userId, password: password, newPassword: newPassword)
         
         var changePasswordRequest = URLRequest(url: changePasswordUrl)
         changePasswordRequest.httpMethod = "POST"
