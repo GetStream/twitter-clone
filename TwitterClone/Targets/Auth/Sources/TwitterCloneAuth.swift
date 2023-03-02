@@ -63,6 +63,12 @@ private struct LoginCredential: Encodable {
     let password: String
 }
 
+private struct ChangeCredential: Encodable {
+    let username: String
+    let password: String
+    let newPassword: String
+}
+
 public enum AuthError: Error {
     case noStoredAuthUser
     case noLoadedAuthUser
@@ -72,6 +78,7 @@ public enum AuthError: Error {
 @MainActor
 public final class TwitterCloneAuth: ObservableObject {
     let signupUrl: URL
+    let changePasswordUrl: URL
     let loginUrl: URL
     let usersUrl: URL
 
@@ -94,6 +101,7 @@ public final class TwitterCloneAuth: ObservableObject {
         }
         let authUrl = baseUrl.appending(path: "auth")
         signupUrl = authUrl.appending(path: "signup")
+        changePasswordUrl = authUrl.appending(path: "chpasswd")
         loginUrl = authUrl.appending(path: "login")
         usersUrl = authUrl.appending(path: "users")
         authUser = try? storedAuthUser()
@@ -133,6 +141,20 @@ public final class TwitterCloneAuth: ObservableObject {
         self.authUser = authUser
 
         return authUser
+    }
+    
+    public func changePassword(username: String, password: String, newPassword: String) async throws {
+        let credential = ChangeCredential(username: username, password: password, newPassword: newPassword)
+        
+        var changePasswordRequest = URLRequest(url: changePasswordUrl)
+        changePasswordRequest.httpMethod = "POST"
+        changePasswordRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        changePasswordRequest.httpBody = try TwitterCloneNetworkKit.jsonEncoder.encode(credential)
+        
+        let (_, response) = try await URLSession.shared.data(for: changePasswordRequest)
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
     }
 
     public func login(username: String, password: String) async throws {
