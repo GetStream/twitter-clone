@@ -82,6 +82,12 @@ extension SpacesViewModel: HMSUpdateListener {
     public func on(error: Error) {
         // Do something here
         print("[HMSUpdate] on error: \(error.localizedDescription)")
+        
+        guard let error = error as? HMSError else { return }
+        
+        if error.isTerminal {
+            leaveCall(with: "")
+        }
     }
     
     public func on(message: HMSMessage) {
