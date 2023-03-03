@@ -45,7 +45,7 @@ extension SpacesViewModel: HMSUpdateListener {
                 if let listenerRole = hmsSDK.roles.first(where: { role in
                     role.name == "listener"
                 }) {
-                    hmsSDK.changeRole(for: peer, to: listenerRole)
+                    hmsSDK.changeRole(for: peer, to: listenerRole, force: true)
                 }
             }
         default:
