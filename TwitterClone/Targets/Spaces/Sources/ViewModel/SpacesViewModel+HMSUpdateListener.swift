@@ -106,12 +106,12 @@ extension SpacesViewModel: HMSUpdateListener {
     }
     
     public func onReconnecting() {
-        // Do something here
+        reconnecting = true
         print("[HMSUpdate] on reconnecting")
     }
     
     public func onReconnected() {
-        // Do something here
         print("[HMSUpdate] on reconnected")
+        reconnecting = false
     }
 }

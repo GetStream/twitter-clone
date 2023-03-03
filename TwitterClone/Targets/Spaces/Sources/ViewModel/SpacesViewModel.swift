@@ -27,6 +27,8 @@ public class SpacesViewModel: ObservableObject {
     @Published var selectedSpace: Space?
     @Published var isInSpace = false
     
+    @Published var reconnecting = false
+    
     // Info message
     @Published var infoMessage: InfoMessage?
     

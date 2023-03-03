@@ -165,6 +165,7 @@ struct SpaceView: View {
                     .disabled(buttonDisabled)
                     .opacity(buttonDisabled ? 0.4 : 1)
                 }
+                .overlay(reconnectingOverlay)
                 
                 if let infoMessage = viewModel.infoMessage {
                     InfoMessageView(infoMessage: infoMessage)
@@ -211,6 +212,16 @@ struct SpaceView: View {
                 if newPhase == .inactive || newPhase == .background {
                     viewModel.spaceCloseTapped()
                 }
+            }
+        }
+    }
+    
+    @ViewBuilder private var reconnectingOverlay: some View {
+        if viewModel.reconnecting {
+            ZStack {
+                Color(white: 0, opacity: 0.75)
+                ProgressView().tint(.white)
+                Text("Reconnecting")
             }
         }
     }
