@@ -17,6 +17,10 @@ extension SpacesViewModel {
         eventsController?.delegate = self
     }
     
+    func unwatchChannel() {
+        eventsController = nil
+    }
+    
     func updateChannel(with id: ChannelId, to state: SpaceState, callId: String? = nil) {
         if let selectedSpace {
             var spaceExtraData = selectedSpace.createExtraData()

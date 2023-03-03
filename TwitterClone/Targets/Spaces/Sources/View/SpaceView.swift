@@ -115,23 +115,7 @@ struct SpaceView: View {
                     }
                     
                     Button {
-                        if viewModel.isInSpace {
-                            if viewModel.isHost {
-                                viewModel.endSpace(with: space.id)
-                            } else {
-                                viewModel.leaveSpace(id: space.id)
-                            }
-                        } else {
-                            if viewModel.isHost {
-                                Task {
-                                    await viewModel.startSpace(id: space.id)
-                                }
-                            } else {
-                                Task {
-                                    await viewModel.joinSpace(id: space.id)
-                                }
-                            }
-                        }
+                        viewModel.spaceButtonTapped()
                     } label: {
                         Text(buttonText)
                             .foregroundColor(.white)
@@ -163,15 +147,10 @@ struct SpaceView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        if viewModel.isHost, let selectedSpaceId = viewModel.selectedSpace?.id {
-                            viewModel.endSpace(with: selectedSpaceId)
-                        } else {
-                            if let selectedSpaceId = viewModel.selectedSpace?.id {
-                                viewModel.leaveSpace(id: selectedSpaceId)
-                            }
-                        }
-                        
+                        // end/leave space
                         viewModel.spaceCloseTapped()
+                        
+                        // close sheet
                         dismiss()
                     } label: {
                         Image(systemName: "xmark.circle.fill")
@@ -194,11 +173,7 @@ struct SpaceView: View {
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .inactive || newPhase == .background {
-                    if viewModel.isHost {
-                        viewModel.endSpace(with: space.id)
-                    } else {
-                        viewModel.leaveSpace(id: space.id)
-                    }
+                    viewModel.spaceCloseTapped()
                 }
             }
         }
