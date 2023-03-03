@@ -15,17 +15,20 @@ public class SpacesViewModel: ObservableObject {
     
     @Injected(\.chatClient) var chatClient
     
+    // HMS-related properties
     @Published var ownTrack: HMSAudioTrack?
     @Published var otherTracks: Set<HMSAudioTrack> = []
-    
     @Published var isAudioMuted = false
-    
-    @Published var isInSpace = false
-    
-    var hmsSDK = HMSSDK.build()
-    
+        
+    // Space-related properties
     @Published var spaces: [Space] = []
     @Published var selectedSpace: Space?
+    @Published var isInSpace = false
+    
+    // Info message
+    @Published var infoMessage: InfoMessage?
+    
+    var hmsSDK = HMSSDK.build()
     
     var eventsController: EventsController?
     
@@ -36,12 +39,12 @@ public class SpacesViewModel: ObservableObject {
         
         let controller = chatClient.channelListController(query: query)
         
-        controller.synchronize { error in
+        controller.synchronize { [weak self] error in
             if let error = error {
-                print("Error querying channels: \(error.localizedDescription)")
+                self?.setInfoMessage(text: "Error querying channels: \(error.localizedDescription)", type: .error)
             }
             
-            self.spaces = Array(controller.channels)
+            self?.spaces = Array(controller.channels)
                 .filter({ channel in
                     channel.type == .livestream
                 })
@@ -136,11 +139,10 @@ public class SpacesViewModel: ObservableObject {
         hmsSDK.localPeer?.localAudioTrack()?.setMute(isAudioMuted)
     }
     
-    // TODO: make this return a Result<> with different error types for the errors and display that to users
     func createChannelForSpace(title: String, description: String, happeningNow: Bool, date: Date) {
         // create new channel
         guard let userId = chatClient.currentUserId else {
-            print("ERROR: chat client doesn't have a userId")
+            setInfoMessage(text: "Chat client doesn't have a userId", type: .error)
             return
         }
         
@@ -160,14 +162,14 @@ public class SpacesViewModel: ObservableObject {
                 "speakerIdList": .array([.string(String(userId))])
             ]
         ) else {
-            print("Channel creation failed")
+            setInfoMessage(text: "Channel creation failed", type: .error)
             return
         }
         
-        // TODO: listen to errors and act accordingly
-        channelController.synchronize { error in
+        /// We should probably do more proper error handling here. At least we're showing the error, which is a start.
+        channelController.synchronize { [weak self] error in
             if let error {
-                print("Synchronize error: \(error.localizedDescription)")
+                self?.setInfoMessage(text: "Synchronize error: \(error.localizedDescription)", type: .error)
             }
         }
     }

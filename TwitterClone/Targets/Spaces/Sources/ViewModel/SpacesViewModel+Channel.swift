@@ -34,7 +34,7 @@ extension SpacesViewModel {
                 extraData: spaceExtraData
             )
         } else {
-            print("No selected space.")
+            setInfoMessage(text: "No selected space.", type: .information)
         }
     }
     

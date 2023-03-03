@@ -41,6 +41,9 @@ struct InfoMessageView: View {
                 .frame(maxWidth: .infinity)
         }
         .padding()
+        .background()
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .shadow(radius: 4)
     }
 }
 

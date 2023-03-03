@@ -61,88 +61,108 @@ struct SpaceView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Text(space.description)
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                LazyVGrid(columns: columns, alignment: .leading, spacing: gridSpacing) {
-                    ForEach(space.speakers, id: \.id) { speaker in
-                        VStack {
-                            ImageFromUrl(url: speaker.imageURL, size: 50)
-                            
-                            Text(speaker.name ?? "Unknown")
-                                .font(.caption)
-                                .bold()
-                            
-                            Text(String(space.hostId) == String(speaker.id) ? "Host" : "Speaker")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
+            ZStack(alignment: .bottom) {
+                VStack {
+                    Text(space.description)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    LazyVGrid(columns: columns, alignment: .leading, spacing: gridSpacing) {
+                        ForEach(space.speakers, id: \.id) { speaker in
+                            VStack {
+                                ImageFromUrl(url: speaker.imageURL, size: 50)
+                                
+                                Text(speaker.name ?? "Unknown")
+                                    .font(.caption)
+                                    .bold()
+                                
+                                Text(String(space.hostId) == String(speaker.id) ? "Host" : "Speaker")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        ForEach(space.listeners, id: \.id) { listener in
+                            VStack {
+                                ImageFromUrl(url: listener.imageURL, size: 50)
+                                
+                                Text(listener.name ?? "Unknown")
+                                    .font(.caption)
+                                    .bold()
+                                
+                                Text("Listener")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
                     
-                    ForEach(space.listeners, id: \.id) { listener in
-                        VStack {
-                            ImageFromUrl(url: listener.imageURL, size: 50)
-                            
-                            Text(listener.name ?? "Unknown")
-                                .font(.caption)
-                                .bold()
-                            
-                            Text("Listener")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
+                    Spacer()
+                    
+                    Text("\(space.listeners.count) total listeners")
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 12)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(.gray, lineWidth: 2)
                         }
+                    
+                    if !viewModel.isInSpace {
+                        Text("Your mic will be off to start")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
-                }
-                
-                Spacer()
-                
-                Text("\(space.listeners.count) total listeners")
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 12)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(.gray, lineWidth: 2)
-                    }
-                
-                if !viewModel.isInSpace {
-                    Text("Your mic will be off to start")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
-                Button {
-                    if viewModel.isInSpace {
-                        if viewModel.isHost {
-                            viewModel.endSpace(with: space.id)
-                        } else {
-                            viewModel.leaveSpace(id: space.id)
-                        }
-                    } else {
-                        if viewModel.isHost {
-                            Task {
-                                await viewModel.startSpace(id: space.id)
+                    
+                    Button {
+                        if viewModel.isInSpace {
+                            if viewModel.isHost {
+                                viewModel.endSpace(with: space.id)
+                            } else {
+                                viewModel.leaveSpace(id: space.id)
                             }
                         } else {
-                            Task {
-                                await viewModel.joinSpace(id: space.id)
+                            if viewModel.isHost {
+                                Task {
+                                    await viewModel.startSpace(id: space.id)
+                                }
+                            } else {
+                                Task {
+                                    await viewModel.joinSpace(id: space.id)
+                                }
                             }
                         }
+                    } label: {
+                        Text(buttonText)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(
+                                LinearGradient.spaceish,
+                                in: Capsule()
+                            )
                     }
-                } label: {
-                    Text(buttonText)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, minHeight: 48)
-                        .background(
-                            LinearGradient.spaceish,
-                            in: Capsule()
-                        )
+                    .padding(.horizontal)
+                    .disabled(buttonDisabled)
+                    .opacity(buttonDisabled ? 0.4 : 1)
+                    
+                    Button {
+                        viewModel.infoMessage = InfoMessage(text: "This is a test info message, I'll be closing in a second.", type: .error)
+                    } label: {
+                        Text("Show info message")
+                    }
                 }
-                .padding(.horizontal)
-                .disabled(buttonDisabled)
-                .opacity(buttonDisabled ? 0.4 : 1)
+                
+                if let infoMessage = viewModel.infoMessage {
+                    InfoMessageView(infoMessage: infoMessage)
+                        .transition(.move(edge: .bottom))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                withAnimation(.easeIn) {
+                                    viewModel.infoMessage = nil
+                                }
+                            }
+                        }
+                }
             }
             .padding()
             .navigationTitle(space.name)
@@ -178,15 +198,6 @@ struct SpaceView: View {
                     }
                 }
             }
-            .sheet(item: $viewModel.infoMessage, content: { infoMessage in
-                InfoMessageView(infoMessage: infoMessage)
-                    .presentationDetents([.fraction(0.2), .fraction(0.6)])
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            viewModel.infoMessage = nil
-                        }
-                    }
-            })
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .inactive || newPhase == .background {
                     if viewModel.isHost {
