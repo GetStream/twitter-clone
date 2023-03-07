@@ -7,14 +7,23 @@ import ProjectDescription
 
 extension Project {
     /// Helper function to create the Project for this ExampleApp
-    public static func app(name: String, platform: Platform, packages: [Package], dependencies: [TargetDependency], additionalTargets: [Target], additionalFiles: [FileElement]) -> Project {
+    public static func app(name: String, versionNumber: String, platform: Platform, packages: [Package], dependencies: [TargetDependency], additionalTargets: [Target], additionalFiles: [FileElement]) -> Project {
         var targets = makeAppTargets(name: name,
+                                     versionNumber: versionNumber,
                                      platform: platform,
                                      dependencies: dependencies + additionalTargets.compactMap { $0.name.hasSuffix("Tests") ? nil : TargetDependency.target(name: $0.name) })
         targets += additionalTargets
+        
+        let baseSettings = SettingsDictionary()
+            .automaticCodeSigning(devTeam: "EHV7XZLAHA")
+            .marketingVersion(versionNumber)
+            .currentProjectVersion("Auto generated")
+        let settings = Settings.settings(base: baseSettings, defaultSettings: .recommended)
+
         return Project(name: name,
                        organizationName: "Stream.io Inc.",
                        packages: packages,
+                       settings: settings,
                        targets: targets,
                        additionalFiles: additionalFiles,
                        resourceSynthesizers: .default)
@@ -44,10 +53,10 @@ extension Project {
     }
 
     /// Helper function to create the application target and the unit test target.
-    private static func makeAppTargets(name: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
+    private static func makeAppTargets(name: String, versionNumber: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
         let platform: Platform = platform
         let infoPlist: [String: InfoPlist.Value] = [
-            "CFBundleShortVersionString": "1.0",
+            "CFBundleShortVersionString": InfoPlist.Value(stringLiteral: versionNumber),
             "CFBundleVersion": "1",
             "UIMainStoryboardFile": "",
             "UILaunchStoryboardName": "LaunchScreen",
@@ -60,18 +69,18 @@ extension Project {
             ]
         
         let swiftlintTargetAction = TargetScript.pre(path: .relativeToRoot("bin/swiftlint.sh"), name: "Swiftlint.", basedOnDependencyAnalysis: false)
-
+        let buildNumberTargetAction = TargetScript.post(path: .relativeToRoot("bin/set_build_number.sh"), name: "Set build number", basedOnDependencyAnalysis: false)
 
         let mainTarget = Target(
             name: name,
             platform: platform,
             product: .app,
-            bundleId: "io.getstream.twitterclone.\(name)",
+            bundleId: "io.getstream.\(name)",
             infoPlist: .extendingDefault(with: infoPlist),
             sources: ["Targets/\(name)/Sources/**"],
             resources: ["Targets/\(name)/Resources/**"],
             entitlements: "TwitterClone.entitlements",
-            scripts: [swiftlintTargetAction],
+            scripts: [swiftlintTargetAction, buildNumberTargetAction],
             dependencies: dependencies,
             launchArguments: [LaunchArgument(name: "NETWORK_PAYLOAD_LOGGING_ENABLED", isEnabled: false)]
         )

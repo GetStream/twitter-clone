@@ -3,6 +3,7 @@ import ProjectDescriptionHelpers
 import MyPlugin
 
 // MARK: - Project
+public let projectVersionNumber = "0.1.0"
 
 // Local plugin loaded
 let localHelper = LocalHelper(name: "MyPlugin")
@@ -146,6 +147,7 @@ let keychainHelperTarget =
 
 // Creates our project using a helper function defined in ProjectDescriptionHelpers
 let project = Project.app(name: "TwitterClone",
+                          versionNumber: projectVersionNumber,
                           platform: .iOS,
                           packages: [],
                           dependencies: [
