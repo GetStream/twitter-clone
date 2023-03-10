@@ -128,6 +128,9 @@ public struct SearchView: View {
                     algoliaController.submit()
                 })
                 .autocapitalization(.none)
+                .foregroundColor(Color(.systemGray))
+                .padding(.bottom)
+                
                 HitsList(hitsController) { user, _ in
                     if let user {
                         HStack {
@@ -162,6 +165,7 @@ public struct SearchView: View {
                     algoliaController.submit()
                 }
             }
+            .padding()
             .navigationBarTitle("Algolia & SwiftUI")
         }
     }
