@@ -1,12 +1,8 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
-import MyPlugin
 
 // MARK: - Project
 public let projectVersionNumber = "0.1.0"
-
-// Local plugin loaded
-let localHelper = LocalHelper(name: "MyPlugin")
 
 let networkKitName = "NetworkKit"
 let uiName = "TwitterCloneUI"
