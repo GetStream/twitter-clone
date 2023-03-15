@@ -1,37 +1,53 @@
 //
 //  RetweetView.swift
-//  TwitterClone
-//
-//  Created by amos.gyamfi@getstream.io on 3.2.2023.
-//  Copyright © 2023 Stream.io Inc. All rights reserved.
-//
 
 import SwiftUI
 
 public struct RetweetView: View {
-    @State private var notRetweeted = false
-    @State private var numberOfRetweets = 20
-    let animationDuration: Double = 0.1
     public init() {}
+    @State private var isShowingRetweetSheet = false
+    @Environment(\.dismiss) var dismiss
     
     public var body: some View {
-        HStack {
-            Button {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0)) {
-                    notRetweeted.toggle()
-                        if notRetweeted {
-                            numberOfRetweets += 1
-                        } else {
-                            numberOfRetweets -= 1
+        Button {
+            // Add retweet action
+            isShowingRetweetSheet.toggle()
+        } label: {
+            Label("10", systemImage: "arrow.2.squarepath")
+                .foregroundColor(.secondary)
+        }
+        .sheet(isPresented: $isShowingRetweetSheet) {
+            VStack(spacing: 32) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 32) {
+                        HStack {
+                            Image(systemName: "arrow.2.squarepath")
+                            Text("Retweet")
                         }
+                        HStack {
+                            Image(systemName: "square.and.pencil")
+                            Text("Quote Tweet")
+                        }
+                    }
+                    
+                    Spacer()
                 }
-            } label: {
-                Image(systemName: "arrow.2.squarepath")
-                    .rotationEffect(.degrees(notRetweeted ? 90 : 0))
-                Text("\(numberOfRetweets)")
+                .padding(.horizontal, 32)
+                
+                Button(role: .cancel) {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                        .padding(EdgeInsets(top: 8, leading: 56, bottom: 8, trailing: 56))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke()
+                        )
+                }
             }
-            .font(notRetweeted ? .title3 : .headline)
-            .foregroundColor(notRetweeted ? Color(.systemPink) : Color(.systemGray))
+            // Add the presentation detents to the content inside the sheet
+            //.presentationDetents([.height(200)])
+            .presentationDetents([.fraction(0.25)])
         }
     }
 }
@@ -39,5 +55,6 @@ public struct RetweetView: View {
 struct RetweetView_Previews: PreviewProvider {
     static var previews: some View {
         RetweetView()
+            .preferredColorScheme(.dark)
     }
 }
