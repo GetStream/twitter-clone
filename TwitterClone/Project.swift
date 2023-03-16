@@ -91,7 +91,8 @@ let timelineUiTarget =
                                     .target(name: feedsName),
                                     .target(name: searchName),
                                     .target(name: profileName),
-                                    .target(name: uiName)
+                                    .target(name: uiName),
+                                    .external(name: "MuxUploadSDK")
                                  ])
 let spacesTarget =
     Project.makeFrameworkTargets(name: spacesName,

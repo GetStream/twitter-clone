@@ -81,6 +81,7 @@ public final class TwitterCloneAuth: ObservableObject {
     let changePasswordUrl: URL
     let loginUrl: URL
     let usersUrl: URL
+    let muxUploadUrl: URL
 
     @Published
     public var authUser: AuthUser?
@@ -104,6 +105,7 @@ public final class TwitterCloneAuth: ObservableObject {
         changePasswordUrl = authUrl.appending(path: "chpasswd")
         loginUrl = authUrl.appending(path: "login")
         usersUrl = authUrl.appending(path: "users")
+        muxUploadUrl = authUrl.appending(path: "mux-upload")
         authUser = try? storedAuthUser()
 //        logout()
     }
@@ -212,5 +214,25 @@ public final class TwitterCloneAuth: ObservableObject {
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
 
         return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[UserReference]>.self, from: data).results
+    }
+    
+    public func muxUploadUrl() async throws -> URL {
+        
+        var muxUploadUrlRequest = URLRequest(url: muxUploadUrl)
+        muxUploadUrlRequest.httpMethod = "POST"
+        
+        let (data, response) = try await URLSession.shared.data(for: muxUploadUrlRequest)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+
+        let result = try TwitterCloneNetworkKit
+            .jsonDecoder.decode(String.self, from: data)
+        
+        guard let uploadUrl = URL(string: result) else {
+            throw AuthError.urlInvalid
+        }
+        
+        return uploadUrl
     }
 }
