@@ -3,6 +3,7 @@
 //  TTwin
 
 import Feeds
+import Profile
 
 import SwiftUI
 
@@ -40,6 +41,8 @@ private class ForYouFeedsViewModel: ObservableObject {
 
 public struct ForYouFeedsView: View {
     @EnvironmentObject var feedClient: FeedsClient
+    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
+
     @StateObject private var viewModel = ForYouFeedsViewModel()
 
     private let feedType: FeedType
@@ -50,7 +53,7 @@ public struct ForYouFeedsView: View {
 
     public var body: some View {
         List(viewModel.activities) { item in
-            let model = PostRowViewViewModel(item: item)
+            let model = PostRowViewViewModel(item: item, profileInfoViewModel: profileInfoViewModel)
             PostRowView(model: model).onReceive(model.$liked) { liked in
                 if liked {
                     Task {

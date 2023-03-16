@@ -29,9 +29,11 @@ public struct ReplyTweetView: View {
     @State var selectedPhotosData = [Data]()
     
     var profileInfoViewModel: ProfileInfoViewModel
+    var parentActivityId: String
     
-    public init(profileInfoViewModel: ProfileInfoViewModel) {
+    public init(profileInfoViewModel: ProfileInfoViewModel, parentActivityId: String) {
         self.profileInfoViewModel = profileInfoViewModel
+        self.parentActivityId = parentActivityId
     }
     
     public var body: some View {
@@ -49,7 +51,7 @@ public struct ReplyTweetView: View {
                             Text("@jeroenL")
                                 .font(.caption)
                                 .bold()
-                    }
+                        }
                     }
                     
                     Spacer()
@@ -79,24 +81,11 @@ public struct ReplyTweetView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         AsyncButton("Tweet") {
                             do {
-                                var tweetPhotoUrlString: String?
-                                logger.debug("add tweet photo identifier: \(selectedItems.first?.itemIdentifier ?? "", privacy: .public)")
-                                
-                                if let item = selectedItems.first, let mimeType = item.supportedContentTypes.first?.preferredMIMEType, let imageData = selectedPhotosData.first {
-                                    
-                                    tweetPhotoUrlString = try await feedsClient.uploadImage(fileName: item.itemIdentifier ?? "filename", mimeType: mimeType, imageData: imageData).absoluteString
-                                    logger.debug("add tweet photo url: \(tweetPhotoUrlString ?? "", privacy: .public)")
-                                    
-                                }
-                                
-                                let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString)
-                                try await feedsClient.addActivity(activity)
+                                try await feedsClient.addReaction(parentActivityId, reactionType: .like, reply: isShowingComposeArea)
                                 presentationMode.wrappedValue.dismiss()
                             } catch {
                                 print(error)
                             }
-                            
-                            print("tap to send tweet")
                         }
                         .font(.subheadline)
                         .fontWeight(.bold)
@@ -197,7 +186,7 @@ public struct ReplyTweetView: View {
 
 struct ReplyTweetView_Previews: PreviewProvider {
     static var previews: some View {
-        ReplyTweetView(profileInfoViewModel: ProfileInfoViewModel())
+        ReplyTweetView(profileInfoViewModel: ProfileInfoViewModel(), parentActivityId: "")
             .preferredColorScheme(.dark)
     }
 }

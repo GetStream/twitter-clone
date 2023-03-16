@@ -54,11 +54,16 @@ internal class URLFactory {
         case .userFeed(let userId):
             newURL.append(path: "enrich/feed/user")
             newURL.append(path: userId)
+            newURL.append(queryItems: [URLQueryItem(name: "withRecentReactions", value: "true")])
+            newURL.append(queryItems: [URLQueryItem(name: "withReactionCounts", value: "true")])
+            newURL.append(queryItems: [URLQueryItem(name: "withOwnReactions", value: "true")])
         case .timelineFeed(let userId):
             // Note: we are GETting the enriched timeline feed which includes actor information.
             newURL.append(path: "enrich/feed/timeline")
             newURL.append(path: userId)
             newURL.append(queryItems: [URLQueryItem(name: "withRecentReactions", value: "true")])
+            newURL.append(queryItems: [URLQueryItem(name: "withReactionCounts", value: "true")])
+            newURL.append(queryItems: [URLQueryItem(name: "withOwnReactions", value: "true")])
         case .follows(let userId):
             newURL.append(path: "feed/timeline")
            newURL.append(path: userId)

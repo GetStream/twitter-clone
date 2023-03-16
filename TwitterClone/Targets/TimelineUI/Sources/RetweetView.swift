@@ -16,6 +16,7 @@ public struct RetweetView: View {
             Label("10", systemImage: "arrow.2.squarepath")
                 .foregroundColor(.secondary)
         }
+        .buttonStyle(.borderless)
         .sheet(isPresented: $isShowingRetweetSheet) {
             VStack(spacing: 32) {
                 HStack {

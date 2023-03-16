@@ -8,6 +8,28 @@
 
 import Foundation
 
+public struct ReactionCounts: Decodable {
+    enum CodingKeys: CodingKey {
+        case like
+        case reply
+    }
+    
+    public var likeCount: Int
+    public var replyCount: Int
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        likeCount = try container.decodeIfPresent(Int.self, forKey: .like) ?? 0
+        replyCount = try container.decodeIfPresent(Int.self, forKey: .reply) ?? 0
+
+    }
+    
+    public init(likeCount: Int, replyCount: Int) {
+        self.likeCount = likeCount
+        self.replyCount = replyCount
+    }
+}
+
 public struct EnrichedPostActivity: Decodable, Identifiable {
     static let dateComponentsFormatter: DateComponentsFormatter = {
         let form = DateComponentsFormatter()
@@ -24,6 +46,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         case verb
         case time
         case tweetPhoto
+        case reaction_counts
     }
 
     public var actor: FeedUser
@@ -33,10 +56,9 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
 
     public var tweetPhoto: String?
 
-    public var numberOfLikes: String?
-    public var numberOfComments: String?
-
     public var time: Date
+    
+    public var reactionCounts: ReactionCounts
 
     public var postAge: String {
         return EnrichedPostActivity.dateComponentsFormatter.string(from: time, to: Date()) ?? "-"
@@ -50,6 +72,8 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         id = try container.decode(String.self, forKey: .id)
         time = try container.decode(Date.self, forKey: .time)
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
+        
+        reactionCounts = try container.decodeIfPresent(ReactionCounts.self, forKey: .reaction_counts) ?? ReactionCounts(likeCount: 0, replyCount: 0)
     }
 
     public static func previewPostActivities() -> [EnrichedPostActivity] {
@@ -62,6 +86,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         self.object = object
         self.id = id
         self.time = time
+        self.reactionCounts = ReactionCounts(likeCount: 7, replyCount: 10)
     }
 }
 
