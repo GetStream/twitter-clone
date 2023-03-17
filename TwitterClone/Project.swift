@@ -60,7 +60,8 @@ let searchTarget =
                                  dependencies: [
                                     .target(name: feedsName),
                                     .target(name: authName),
-                                    .external(name: "InstantSearchSwiftUI")
+                                    .external(name: "InstantSearchSwiftUI"),
+                                    .external(name: "InstantSearchInsights"),
                                  ])
 let settingsTarget =
     Project.makeFrameworkTargets(name: settingsName,

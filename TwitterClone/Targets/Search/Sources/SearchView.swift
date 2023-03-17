@@ -8,11 +8,13 @@ import Feeds
 import Combine
 import Auth
 import InstantSearchCore
+import InstantSearchInsights
 import InstantSearchSwiftUI
 
 @MainActor
 class AlgoliaController: ObservableObject {
     let searcher: HitsSearcher
+    let insights: Insights
     let searchBoxInteractor: SearchBoxInteractor
     let searchBoxController: SearchBoxObservableController
 
@@ -21,6 +23,8 @@ class AlgoliaController: ObservableObject {
   
     var feedsClient: FeedsClient
     var auth: TwitterCloneAuth
+    
+    private let indexName: IndexName = "TwitterCloneUsers"
     
     func submit() {
         searchBoxController.submit()
@@ -37,30 +41,36 @@ class AlgoliaController: ObservableObject {
     init(feedsClient: FeedsClient, auth: TwitterCloneAuth) {
         self.feedsClient = feedsClient
         self.auth = auth
-    self.searcher = HitsSearcher(appID: "BGP9QX4VDE",
-                                 apiKey: "d50d7e16b4341c04814ef66977faa4c2",
-                                 indexName: "TwitterCloneUsers")
-    self.searchBoxInteractor = .init()
-    self.searchBoxController = .init()
-    self.hitsInteractor = .init()
-    self.hitsController = .init()
-    setupConnections()
-  }
+        let appID: ApplicationID = "BGP9QX4VDE"
+        let apiKey: APIKey = "d50d7e16b4341c04814ef66977faa4c2"
+        let userToken = UserToken(rawValue: feedsClient.authUser.userId)
+        self.searcher = HitsSearcher(appID: appID,
+                                 apiKey: apiKey,
+                                 indexName: indexName)
+        self.insights = Insights.register(appId: appID, apiKey: apiKey, userToken: userToken)
+        self.searchBoxInteractor = .init()
+        self.searchBoxController = .init()
+        self.hitsInteractor = .init()
+        self.hitsController = .init()
+        setupConnections()
+    }
   
-  func setupConnections() {
-    searchBoxInteractor.connectSearcher(searcher)
-    searchBoxInteractor.connectController(searchBoxController)
-    hitsInteractor.connectSearcher(searcher)
-    hitsInteractor.connectController(hitsController)
-  }
+    func setupConnections() {
+      searchBoxInteractor.connectSearcher(searcher)
+      searchBoxInteractor.connectController(searchBoxController)
+      hitsInteractor.connectSearcher(searcher)
+      hitsInteractor.connectController(hitsController)
+    }
     
     func isFollowing(user: FeedUser) -> Bool {
         return followedUserFeedIds.contains("user:" + user.userId)
     }
+    
     func unfollow(user: FeedUser) {
         Task {
             do {
                 try await feedsClient.unfollow(target: user.userId, keepHistory: true)
+                insights.clicked(eventName: EventName(rawValue: "unfollow"), indexName: indexName, objectID: ObjectID(rawValue: user.userId), userToken: UserToken(rawValue: feedsClient.authUser.userId))
                 followedUserFeedIds.remove("user:" + user.userId)
             } catch {
                 print(error)
@@ -72,6 +82,7 @@ class AlgoliaController: ObservableObject {
         Task {
             do {
                 try await feedsClient.follow(target: user.userId, activityCopyLimit: 100)
+                insights.clicked(eventName: EventName(rawValue: "follow"), indexName: indexName, objectID: ObjectID(rawValue: user.userId), userToken: UserToken(rawValue: feedsClient.authUser.userId))
                 followedUserFeedIds.insert("user:" + user.userId)
             } catch {
                 print(error)
