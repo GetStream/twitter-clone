@@ -1,11 +1,10 @@
 # How To Launch A Twitter Competitor On the App Store In Days
 Leverage API components to build a fully functioning Twitter clone
 
-## Key Features
 | Partners | Main Features | Description | Preview |
 |---------------|---------------|-------------|---------|
 | ![Stream](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/stream.svg) | Homepage timeline feeds     | Stream Feeds and the React Activity Feeds SDK from Stream to create a mobile clone of Twitter.    | ![Stream feeds](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/01_signInTimeLine.gif) |
-| ![100ms](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/100ms.svg) |   Twitter Spaces   | Create an audio room for conversations     | ![]() |
+| ![100ms](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/100ms.svg) |   Twitter Spaces   | Create an audio room for conversations     | ![https://www.100ms.live/](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/04_spaces.gif) |
 | ![Algolia](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/algolia.svg) | Search & Follow Users     | Build a fully functional search to find and follow users using Algolia's search API     | ![Algolia](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/03_search.gif) |
 | ![Mux](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/mux.svg) | Media upload     | Tweet with video     | ![]() |
 | ![RevenueCat](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/revenueCat.svg) | Twitter Blue     | In-app subscriptions     | ![]() |
