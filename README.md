@@ -16,7 +16,7 @@ Please run the Node sample backend from this Git repository: [GetStream/stream-n
 
 # iOS Frontend
 
-The folder TwitterClone contains the iOS codebase.
+The folder TwitterClone contains the iOS codebase
 
 To get started with it, you need to install Tuist and run `tuist generate` in the directory `TwitterClone`. Then open the `TwitterClone.xcworkspace` file.
 
