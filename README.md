@@ -45,7 +45,7 @@ tuist generate
 ```
 
 # iOS package graph
-We work towards a µFramework based packaging system.
+We work towards a µFramework based packaging system
 
 ![](TwitterClone/graph.png)
 
