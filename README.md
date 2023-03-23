@@ -1,5 +1,5 @@
-# How To Launch A Twitter Competitor On the App Store In Days
-Leverage API components to build a fully functioning Twitter clone
+# Build a Twitter Clone With SwiftUI in a Weekend :sunglasses:
+Eight tutorials aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use Stream for Chat and Activity Feeds, Algolia for search, RevenueCat for subscriptions, 100ms for audio rooms and Mux for video playback.
 
 | Partners | Main Features | Description | Preview |
 |---------------|---------------|-------------|---------|
