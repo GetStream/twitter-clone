@@ -20,9 +20,11 @@ let logger = Logger(subsystem: "AddNewTweetView", category: "main")
 public struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var composeAreaIsFocussed: Bool
     
     @State private var isShowingComposeArea = ""
     @State private var isRecording = false
+    @State private var isCapturing = false
     
     @State var selectedItems: [PhotosPickerItem] = []
     @State var selectedPhotosData = [Data]()
@@ -44,6 +46,7 @@ public struct AddNewTweetView: View {
                         .lineLimit(3, reservesSpace: true)
                         .font(.caption)
                         .keyboardType(.twitter)
+                        .focused($composeAreaIsFocussed)
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -146,11 +149,16 @@ public struct AddNewTweetView: View {
                     // For the sake of keeping the 4 above icons on the left of the keyboard
                     ToolbarItem(placement: .keyboard) {
                         Button {
-                            print("tap to record audio")
+                            composeAreaIsFocussed = false
+                            self.isCapturing.toggle()
+                            print("tap to record video")
                         } label: {
-                            Image(systemName: "")
+                            Image(systemName: "video")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
+                        }
+                        .fullScreenCover(isPresented: $isCapturing) {
+                            CameraView()
                         }
                     }
                 }
