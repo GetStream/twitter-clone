@@ -1,5 +1,5 @@
 # Build a Twitter Clone With SwiftUI in a Weekend :sunglasses:
-[Seven tutorials](#) aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use Stream for Chat and Activity Feeds, Algolia for search, RevenueCat for subscriptions, 100ms for audio rooms and Mux for video playback.
+[Seven tutorials](#) aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use [Stream](https://getstream.io/ios-activity-feed/tutorial/) for Chat and Activity Feeds, [Algolia](https://www.algolia.com/) for search, [RevenueCat](https://www.revenuecat.com/) for subscriptions, [100ms](https://www.100ms.live/) for audio rooms and [Mux](https://www.mux.com/) for video playback.
 
 | Partners | Main Features | Description | Preview |
 |---------------|---------------|-------------|---------|
@@ -22,10 +22,12 @@
 
 -------------
 
-# Node backend
+# Getting Started
+
+## Node backend
 Please run the Node sample backend from this Git repository: [GetStream/stream-node-simple-integration-sample](https://github.com/getstream/stream-node-simple-integration-sample/)
 
-# iOS Frontend
+## iOS Frontend
 
 The folder TwitterClone contains the iOS codebase
 
@@ -34,14 +36,14 @@ To get started with it, you need to install Tuist and run `tuist generate` in th
 [![Tuist badge](https://img.shields.io/badge/Powered%20by-Tuist-blue)](https://tuist.io)
 
 
-## To install Tuist on your system:
+### To install Tuist on your system:
 
 Run:
 ```shell
 curl -Ls https://install.tuist.io | bash
 ```
 
-## Fetching external dependencies
+### Fetching external dependencies
 
 When you get freshly cloned this repository or dependencies have been updated. Run:
 
@@ -49,13 +51,13 @@ When you get freshly cloned this repository or dependencies have been updated. R
 tuist fetch
 ```
 
-## Generate and open project files
+### Generate and open project files
 To generate the Xcode project files and open the project in Xcode, run:
 ```shell
 tuist generate
 ```
 
-# iOS package graph
+## iOS package graph
 We work towards a µFramework based packaging system
 
 ![](TwitterClone/graph.png)
