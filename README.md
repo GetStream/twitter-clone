@@ -1,5 +1,5 @@
 # Build a Twitter Clone With SwiftUI in a Weekend :sunglasses:
-Eight tutorials aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use Stream for Chat and Activity Feeds, Algolia for search, RevenueCat for subscriptions, 100ms for audio rooms and Mux for video playback.
+[Seven tutorials](#) aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use Stream for Chat and Activity Feeds, Algolia for search, RevenueCat for subscriptions, 100ms for audio rooms and Mux for video playback.
 
 | Partners | Main Features | Description | Preview |
 |---------------|---------------|-------------|---------|
@@ -9,6 +9,18 @@ Eight tutorials aimed at teaching you how to build a functional Twitter clone us
 | ![Mux](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/mux.svg) | **Media Upload**     | Tweet with video     | ![]() |
 | ![RevenueCat](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/revenueCat.svg) | **Twitter Blue**     | In-app subscriptions     | ![]() |
 
+
+## The following links are the various parts of the tutorial series.
+
+1. [Building the Timeline](#) 
+2. [Adding Stream Feeds to the Timeline](#)
+3. [Enabling Support For Media Tweets and Video Playback](#)
+4. [Searching and Following Users](#)
+5. [Messaging and DMs](#)
+6. [Conversations With Spaces](#)
+7. [Twitter Blue and In-app Subscriptions](#)
+
+-------------
 
 # Node backend
 Please run the Node sample backend from this Git repository: [GetStream/stream-node-simple-integration-sample](https://github.com/getstream/stream-node-simple-integration-sample/)
