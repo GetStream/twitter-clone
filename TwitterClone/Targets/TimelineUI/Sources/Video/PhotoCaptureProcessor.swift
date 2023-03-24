@@ -146,8 +146,8 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
         }
         // A portrait effects matte gets generated only if AVFoundation detects a face.
         if var portraitEffectsMatte = photo.portraitEffectsMatte {
-            if let orientation = photo.metadata[ String(kCGImagePropertyOrientation) ] as? UInt32 {
-                portraitEffectsMatte = portraitEffectsMatte.applyingExifOrientation(CGImagePropertyOrientation(rawValue: orientation)!)
+            if let orientation = photo.metadata[ String(kCGImagePropertyOrientation) ] as? UInt32, let exifOrientation = CGImagePropertyOrientation(rawValue: orientation) {
+                portraitEffectsMatte = portraitEffectsMatte.applyingExifOrientation(exifOrientation)
             }
             let portraitEffectsMattePixelBuffer = portraitEffectsMatte.mattingImage
             let portraitEffectsMatteImage = CIImage( cvImageBuffer: portraitEffectsMattePixelBuffer, options: [ .auxiliaryPortraitEffectsMatte: true ] )

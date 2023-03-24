@@ -137,9 +137,10 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"),
                                                             style: .`default`,
                                                             handler: { _ in
-                                                                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
-                                                                                          options: [:],
-                                                                                          completionHandler: nil)
+                        // swiftlint:disable:next force_unwrapping
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
+                                                  options: [:],
+                                                  completionHandler: nil)
                     }))
                     
                     self.present(alertController, animated: true, completion: nil)
@@ -299,13 +300,15 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
         
         // Add an audio input device.
         do {
-            let audioDevice = AVCaptureDevice.default(for: .audio)
-            let audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice!)
-            
-            if session.canAddInput(audioDeviceInput) {
-                session.addInput(audioDeviceInput)
+            if let audioDevice = AVCaptureDevice.default(for: .audio) {
+                let audioDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
+                if session.canAddInput(audioDeviceInput) {
+                    session.addInput(audioDeviceInput)
+                } else {
+                    print("Could not add audio device input to the session")
+                }
             } else {
-                print("Could not add audio device input to the session")
+                print("Audio device input nil")
             }
         } catch {
             print("Could not create audio device input: \(error)")
@@ -383,7 +386,9 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
             sessionQueue.async {
                 // Remove the AVCaptureMovieFileOutput from the session because it doesn't support capture of Live Photos.
                 self.session.beginConfiguration()
-                self.session.removeOutput(self.movieFileOutput!)
+                if let movieFileOutput = self.movieFileOutput {
+                    self.session.removeOutput(movieFileOutput)
+                }
                 self.session.sessionPreset = .photo
                 
                 DispatchQueue.main.async {
@@ -451,7 +456,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                     
                     self.selectedMovieMode10BitDeviceFormat = self.tenBitVariantOfFormat(activeFormat: self.videoDeviceInput.device.activeFormat)
                     
-                    if self.selectedMovieMode10BitDeviceFormat != nil {
+                    if let selectedMovieMode10BitDeviceFormat = self.selectedMovieMode10BitDeviceFormat {
                         DispatchQueue.main.async {
                             self.HDRVideoModeButton.isHidden = false
                             self.HDRVideoModeButton.isEnabled = true
@@ -460,8 +465,8 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                         if self.HDRVideoMode == .on {
                             do {
                                 try self.videoDeviceInput.device.lockForConfiguration()
-                                self.videoDeviceInput.device.activeFormat = self.selectedMovieMode10BitDeviceFormat!
-                                print("Setting 'x420' format \(String(describing: self.selectedMovieMode10BitDeviceFormat)) for video recording")
+                                self.videoDeviceInput.device.activeFormat = selectedMovieMode10BitDeviceFormat
+                                print("Setting 'x420' format \(String(describing: selectedMovieMode10BitDeviceFormat)) for video recording")
                                 self.videoDeviceInput.device.unlockForConfiguration()
                             } catch {
                                 print("Could not lock device for configuration: \(error)")
@@ -566,7 +571,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                         
                         self.selectedMovieMode10BitDeviceFormat = self.tenBitVariantOfFormat(activeFormat: self.videoDeviceInput.device.activeFormat)
                         
-                        if self.selectedMovieMode10BitDeviceFormat != nil {
+                        if let selectedMovieMode10BitDeviceFormat = self.selectedMovieMode10BitDeviceFormat {
                             DispatchQueue.main.async {
                                 self.HDRVideoModeButton.isEnabled = true
                             }
@@ -574,8 +579,8 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                             if self.HDRVideoMode == .on {
                                 do {
                                     try self.videoDeviceInput.device.lockForConfiguration()
-                                    self.videoDeviceInput.device.activeFormat = self.selectedMovieMode10BitDeviceFormat!
-                                    print("Setting 'x420' format \(String(describing: self.selectedMovieMode10BitDeviceFormat)) for video recording")
+                                    self.videoDeviceInput.device.activeFormat = selectedMovieMode10BitDeviceFormat
+                                    print("Setting 'x420' format \(String(describing: selectedMovieMode10BitDeviceFormat)) for video recording")
                                     self.videoDeviceInput.device.unlockForConfiguration()
                                 } catch {
                                     print("Could not lock device for configuration: \(error)")
@@ -676,8 +681,8 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
         let videoPreviewLayerOrientation = previewView.videoPreviewLayer.connection?.videoOrientation
         
         sessionQueue.async {
-            if let photoOutputConnection = self.photoOutput.connection(with: .video) {
-                photoOutputConnection.videoOrientation = videoPreviewLayerOrientation!
+            if let photoOutputConnection = self.photoOutput.connection(with: .video), let videoPreviewLayerOrientation {
+                photoOutputConnection.videoOrientation = videoPreviewLayerOrientation
             }
             var photoSettings = AVCapturePhotoSettings()
             
@@ -697,8 +702,10 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
             // Live Photo capture is not supported in movie mode.
             if self.livePhotoMode == .on && self.photoOutput.isLivePhotoCaptureSupported {
                 let livePhotoMovieFileName = NSUUID().uuidString
-                let livePhotoMovieFilePath = (NSTemporaryDirectory() as NSString).appendingPathComponent((livePhotoMovieFileName as NSString).appendingPathExtension("mov")!)
-                photoSettings.livePhotoMovieFileURL = URL(fileURLWithPath: livePhotoMovieFilePath)
+                var url = URL(filePath: NSTemporaryDirectory())
+                url = url.appendingPathComponent(livePhotoMovieFileName).appendingPathExtension("mov")
+
+                photoSettings.livePhotoMovieFileURL = url
             }
             
             photoSettings.isDepthDataDeliveryEnabled = (self.depthDataDeliveryMode == .on
@@ -912,7 +919,9 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
 
     func tenBitVariantOfFormat(activeFormat: AVCaptureDevice.Format) -> AVCaptureDevice.Format? {
         let formats = self.videoDeviceInput.device.formats
-        let formatIndex = formats.firstIndex(of: activeFormat)!
+        guard let formatIndex = formats.firstIndex(of: activeFormat) else {
+            return nil
+        }
         
         let activeDimensions = CMVideoFormatDescriptionGetDimensions(activeFormat.formatDescription)
         let activeMaxFrameRate = activeFormat.videoSupportedFrameRateRanges.last?.maxFrameRate
@@ -967,7 +976,9 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                 if HDRVideoMode == .on {
                     do {
                         try self.videoDeviceInput.device.lockForConfiguration()
-                        self.videoDeviceInput.device.activeFormat = self.selectedMovieMode10BitDeviceFormat!
+                        if let selectedMovieMode10BitDeviceFormat = self.selectedMovieMode10BitDeviceFormat {
+                            self.videoDeviceInput.device.activeFormat = selectedMovieMode10BitDeviceFormat
+                        }
                         self.videoDeviceInput.device.unlockForConfiguration()
                     } catch {
                         print("Could not lock device for configuration: \(error)")
@@ -1021,19 +1032,25 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                 }
                 
                 // Update the orientation on the movie file output video connection before recording.
-                let movieFileOutputConnection = movieFileOutput.connection(with: .video)
-                movieFileOutputConnection?.videoOrientation = videoPreviewLayerOrientation!
-                
-                let availableVideoCodecTypes = movieFileOutput.availableVideoCodecTypes
-                
-                if availableVideoCodecTypes.contains(.hevc) {
-                    movieFileOutput.setOutputSettings([AVVideoCodecKey: AVVideoCodecType.hevc], for: movieFileOutputConnection!)
+                if let videoPreviewLayerOrientation, let movieFileOutputConnection = movieFileOutput.connection(with: .video) {
+                    movieFileOutputConnection.videoOrientation = videoPreviewLayerOrientation
+                    
+                    let availableVideoCodecTypes = movieFileOutput.availableVideoCodecTypes
+                    
+                    if availableVideoCodecTypes.contains(.hevc) {
+                    movieFileOutput.setOutputSettings([AVVideoCodecKey: AVVideoCodecType.hevc], for: movieFileOutputConnection)
                 }
+            }
                 
+                // TODO: Does this work?
                 // Start recording video to a temporary file.
                 let outputFileName = NSUUID().uuidString
-                let outputFilePath = (NSTemporaryDirectory() as NSString).appendingPathComponent((outputFileName as NSString).appendingPathExtension("mov")!)
-                movieFileOutput.startRecording(to: URL(fileURLWithPath: outputFilePath), recordingDelegate: self)
+                var url = URL(filePath: NSTemporaryDirectory())
+                url = url.appendingPathComponent(outputFileName).appendingPathExtension("mov")
+                movieFileOutput.startRecording(to: url, recordingDelegate: self)
+
+//                let outputFilePath = (NSTemporaryDirectory() as NSString).appendingPathComponent((outputFileName as NSString).appendingPathExtension("mov")!)
+//                movieFileOutput.startRecording(to: URL(fileURLWithPath: outputFilePath), recordingDelegate: self)
             } else {
                 movieFileOutput.stopRecording()
             }
@@ -1076,13 +1093,14 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
         
         var success = true
         
-        if error != nil {
+        if let error = error as? NSError {
             print("Movie file finishing error: \(String(describing: error))")
-            success = (((error! as NSError).userInfo[AVErrorRecordingSuccessfullyFinishedKey] as AnyObject).boolValue)!
+            success = ((error.userInfo[AVErrorRecordingSuccessfullyFinishedKey] as AnyObject).boolValue) ?? false
         }
         
         if success {
             // Check the authorization status.
+            //TODO: Upload to MUX here
             PHPhotoLibrary.requestAuthorization { status in
                 if status == .authorized {
                     // Save the movie file to the photo library and cleanup.
