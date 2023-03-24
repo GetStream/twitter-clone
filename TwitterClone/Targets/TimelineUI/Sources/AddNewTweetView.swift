@@ -19,6 +19,8 @@ let logger = Logger(subsystem: "AddNewTweetView", category: "main")
 
 public struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
+    @EnvironmentObject var auth: TwitterCloneAuth
+    
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var composeAreaIsFocussed: Bool
     
@@ -158,7 +160,7 @@ public struct AddNewTweetView: View {
                                 .fontWeight(.bold)
                         }
                         .fullScreenCover(isPresented: $isCapturing) {
-                            CameraView()
+                            CameraView(viewModel: CameraViewModel(auth: auth))
                         }
                     }
                 }

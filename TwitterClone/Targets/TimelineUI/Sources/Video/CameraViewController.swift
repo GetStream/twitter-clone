@@ -12,12 +12,64 @@ import AVFoundation
 import CoreLocation
 import Photos
 import SwiftUI
+import Auth
+import MuxUploadSDK
 
+protocol CameraViewControllerDelegate: AnyObject {
+    func didFinishRecordingTo(outputFileURL: URL)
+    func failedRecordingTo(outputFileURL: URL)
+}
+
+class CameraViewModel: ObservableObject, CameraViewControllerDelegate {
+    let auth: TwitterCloneAuth
+    
+    init(auth: TwitterCloneAuth) {
+        self.auth = auth
+    }
+    func didFinishRecordingTo(outputFileURL: URL) {
+        Task {
+            let uploadUrl = try await auth.muxUploadUrl()
+            
+            let upload = MuxUpload(uploadURL: uploadUrl, videoFileURL: outputFileURL)
+            upload.resultHandler = { result in
+                switch result {
+                case .success(let finalState):
+                    //TODO: Uploaded to MUX here, now what? Where is the thing stored?
+                    print(finalState)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            upload.start()
+            cleanup(outputFileURL: outputFileURL)
+        }
+    }
+    
+    func failedRecordingTo(outputFileURL: URL) {
+        cleanup(outputFileURL: outputFileURL)
+    }
+    
+    private func cleanup(outputFileURL: URL) {
+        let path = outputFileURL.path
+        if FileManager.default.fileExists(atPath: path) {
+            do {
+                try FileManager.default.removeItem(atPath: path)
+            } catch {
+                print("Could not remove file at url: \(outputFileURL)")
+            }
+        }
+    }
+
+}
 struct CameraView: UIViewControllerRepresentable {
+    @StateObject var viewModel: CameraViewModel
+    
     func makeUIViewController(context: Context) -> CameraViewController {
         let storyboard = UIStoryboard(name: "Video", bundle: Bundle.module)
         // swiftlint:disable:next force_cast
-        return storyboard.instantiateInitialViewController() as! CameraViewController
+        let cameraViewController = storyboard.instantiateInitialViewController() as! CameraViewController
+        cameraViewController.delegate = viewModel
+        return cameraViewController
     }
     
     func updateUIViewController(_ uiViewController: CameraViewController, context: Context) {
@@ -27,6 +79,8 @@ struct CameraView: UIViewControllerRepresentable {
 }
 
 class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelegate, ItemSelectionViewControllerDelegate {
+    
+    var delegate: CameraViewControllerDelegate?
     
     private var spinner: UIActivityIndicatorView!
     
@@ -1073,15 +1127,6 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                     error: Error?) {
         // Note: Because we use a unique file path for each recording, a new recording won't overwrite a recording mid-save.
         func cleanup() {
-            let path = outputFileURL.path
-            if FileManager.default.fileExists(atPath: path) {
-                do {
-                    try FileManager.default.removeItem(atPath: path)
-                } catch {
-                    print("Could not remove file at url: \(outputFileURL)")
-                }
-            }
-            
             if let currentBackgroundRecordingID = backgroundRecordingID {
                 backgroundRecordingID = UIBackgroundTaskIdentifier.invalid
                 
@@ -1100,8 +1145,8 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
         
         if success {
             // Check the authorization status.
-            //TODO: Upload to MUX here
-            PHPhotoLibrary.requestAuthorization { status in
+            
+            PHPhotoLibrary.requestAuthorization { [weak self] status in
                 if status == .authorized {
                     // Save the movie file to the photo library and cleanup.
                     PHPhotoLibrary.shared().performChanges({
@@ -1111,20 +1156,23 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                         creationRequest.addResource(with: .video, fileURL: outputFileURL, options: options)
 						
 						// Specify the location the movie was recoreded
-						creationRequest.location = self.locationManager.location
+						creationRequest.location = self?.locationManager.location
                     }, completionHandler: { success, error in
                         if !success {
                             print("AVCam couldn't save the movie to your photo library: \(String(describing: error))")
                         }
                         cleanup()
+                        self?.delegate?.didFinishRecordingTo(outputFileURL: outputFileURL)
                     }
                     )
                 } else {
                     cleanup()
+                    self?.delegate?.didFinishRecordingTo(outputFileURL: outputFileURL)
                 }
             }
         } else {
             cleanup()
+            delegate?.failedRecordingTo(outputFileURL: outputFileURL)
         }
         
         // Enable the Camera and Record buttons to let the user switch camera and start another recording.
