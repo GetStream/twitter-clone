@@ -22,26 +22,38 @@ protocol CameraViewControllerDelegate: AnyObject {
 
 class CameraViewModel: ObservableObject, CameraViewControllerDelegate {
     let auth: TwitterCloneAuth
+    /// This value is set on a successful upload
+    var muxUploadId: String?
+    var upload: MuxUpload?
     
+    @Published var isCapturing = false
+
     init(auth: TwitterCloneAuth) {
         self.auth = auth
     }
     func didFinishRecordingTo(outputFileURL: URL) {
         Task {
-            let uploadUrl = try await auth.muxUploadUrl()
-            
-            let upload = MuxUpload(uploadURL: uploadUrl, videoFileURL: outputFileURL)
-            upload.resultHandler = { result in
-                switch result {
-                case .success(let finalState):
-                    //TODO: Uploaded to MUX here, now what? Where is the thing stored?
-                    print(finalState)
-                case .failure(let error):
-                    print(error)
+            do {
+                let uploadResponse = try await self.auth.muxUploadUrl()
+                if let uploadUrl = URL(string: uploadResponse.upload_url) {
+                    
+                    upload = MuxUpload(uploadURL: uploadUrl, videoFileURL: outputFileURL)
+                    upload?.resultHandler = { result in
+                        switch result {
+                        case .success(let finalState):
+                            self.muxUploadId = uploadResponse.upload_id
+                            print(finalState)
+                        case .failure(let error):
+                            print(error)
+                        }
+                        self.cleanup(outputFileURL: outputFileURL)
+                        self.isCapturing = false
+                    }
+                    upload?.start()
                 }
+            } catch {
+                print(error)
             }
-            upload.start()
-            cleanup(outputFileURL: outputFileURL)
         }
     }
     
@@ -63,6 +75,7 @@ class CameraViewModel: ObservableObject, CameraViewControllerDelegate {
 }
 struct CameraView: UIViewControllerRepresentable {
     @StateObject var viewModel: CameraViewModel
+    @Environment(\.presentationMode) var presentationMode
     
     func makeUIViewController(context: Context) -> CameraViewController {
         let storyboard = UIStoryboard(name: "Video", bundle: Bundle.module)
@@ -202,6 +215,13 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                 
             case .configurationFailed:
                 DispatchQueue.main.async {
+#if targetEnvironment(simulator)
+                    // your code
+                    if let sampleUrl = Bundle.module.url(forResource: "sample", withExtension: "MOV") {
+                        self.delegate?.didFinishRecordingTo(outputFileURL: sampleUrl)
+                    }
+                    return
+#endif
                     let alertMsg = "Alert message when something goes wrong during capture session configuration"
                     let message = NSLocalizedString("Unable to capture media", comment: alertMsg)
                     let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
@@ -1182,6 +1202,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
             self.recordButton.isEnabled = true
             self.captureModeControl.isEnabled = true
             self.recordButton.setImage(TimelineUIAsset.captureVideo.image, for: [])
+            self.dismiss(animated: true)
         }
     }
     

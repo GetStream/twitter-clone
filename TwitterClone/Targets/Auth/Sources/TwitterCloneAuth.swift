@@ -19,6 +19,31 @@ private enum AuthKeychainKey: String {
     case userId
 }
 
+public struct MuxUploadResponse: Decodable {
+    public let upload_id: String
+    public let upload_url: String
+}
+
+public struct MuxPlaybackResponse: Decodable {
+    public let policy: String
+    public let id: String
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+        case policy
+        case id
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
+        
+        policy = try dataContainer.decode(String.self, forKey: .policy)
+        id = try dataContainer.decode(String.self, forKey: .id)
+    }
+    
+}
+
 public struct UserReference: Decodable, Identifiable {
     public var id: String {
         return userId
@@ -82,6 +107,7 @@ public final class TwitterCloneAuth: ObservableObject {
     let loginUrl: URL
     let usersUrl: URL
     let muxUploadUrl: URL
+    let muxPlaybackUrl: URL
 
     @Published
     public var authUser: AuthUser?
@@ -106,6 +132,7 @@ public final class TwitterCloneAuth: ObservableObject {
         loginUrl = authUrl.appending(path: "login")
         usersUrl = authUrl.appending(path: "users")
         muxUploadUrl = authUrl.appending(path: "mux-upload")
+        muxPlaybackUrl = authUrl.appending(path: "mux-playback")
         authUser = try? storedAuthUser()
 //        logout()
     }
@@ -216,7 +243,7 @@ public final class TwitterCloneAuth: ObservableObject {
         return try TwitterCloneNetworkKit.jsonDecoder.decode(ResultResponse<[UserReference]>.self, from: data).results
     }
     
-    public func muxUploadUrl() async throws -> URL {
+    public func muxUploadUrl() async throws -> MuxUploadResponse {
         
         var muxUploadUrlRequest = URLRequest(url: muxUploadUrl)
         muxUploadUrlRequest.httpMethod = "POST"
@@ -225,14 +252,24 @@ public final class TwitterCloneAuth: ObservableObject {
         
         let statusCode = (response as? HTTPURLResponse)?.statusCode
         try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
-
-        let result = try TwitterCloneNetworkKit
-            .jsonDecoder.decode(String.self, from: data)
         
-        guard let uploadUrl = URL(string: result) else {
-            throw AuthError.urlInvalid
-        }
+        let muxUploadResponse = try TwitterCloneNetworkKit.jsonDecoder.decode(MuxUploadResponse.self, from: data)
         
-        return uploadUrl
+        return muxUploadResponse
+    }
+    
+    public func muxPlaybackUrl(assetId: String) async throws -> MuxPlaybackResponse {
+        
+        var muxPlaybackUrlRequest = URLRequest(url: muxPlaybackUrl)
+        muxPlaybackUrlRequest.httpMethod = "POST"
+        
+        let (data, response) = try await URLSession.shared.data(for: muxPlaybackUrlRequest)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+        
+        let muxPlaybackresponse = try TwitterCloneNetworkKit.jsonDecoder.decode(MuxPlaybackResponse.self, from: data)
+        
+        return muxPlaybackresponse
     }
 }

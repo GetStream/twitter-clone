@@ -46,6 +46,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         case verb
         case time
         case tweetPhoto
+        case tweetMovieAssetId
         case reaction_counts
     }
 
@@ -55,6 +56,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
     public var id: String
 
     public var tweetPhoto: String?
+    public var tweetMovieAssetId: String?
 
     public var time: Date
     
@@ -72,6 +74,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         id = try container.decode(String.self, forKey: .id)
         time = try container.decode(Date.self, forKey: .time)
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
+        tweetMovieAssetId = try container.decodeIfPresent(String.self, forKey: .tweetMovieAssetId)
         
         reactionCounts = try container.decodeIfPresent(ReactionCounts.self, forKey: .reaction_counts) ?? ReactionCounts(likeCount: 0, replyCount: 0)
     }
@@ -97,6 +100,7 @@ public struct PostActivity: Encodable {
         case object
         case verb
         case tweetPhoto
+        case tweetMovieAssetId
     }
     public var actor: String
     /// The verb of the activity.
@@ -106,6 +110,7 @@ public struct PostActivity: Encodable {
     public var object: String
 
     public var tweetPhoto: String?
+    public var tweetMovieAssetId: String?
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -115,12 +120,16 @@ public struct PostActivity: Encodable {
         if let tweetPhoto {
             try container.encode(tweetPhoto, forKey: .tweetPhoto)
         }
+        if let tweetMovieAssetId {
+            try container.encode(tweetMovieAssetId, forKey: .tweetMovieAssetId)
+        }
     }
 
-    public init(actor: String, object: String, tweetPhotoUrlString: String?) {
+    public init(actor: String, object: String, tweetPhotoUrlString: String?, tweetMovieAssetId: String?) {
         self.actor = actor
         self.object = object
         self.tweetPhoto = tweetPhotoUrlString
+        self.tweetMovieAssetId = tweetMovieAssetId
     }
 
     public init(from decoder: Decoder) throws {
@@ -130,6 +139,7 @@ public struct PostActivity: Encodable {
         object = try container.decode(String.self, forKey: .object)
 
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
+        tweetMovieAssetId = try container.decodeIfPresent(String.self, forKey: .tweetMovieAssetId)
     }
 }
 

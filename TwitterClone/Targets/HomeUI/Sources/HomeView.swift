@@ -56,7 +56,7 @@ public struct HomeView: View {
                                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 16))
                                 }
                                 .sheet(isPresented: $isAddingTweet, content: {
-                                    AddNewTweetView(profileInfoViewModel: profileInfoViewModel)
+                                    AddNewTweetView(profileInfoViewModel: profileInfoViewModel, auth: auth)
                                         .environmentObject(feedsClient)
                                 })
                             }

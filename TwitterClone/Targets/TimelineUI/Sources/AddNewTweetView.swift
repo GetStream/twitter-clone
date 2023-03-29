@@ -19,22 +19,26 @@ let logger = Logger(subsystem: "AddNewTweetView", category: "main")
 
 public struct AddNewTweetView: View {
     @EnvironmentObject var feedsClient: FeedsClient
-    @EnvironmentObject var auth: TwitterCloneAuth
+    @StateObject
+    var auth: TwitterCloneAuth
     
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var composeAreaIsFocussed: Bool
     
     @State private var isShowingComposeArea = ""
     @State private var isRecording = false
-    @State private var isCapturing = false
     
     @State var selectedItems: [PhotosPickerItem] = []
     @State var selectedPhotosData = [Data]()
     
+    @StateObject var cameraViewModel: CameraViewModel
+    
     var profileInfoViewModel: ProfileInfoViewModel
     
-    public init(profileInfoViewModel: ProfileInfoViewModel) {
+    public init(profileInfoViewModel: ProfileInfoViewModel, auth: TwitterCloneAuth) {
         self.profileInfoViewModel = profileInfoViewModel
+        _auth = StateObject(wrappedValue: auth)
+        _cameraViewModel = StateObject(wrappedValue: CameraViewModel(auth: auth))
     }
     
     public var body: some View {
@@ -69,8 +73,8 @@ public struct AddNewTweetView: View {
                                     logger.debug("add tweet photo url: \(tweetPhotoUrlString ?? "", privacy: .public)")
 
                                 }
-                                
-                                let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString)
+                                let tweetMovieAssetId = cameraViewModel.muxUploadId
+                                let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString, tweetMovieAssetId: tweetMovieAssetId)
                                 try await feedsClient.addActivity(activity)
                                 presentationMode.wrappedValue.dismiss()
                             } catch {
@@ -152,16 +156,30 @@ public struct AddNewTweetView: View {
                     ToolbarItem(placement: .keyboard) {
                         Button {
                             composeAreaIsFocussed = false
-                            self.isCapturing.toggle()
+                            self.cameraViewModel.isCapturing.toggle()
                             print("tap to record video")
                         } label: {
                             Image(systemName: "video")
                                 .font(.subheadline)
                                 .fontWeight(.bold)
                         }
-                        .fullScreenCover(isPresented: $isCapturing) {
-                            CameraView(viewModel: CameraViewModel(auth: auth))
-                        }
+                        .fullScreenCover(isPresented: $cameraViewModel.isCapturing, onDismiss: {
+                            print("dismissed")
+                        }, content: {
+                            NavigationView {
+                                CameraView(viewModel: cameraViewModel)
+                                    .toolbar {
+                                        ToolbarItem(placement: .navigationBarLeading) {
+                                            Button {
+                                                //TODO: Does this work? Dismiss sheet if already active
+                                                presentationMode.wrappedValue.dismiss()
+                                            } label: {
+                                                Text("Cancel")
+                                            }
+                                        }
+                                    }
+                            }
+                        })
                     }
                 }
                 ForEach(selectedPhotosData, id: \.self) { photoData in
