@@ -30,23 +30,22 @@ public struct MuxAssetUploadStatusResponse: Decodable {
 }
 
 public struct MuxPlaybackResponse: Decodable {
-    public let policy: String
-    public let id: String
+    public let ids: [MuxPlaybackId]
     
     enum CodingKeys: String, CodingKey {
-        case data
-        case policy
-        case id
+        case ids = "playback_ids"
     }
     
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
-        
-        policy = try dataContainer.decode(String.self, forKey: .policy)
-        id = try dataContainer.decode(String.self, forKey: .id)
+        let container = try decoder.container(keyedBy: CodingKeys.self)        
+        ids = try container.decode([MuxPlaybackId].self, forKey: .ids)
     }
     
+}
+
+public struct MuxPlaybackId: Decodable {
+    public let id: String
+    public let policy: String
 }
 
 public struct UserReference: Decodable, Identifiable {

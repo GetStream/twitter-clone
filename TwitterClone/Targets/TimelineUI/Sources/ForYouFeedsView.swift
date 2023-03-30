@@ -4,6 +4,7 @@
 
 import Feeds
 import Profile
+import Auth
 
 import SwiftUI
 
@@ -41,6 +42,7 @@ private class ForYouFeedsViewModel: ObservableObject {
 
 public struct ForYouFeedsView: View {
     @EnvironmentObject var feedClient: FeedsClient
+    @EnvironmentObject var auth: TwitterCloneAuth
     @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
 
     @StateObject private var viewModel = ForYouFeedsViewModel()
@@ -53,7 +55,7 @@ public struct ForYouFeedsView: View {
 
     public var body: some View {
         List(viewModel.activities) { item in
-            let model = PostRowViewViewModel(item: item, profileInfoViewModel: profileInfoViewModel)
+            let model = PostRowViewViewModel(item: item, profileInfoViewModel: profileInfoViewModel, auth: auth)
             PostRowView(model: model).onReceive(model.$liked) { liked in
                 if liked {
                     Task {

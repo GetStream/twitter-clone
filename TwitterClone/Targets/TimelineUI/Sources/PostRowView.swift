@@ -11,23 +11,42 @@ import Feeds
 import SwiftUI
 import TwitterCloneUI
 import Profile
+import Auth
 
+import AVKit
+
+@MainActor
 class PostRowViewViewModel: ObservableObject {
+    var auth: TwitterCloneAuth
     var item: EnrichedPostActivity
     var profileInfoViewModel: ProfileInfoViewModel
     
     @Published
     var liked: Bool
     
-    init(item: EnrichedPostActivity, profileInfoViewModel: ProfileInfoViewModel) {
+    @Published
+    var assetPlaybackUrlString: String?
+    
+    init(item: EnrichedPostActivity, profileInfoViewModel: ProfileInfoViewModel, auth: TwitterCloneAuth) {
         liked = false
         self.item = item
         self.profileInfoViewModel = profileInfoViewModel
+        self.auth = auth
+    }
+    
+    func loadMuxAsset() async {
+        if let assetId = item.tweetMovieAssetId {
+            let result = try? await auth.muxPlaybackUrl(assetId: assetId)
+            if let playbackId = result?.ids.first {
+                assetPlaybackUrlString = "https://stream.mux.com/\(playbackId.id)"
+            }
+        }
     }
 }
 
 struct PostRowView: View {
 
+    @StateObject
     var model: PostRowViewViewModel
     @EnvironmentObject var feedClient: FeedsClient
     
@@ -110,6 +129,12 @@ struct PostRowView: View {
                         .accessibilityAddTraits(.isButton)
                     }
                     
+                    if let assetPlaybackUrlString = model.assetPlaybackUrlString, let assetPlaybackUrl = URL(string: assetPlaybackUrlString) {
+                        VideoPlayer(player: AVPlayer(url: assetPlaybackUrl))
+                            .frame(width: nil, height: 180)
+                            .cornerRadius(16)
+                    }
+                    
                     HStack {
                         Button {
                             // Add retweet action
@@ -155,6 +180,9 @@ struct PostRowView: View {
                     .foregroundColor(.secondary)
                 }
             }
+        }
+        .task {
+            await model.loadMuxAsset()
         }
     }
 }
