@@ -25,6 +25,7 @@ struct SpaceCard: View {
                     if space.state == .running {
                         SoundIndicatorView()
                             .scaleEffect(0.3)
+                            .frame(width: 40, height: 40)
                     }
                     Text(space.state.cardString)
                         .font(.subheadline)
