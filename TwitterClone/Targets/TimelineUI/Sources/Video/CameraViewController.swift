@@ -220,8 +220,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                     if let sampleUrl = Bundle.module.url(forResource: "sample", withExtension: "MOV") {
                         self.delegate?.didFinishRecordingTo(outputFileURL: sampleUrl)
                     }
-                    return
-#endif
+#else
                     let alertMsg = "Alert message when something goes wrong during capture session configuration"
                     let message = NSLocalizedString("Unable to capture media", comment: alertMsg)
                     let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
@@ -231,6 +230,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                                                             handler: nil))
                     
                     self.present(alertController, animated: true, completion: nil)
+#endif
                 }
             }
         }

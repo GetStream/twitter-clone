@@ -24,6 +24,11 @@ public struct MuxUploadResponse: Decodable {
     public let upload_url: String
 }
 
+public struct MuxAssetUploadStatusResponse: Decodable {
+    public let asset_id: String
+    public let status: String
+}
+
 public struct MuxPlaybackResponse: Decodable {
     public let policy: String
     public let id: String
@@ -108,6 +113,7 @@ public final class TwitterCloneAuth: ObservableObject {
     let usersUrl: URL
     let muxUploadUrl: URL
     let muxPlaybackUrl: URL
+    let muxAssetUrl: URL
 
     @Published
     public var authUser: AuthUser?
@@ -133,6 +139,7 @@ public final class TwitterCloneAuth: ObservableObject {
         usersUrl = authUrl.appending(path: "users")
         muxUploadUrl = authUrl.appending(path: "mux-upload")
         muxPlaybackUrl = authUrl.appending(path: "mux-playback")
+        muxAssetUrl = authUrl.appending(path: "mux-asset")
         authUser = try? storedAuthUser()
 //        logout()
     }
@@ -247,7 +254,8 @@ public final class TwitterCloneAuth: ObservableObject {
         
         var muxUploadUrlRequest = URLRequest(url: muxUploadUrl)
         muxUploadUrlRequest.httpMethod = "POST"
-        
+        muxUploadUrlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
         let (data, response) = try await URLSession.shared.data(for: muxUploadUrlRequest)
         
         let statusCode = (response as? HTTPURLResponse)?.statusCode
@@ -258,10 +266,34 @@ public final class TwitterCloneAuth: ObservableObject {
         return muxUploadResponse
     }
     
+    public func muxAssetId(uploadId: String) async throws -> MuxAssetUploadStatusResponse {
+        var muxAssetUrlRequest = URLRequest(url: muxAssetUrl)
+        muxAssetUrlRequest.httpMethod = "POST"
+        muxAssetUrlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let postDict = ["upload_id": uploadId]
+        let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(postDict)
+        muxAssetUrlRequest.httpBody = postData
+        
+        let (data, response) = try await URLSession.shared.data(for: muxAssetUrlRequest)
+        
+        let statusCode = (response as? HTTPURLResponse)?.statusCode
+        try TwitterCloneNetworkKit.checkStatusCode(statusCode: statusCode)
+        
+        let muxAssetResponse = try TwitterCloneNetworkKit.jsonDecoder.decode(MuxAssetUploadStatusResponse.self, from: data)
+        
+        return muxAssetResponse
+    }
+    
     public func muxPlaybackUrl(assetId: String) async throws -> MuxPlaybackResponse {
         
         var muxPlaybackUrlRequest = URLRequest(url: muxPlaybackUrl)
         muxPlaybackUrlRequest.httpMethod = "POST"
+        muxPlaybackUrlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let postDict = ["asset_id": assetId]
+        let postData = try TwitterCloneNetworkKit.jsonEncoder.encode(postDict)
+        muxPlaybackUrlRequest.httpBody = postData
         
         let (data, response) = try await URLSession.shared.data(for: muxPlaybackUrlRequest)
         

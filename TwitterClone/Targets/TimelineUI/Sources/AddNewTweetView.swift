@@ -73,7 +73,17 @@ public struct AddNewTweetView: View {
                                     logger.debug("add tweet photo url: \(tweetPhotoUrlString ?? "", privacy: .public)")
 
                                 }
-                                let tweetMovieAssetId = cameraViewModel.muxUploadId
+                                var tweetMovieAssetId: String?
+                                if let muxUploadId = cameraViewModel.muxUploadId {
+                                    do {
+                                        let response = try await auth.muxAssetId(uploadId: muxUploadId)
+                                        tweetMovieAssetId = response.asset_id
+                                        print(response)
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                                
                                 let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString, tweetMovieAssetId: tweetMovieAssetId)
                                 try await feedsClient.addActivity(activity)
                                 presentationMode.wrappedValue.dismiss()
