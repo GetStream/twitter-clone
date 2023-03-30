@@ -9,7 +9,7 @@
 import Foundation
 import StreamChat
 
-struct Space: Identifiable {
+struct Space: Identifiable, Hashable {
     let id: String
     let name: String
     let description: String

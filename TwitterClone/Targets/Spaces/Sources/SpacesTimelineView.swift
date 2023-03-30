@@ -31,7 +31,7 @@ public struct SpacesTimelineView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 20) {
-                                ForEach(spacesViewModel.spaces) { space in
+                                ForEach(spacesViewModel.sortedSpaces) { space in
                                     VStack {
                                         SpaceCard(viewModel: spacesViewModel, space: space)
                                     }
