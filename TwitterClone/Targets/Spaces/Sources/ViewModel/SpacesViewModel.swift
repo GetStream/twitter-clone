@@ -23,7 +23,7 @@ public class SpacesViewModel: ObservableObject {
     var hmsSDK = HMSSDK.build()
         
     // Space-related properties
-    @Published var spaces: [Space] = []
+    @Published var spaces: Set<Space> = []
     @Published var selectedSpace: Space?
     @Published var isInSpace = false
     
@@ -33,7 +33,15 @@ public class SpacesViewModel: ObservableObject {
     @Published var infoMessage: InfoMessage?
     
     // Channel-related properties
-    var eventsController: EventsController?
+    var allEventsController: EventsController?
+    
+    /// Sorts the spaces by date
+    var sortedSpaces: [Space] {
+        Array(spaces)
+            .sorted { space1, space2 in
+                space1.startDate > space2.startDate
+            }
+    }
     
     /// Determines if the current user is the host of the selected space.
     var isHost: Bool {
@@ -58,32 +66,31 @@ public class SpacesViewModel: ObservableObject {
         )
         
         let controller = chatClient.channelListController(query: query)
+        allEventsController = chatClient.eventsController()
+        allEventsController?.delegate = self
         
         controller.synchronize { [weak self] error in
             if let error = error {
                 self?.setInfoMessage(text: "Error querying channels: \(error.localizedDescription)", type: .error)
             }
             
-            self?.spaces = Array(controller.channels)
+            self?.spaces = Set(Array(controller.channels)
                 .filter({ channel in
                     channel.type == .livestream
                 })
                 .filter({ channel in
                     channel.extraData.keys.contains("spaceChannel")
                 })
-                .map { Space.from($0) }
+                .map { Space.from($0) })
         }
     }
     
     func spaceCardTapped(space: Space) {
-        watchChannel(id: space.id)
         selectedSpace = space
     }
     
     @MainActor
     func spaceCloseTapped() {
-        unwatchChannel()
-        
         if let selectedSpace {
             if isHost {
                 endSpace(with: selectedSpace.id)

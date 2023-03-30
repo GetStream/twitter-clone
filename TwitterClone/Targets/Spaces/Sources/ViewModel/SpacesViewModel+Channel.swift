@@ -10,17 +10,7 @@ import Foundation
 import StreamChat
 
 extension SpacesViewModel {
-    
-    func watchChannel(id: String) {
-        let channelId = ChannelId(type: .livestream, id: id)
-        self.eventsController = chatClient.channelEventsController(for: channelId)
-        eventsController?.delegate = self
-    }
-    
-    func unwatchChannel() {
-        eventsController = nil
-    }
-    
+
     func updateChannel(with id: ChannelId, to state: SpaceState, callId: String? = nil) {
         if let selectedSpace {
             var spaceExtraData = selectedSpace.createExtraData()
@@ -49,9 +39,17 @@ extension SpacesViewModel: EventsControllerDelegate {
     public func eventsController(_ controller: EventsController, didReceiveEvent event: Event) {
         /// We should be more fine-grained when listening to events here. This is more like a brute-force method.
         /// Examples can be found with the `ChannelEvent` and `MemberEvent` in StreamChat.
-        guard let event = event as? ChannelUpdatedEvent, selectedSpace != nil else { return }
+        guard let event = event as? ChannelUpdatedEvent else { return }
+        let updatedSpace = Space.from(event.channel)
         
-        self.selectedSpace = Space.from(event.channel)
+        spaces = spaces.filter { space in
+            space.id != updatedSpace.id
+        }
+        spaces.insert(updatedSpace)
+        
+        if selectedSpace?.id == updatedSpace.id {
+            self.selectedSpace = updatedSpace
+        }
     }
     
 }
