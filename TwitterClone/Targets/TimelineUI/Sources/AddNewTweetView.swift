@@ -74,17 +74,22 @@ public struct AddNewTweetView: View {
 
                                 }
                                 var tweetMovieAssetId: String?
+                                var tweetMoviePlaybackId: String?
+
                                 if let muxUploadId = cameraViewModel.muxUploadId {
                                     do {
                                         let response = try await auth.muxAssetId(uploadId: muxUploadId)
                                         tweetMovieAssetId = response.asset_id
-                                        print(response)
+                                        if let tweetMovieAssetId {
+                                            let playbackResponse = try? await auth.muxPlaybackId(assetId: tweetMovieAssetId)
+                                            tweetMoviePlaybackId = playbackResponse?.ids.first?.id
+                                        }
                                     } catch {
                                         print(error)
                                     }
                                 }
                                 
-                                let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString, tweetMovieAssetId: tweetMovieAssetId)
+                                let activity = PostActivity(actor: feedsClient.authUser.userId, object: isShowingComposeArea, tweetPhotoUrlString: tweetPhotoUrlString, tweetMovieAssetId: tweetMovieAssetId, tweetMoviePlaybackId: tweetMoviePlaybackId)
                                 try await feedsClient.addActivity(activity)
                                 presentationMode.wrappedValue.dismiss()
                             } catch {

@@ -47,6 +47,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         case time
         case tweetPhoto
         case tweetMovieAssetId
+        case tweetMoviePlaybackId
         case reaction_counts
     }
 
@@ -57,6 +58,7 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
 
     public var tweetPhoto: String?
     public var tweetMovieAssetId: String?
+    public var tweetMoviePlaybackId: String?
 
     public var time: Date
     
@@ -75,7 +77,8 @@ public struct EnrichedPostActivity: Decodable, Identifiable {
         time = try container.decode(Date.self, forKey: .time)
         tweetPhoto = try container.decodeIfPresent(String.self, forKey: .tweetPhoto)
         tweetMovieAssetId = try container.decodeIfPresent(String.self, forKey: .tweetMovieAssetId)
-        
+        tweetMoviePlaybackId = try container.decodeIfPresent(String.self, forKey: .tweetMoviePlaybackId)
+
         reactionCounts = try container.decodeIfPresent(ReactionCounts.self, forKey: .reaction_counts) ?? ReactionCounts(likeCount: 0, replyCount: 0)
     }
 
@@ -101,6 +104,7 @@ public struct PostActivity: Encodable {
         case verb
         case tweetPhoto
         case tweetMovieAssetId
+        case tweetMoviePlaybackId
     }
     public var actor: String
     /// The verb of the activity.
@@ -111,6 +115,7 @@ public struct PostActivity: Encodable {
 
     public var tweetPhoto: String?
     public var tweetMovieAssetId: String?
+    public var tweetMoviePlaybackId: String?
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -123,13 +128,17 @@ public struct PostActivity: Encodable {
         if let tweetMovieAssetId {
             try container.encode(tweetMovieAssetId, forKey: .tweetMovieAssetId)
         }
+        if let tweetMoviePlaybackId {
+            try container.encode(tweetMoviePlaybackId, forKey: .tweetMoviePlaybackId)
+        }
     }
 
-    public init(actor: String, object: String, tweetPhotoUrlString: String?, tweetMovieAssetId: String?) {
+    public init(actor: String, object: String, tweetPhotoUrlString: String?, tweetMovieAssetId: String?, tweetMoviePlaybackId: String?) {
         self.actor = actor
         self.object = object
         self.tweetPhoto = tweetPhotoUrlString
         self.tweetMovieAssetId = tweetMovieAssetId
+        self.tweetMoviePlaybackId = tweetMoviePlaybackId
     }
 
     public init(from decoder: Decoder) throws {

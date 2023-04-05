@@ -35,11 +35,8 @@ class PostRowViewViewModel: ObservableObject {
     }
     
     func loadMuxAsset() async {
-        if let assetId = item.tweetMovieAssetId {
-            let result = try? await auth.muxPlaybackUrl(assetId: assetId)
-            if let playbackId = result?.ids.first {
-                assetPlaybackUrlString = "https://stream.mux.com/\(playbackId.id)"
-            }
+        if let playbackId = item.tweetMoviePlaybackId {
+            assetPlaybackUrlString = "https://stream.mux.com/\(playbackId)"
         }
     }
 }

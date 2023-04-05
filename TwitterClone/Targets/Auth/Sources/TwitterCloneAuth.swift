@@ -284,7 +284,7 @@ public final class TwitterCloneAuth: ObservableObject {
         return muxAssetResponse
     }
     
-    public func muxPlaybackUrl(assetId: String) async throws -> MuxPlaybackResponse {
+    public func muxPlaybackId(assetId: String) async throws -> MuxPlaybackResponse {
         
         var muxPlaybackUrlRequest = URLRequest(url: muxPlaybackUrl)
         muxPlaybackUrlRequest.httpMethod = "POST"
