@@ -8,11 +8,11 @@
 
 | Partners | Main Features | Description | Preview |
 |---------------|---------------|-------------|---------|
-| ![Stream](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/stream.svg) | **Homepage Timeline Feeds**     | Stream Feeds and the React Activity Feeds SDK from Stream to create a mobile clone of Twitter.    | ![Stream feeds](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/01_signInTimeLine.gif) |
-| ![100ms](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/100ms.svg) |   **Twitter Spaces**   | Create an audio room for conversations     | ![https://www.100ms.live/](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/04_spaces.gif) |
-| ![Algolia](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/algolia.svg) | **Search & Follow Users**     | Build a fully functional search to find and follow users using Algolia's search API     | ![Algolia](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/03_search.gif) |
-| ![Mux](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/mux.svg) | **Media Upload**     | Tweet with video     | ![]() |
-| ![RevenueCat](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/revenueCat.svg) | **Twitter Blue**     | In-app subscriptions     | ![]() |
+| ![Stream](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/stream.svg) | **Homepage Timeline Feeds**     | Drive social engagement by integrating Stream Feeds and Chat.    | ![Stream feeds](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/01_signInTimeLine.gif) |
+| ![100ms](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/100ms.svg) |   **Twitter Spaces**   | Integrate live audio streaming capabilities with 100ms to recreate Twitter Spaces.     | ![https://www.100ms.live/](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/04_spaces.gif) |
+| ![Algolia](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/algolia.svg) | **Search & Follow Users**     | Leverage Algolia’s advanced search functionality to help users find friends and connect with one another.     | ![Algolia](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/03_search.gif) |
+| ![Mux](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/mux.svg) | **Media Upload**     | Use Mux to upload and play back videos in your app.     | ![Media upload with Mux](https://github.com/GetStream/build-your-own-twitter/blob/main/Preview/muxMedisUpload.png) |
+| ![RevenueCat](https://github.com/GetStream/stream-twitter-byo-ios/blob/main/Preview/revenueCat.svg) | **Twitter Blue**     | Power your platform’s monetization model by using RevenueCat to integrate in-app purchases and subscriptions.     | ![RevenueCat subscription](https://github.com/GetStream/build-your-own-twitter/blob/main/Preview/revenueCatSubscription.png) |
 
 
 ## The following links are the various parts of the tutorial series.
