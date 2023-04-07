@@ -1,8 +1,5 @@
 # Build a Twitter Clone With SwiftUI in a Weekend :sunglasses:
-<video width="560" height="315" controls muted>
-  <source src="https://github.com/GetStream/build-your-own-twitter/blob/main/Preview/BYOT-Ally-Amos-Edited-Final.mp4" type="video/mp4">
-  Unable to load the TwitterClone teaser video
-</video>
+![TwitterClone teaser video](https://github.com/GetStream/build-your-own-twitter/blob/main/Preview/BYOT-Ally-Amos-Edited-Final.mp4)
 
 [Eight tutorials](#) aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use [Stream](https://getstream.io/ios-activity-feed/tutorial/) for Chat and Activity Feeds, [Algolia](https://www.algolia.com/) for search, [RevenueCat](https://www.revenuecat.com/) for subscriptions, [100ms](https://www.100ms.live/) for audio rooms and [Mux](https://www.mux.com/) for video playback.
 
