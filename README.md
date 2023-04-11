@@ -1,6 +1,6 @@
 # Build a Twitter Clone With SwiftUI in a Weekend :sunglasses:
 
-[Eight tutorials](#) aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use [Stream](https://getstream.io/ios-activity-feed/tutorial/) for Chat and Activity Feeds, [Algolia](https://www.algolia.com/) for search, [RevenueCat](https://www.revenuecat.com/) for subscriptions, [100ms](https://www.100ms.live/) for audio rooms and [Mux](https://www.mux.com/) for video playback.
+[Eight tutorials](https://getstream.io/resources/projects/twitter-clone/) aimed at teaching you how to build a functional Twitter clone using APIs and SwiftUI. In this project, we will use [Stream](https://getstream.io/ios-activity-feed/tutorial/) for Chat and Activity Feeds, [Algolia](https://www.algolia.com/) for search, [RevenueCat](https://www.revenuecat.com/) for subscriptions, [100ms](https://www.100ms.live/) for audio rooms and [Mux](https://www.mux.com/) for video playback.
 
 ![Header image](https://github.com/GetStream/build-your-own-twitter/blob/main/Preview/byot-wrapup-header.png)
 
@@ -17,13 +17,14 @@
 
 ## The following links are the various parts of the tutorial series.
 
-1. [Building the Timeline](#) 
-2. [Adding Stream Feeds to the Timeline](#)
-3. [Enabling Support For Media Tweets and Video Playback](#)
-4. [Searching and Following Users](#)
-5. [Messaging and DMs](#)
-6. [Conversations With Spaces](#)
-7. [Twitter Blue and In-app Subscriptions](#)
+1. [Building the Timeline](https://getstream.io/resources/projects/twitter-clone/building-the-timeline) 
+2. [Adding Stream Feeds to the Timeline](https://getstream.io/resources/projects/twitter-clone/adding-stream-feeds-to-the-timeline/)
+3. [Enabling Support For Media Tweets and Video Playback](https://getstream.io/resources/projects/twitter-clone/enabling-support-for-media-tweets-and-video-playback/)
+4. [Searching and Following Users](https://getstream.io/resources/projects/twitter-clone/searching-and-following-users/)
+5. [Messaging and DMs](https://getstream.io/resources/projects/twitter-clone/messaging-and-dms/)
+6. [Conversations With Spaces](https://getstream.io/resources/projects/twitter-clone/conversations-with-spaces/)
+7. [Twitter Blue and In-app Subscriptions](https://getstream.io/resources/projects/twitter-clone/twitter-blue-in-app-subscriptions/)
+8. [Brining it all together](https://getstream.io/resources/projects/twitter-clone/wrap-up-and-conclusion/)
 
 -------------
 
