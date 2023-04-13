@@ -77,45 +77,33 @@ public struct TweetAudioView: View {
                 }
                 
                 ToolbarItem(placement: .keyboard) {
-                    Button {
-                        print("tap to initiate a new Space")
-                    } label: {
-                        Image(systemName: "mic.badge.plus")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
-                    
-                }
-                
-                ToolbarItem(placement: .keyboard) {
-                    Button {
-                        //self.isRecording.toggle()
-                    } label: {
-                        Image(systemName: "waveform")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
-                    //.fullScreenCover(isPresented: $isRecording, content: RecordAudioView.init)
-                }
-                
-                ToolbarItem(placement: .keyboard) {
-                    Button {
-                        print("tap to record audio")
-                    } label: {
-                        Image(systemName: "bolt.square")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
-                }
-                
-                // For the sake of keeping the 4 above icons on the left of the keyboard
-                ToolbarItem(placement: .keyboard) {
-                    Button {
-                        print("tap to record audio")
-                    } label: {
-                        Image(systemName: "")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
+                    HStack {
+                        Button {
+                            print("tap to initiate a new Space")
+                        } label: {
+                            Image(systemName: "mic.badge.plus")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                        }
+
+                        Button {
+                            //self.isRecording.toggle()
+                        } label: {
+                            Image(systemName: "waveform")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                        }
+                        //.fullScreenCover(isPresented: $isRecording, content: RecordAudioView.init)
+
+                        Button {
+                            print("tap to record audio")
+                        } label: {
+                            Image(systemName: "bolt.square")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
+                        }
+
+                        Spacer()
                     }
                 }
             }
