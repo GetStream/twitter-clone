@@ -34,7 +34,7 @@ class CameraViewModel: ObservableObject, CameraViewControllerDelegate {
     func didFinishRecordingTo(outputFileURL: URL) {
         Task {
             do {
-                let uploadResponse = try await self.auth.muxUploadUrl()
+                let uploadResponse = try await self.auth.muxUpload()
                 if let uploadUrl = URL(string: uploadResponse.upload_url) {
                     
                     upload = MuxUpload(uploadURL: uploadUrl, videoFileURL: outputFileURL)
