@@ -93,78 +93,56 @@ public struct ReplyTweetView: View {
                         .disabled(isShowingComposeArea.isEmpty)
                     }
                     
-                    // Photo picker view
                     ToolbarItem(placement: .keyboard) {
-                        Button {
-                            print("tap to upload an image")
-                        } label: {
-                            VStack {
-                                PhotosPicker(
-                                    selection: $selectedItems,
-                                    maxSelectionCount: 1,
-                                    matching: .any(of: [.images, .not(.livePhotos)])
-                                ) {
-                                    Image(systemName: "photo.on.rectangle.angled")
-                                        .accessibilityLabel("Photo picker")
-                                        .accessibilityAddTraits(.isButton)
-                                }
-                                .onChange(of: selectedItems) { newItems in
-                                    selectedPhotosData.removeAll()
-                                    for newItem in newItems {
-                                        Task {
-                                            if let data = try? await newItem.loadTransferable(type: Data.self) {
-                                                selectedPhotosData.append(data)
-                                            }
+                        HStack {
+                            PhotosPicker(
+                                selection: $selectedItems,
+                                maxSelectionCount: 1,
+                                matching: .any(of: [.images, .not(.livePhotos)])
+                            ) {
+                                Image(systemName: "photo.on.rectangle.angled")
+                                    .accessibilityLabel("Photo picker")
+                                    .accessibilityAddTraits(.isButton)
+                            }
+                            .onChange(of: selectedItems) { newItems in
+                                selectedPhotosData.removeAll()
+                                for newItem in newItems {
+                                    Task {
+                                        if let data = try? await newItem.loadTransferable(type: Data.self) {
+                                            selectedPhotosData.append(data)
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .keyboard) {
-                        Button {
-                            print("tap to initiate a new Space")
-                        } label: {
-                            Image(systemName: "mic.badge.plus")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
+
+                            Button {
+                                print("tap to initiate a new Space")
+                            } label: {
+                                Image(systemName: "mic.badge.plus")
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
+                            }
+                            Button {
+                                self.isRecording.toggle()
+                            } label: {
+                                Image(systemName: "waveform")
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
+                            }
+                            .fullScreenCover(isPresented: $isRecording) {
+                                RecordAudioView(profileInfoViewModel: profileInfoViewModel)
+                            }
+                            Button {
+                                print("tap to record audio")
+                            } label: {
+                                Image(systemName: "bolt.square")
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
+                            }
+
+                            Spacer()
                         }
                         
-                    }
-                    
-                    ToolbarItem(placement: .keyboard) {
-                        Button {
-                            self.isRecording.toggle()
-                        } label: {
-                            Image(systemName: "waveform")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                        }
-                        .fullScreenCover(isPresented: $isRecording) {
-                            RecordAudioView(profileInfoViewModel: profileInfoViewModel)
-                        }
-                    }
-                    
-                    ToolbarItem(placement: .keyboard) {
-                        Button {
-                            print("tap to record audio")
-                        } label: {
-                            Image(systemName: "bolt.square")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                        }
-                    }
-                    
-                    // For the sake of keeping the 4 above icons on the left of the keyboard
-                    ToolbarItem(placement: .keyboard) {
-                        Button {
-                            print("tap to record audio")
-                        } label: {
-                            Image(systemName: "")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                        }
                     }
                 }
                 ForEach(selectedPhotosData, id: \.self) { photoData in
