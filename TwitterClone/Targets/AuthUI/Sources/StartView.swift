@@ -7,60 +7,21 @@
 
 import SwiftUI
 import TwitterCloneUI
-import Feeds
 
 public struct StartView: View {
-    @State private var isPresented = false
-    @State private var isShown = false
+    @State private var isLoginPresented = false
+    @State private var isSignUpPresented = false
 
     public init() {}
 
     public var body: some View {
         NavigationStack {
             VStack {
-                Text("See what's happening in the world right now.")
-                    .font(.title)
-                    .fontWeight(.heavy)
-                    .multilineTextAlignment(.center)
-
-                AuthUIAsset.startImage.swiftUIImage
-                    .resizable()
-                    .scaledToFit()
-
-                Button {
-                    self.isShown.toggle()
-                } label: {
-                    Label("Create account", systemImage: "plus")
-                        .padding(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
-                }
-                .padding(.top)
-                .buttonStyle(.bordered)
-                // .fullScreenCover(isPresented: $isShown, content: SignUp.init)
-                .sheet(isPresented: $isShown) {
-                    SignUp()
-                }
-
-                // Button with image and label
-                HStack {
-                    Rectangle()
-                        .frame(width: 150, height: 2)
-                        .foregroundColor(Color(.systemGray6))
-                    Text("or")
-                    Rectangle()
-                        .frame(width: 150, height: 2)
-                        .foregroundColor(Color(.systemGray6))
-                }
-
-                HStack {
-                    Text("Have an account already?")
-                    Button("Login") {
-                        self.isPresented.toggle()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(Color(.systemBlue))
-                    .sheet(isPresented: $isPresented, content: LogIn.init)
-                }
-
+                titleView
+                imageView
+                createAccountButton
+                orSeparatorView
+                loginRowView
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
@@ -69,16 +30,71 @@ public struct StartView: View {
                     TTwinLogo()
                 }
             }
+        }
+    }
 
+    var titleView: some View {
+        Text("See what's happening in the world right now.")
+            .font(.title)
+            .fontWeight(.heavy)
+            .multilineTextAlignment(.center)
+    }
+
+    var imageView: some View {
+        AuthUIAsset.startImage.swiftUIImage
+            .resizable()
+            .scaledToFit()
+    }
+
+    var createAccountButton: some View {
+        Button {
+            self.isSignUpPresented.toggle()
+        } label: {
+            Label("Create account", systemImage: "plus")
+                .padding(.vertical, 8)
+                .padding(.horizontal, 20)
+        }
+        .padding(.top)
+        .buttonStyle(.bordered)
+        .sheet(isPresented: $isSignUpPresented) {
+            SignUpView()
+        }
+    }
+
+    var orSeparatorView: some View {
+        HStack {
+            Rectangle()
+                .frame(width: 150, height: 2)
+                .foregroundColor(Color(.systemGray6))
+            Text("or")
+            Rectangle()
+                .frame(width: 150, height: 2)
+                .foregroundColor(Color(.systemGray6))
+        }
+    }
+
+    var loginRowView: some View {
+        HStack {
+            Text("Have an account already?")
+            loginButton
+        }
+    }
+
+    var loginButton: some View {
+        Button("Login") {
+            self.isLoginPresented.toggle()
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(Color(.systemBlue))
+        .sheet(isPresented: $isLoginPresented) {
+            LogInView()
         }
     }
 }
 
-// struct StartView_Previews: PreviewProvider {
-//    static let auth = TwitterCloneAuth()
-//    static var previews: some View {
-//        StartView()
-//            .environmentObject(auth)
-//            .preferredColorScheme(.dark)
-//    }
-// }
+struct StartView_Previews: PreviewProvider {
+    static var previews: some View {
+        StartView()
+            .preferredColorScheme(.dark)
+    }
+}
