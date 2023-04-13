@@ -90,22 +90,23 @@ public final class TwitterCloneAuth: TwitterCloneClient, ObservableObject {
     public var authUser: AuthUser?
 
     private var storedAuthUser: AuthUser? {
-        os_log("Load credentials from keychain")
         guard
             let feedToken = keychainHelper.string(for: .feedToken),
             let chatToken = keychainHelper.string(for: .chatToken),
             let username = keychainHelper.string(for: .username),
             let userId = keychainHelper.string(for: .userId)
         else {
+            os_log("No credentials found in keychain")
             return nil
         }
 
+        os_log("Load credentials from keychain")
         return AuthUser(feedToken: feedToken, chatToken: chatToken, username: username, userId: userId)
     }
 
     private let keychainHelper = KeyChainHelper.shared
 
-    public override init(baseUrl baseUrlString: String) throws {
+    override public init(baseUrl baseUrlString: String) throws {
         os_log("Init auth")
         try super.init(baseUrl: baseUrlString)
         authUser = storedAuthUser
