@@ -165,7 +165,7 @@ public final class TwitterCloneAuth: TwitterCloneClient, ObservableObject {
     
     public func muxUpload() async throws -> MuxUploadResponse {
         // TODO: provide request data
-        let response: MuxUploadResponse = try await post(route: Routes.muxUpload, request: ["":""])
+        let response: MuxUploadResponse = try await post(route: Routes.muxUpload, request: ["": ""])
         return response
     }
     

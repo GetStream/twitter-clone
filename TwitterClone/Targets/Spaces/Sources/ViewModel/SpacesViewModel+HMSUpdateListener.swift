@@ -22,15 +22,15 @@ extension SpacesViewModel: HMSUpdateListener {
     public func on(removedFromRoom notification: HMSRemovedFromRoomNotification) {
         print("[HMSUpdate] onRemovedFromRoom: \(notification.description), reason: \(notification.reason)")
         
-        /// This will be called if the host has ended the room. In this case, we need to clean up and end the space locally.
-        /// Cleanup the tracks
+        // This will be called if the host has ended the room. In this case, we need to clean up and end the space locally.
+        // Cleanup the tracks
         ownTrack = nil
         otherTracks = []
         
-        /// In the end we update the state.
+        // In the end we update the state.
         isInSpace = false
         
-        /// Show the information that the room has ended, and why, to the user.
+        // Show the information that the room has ended, and why, to the user.
         setInfoMessage(text: "You were removed from the space.\n\(notification.reason)", type: .information)
     }
     
@@ -39,9 +39,9 @@ extension SpacesViewModel: HMSUpdateListener {
         print("[HMSUpdate] on peer: \(peer.name), update: \(update.description)")
         switch update {
         case .peerJoined:
-            /// When we are host and it's not the local peer
+            // When we are host and it's not the local peer
             if isHost && !peer.isLocal {
-                /// Change the role of the peer to "listener"
+                // Change the role of the peer to "listener"
                 if let listenerRole = hmsSDK.roles.first(where: { role in
                     role.name == "listener"
                 }) {
@@ -57,7 +57,7 @@ extension SpacesViewModel: HMSUpdateListener {
         print("[HMSUpdate] on track: \(track.trackId), update: \(update.description), peer: \(peer.name)")
         switch update {
         case .trackAdded:
-            /// If the track that was added is an audio track, add it to our tracks.
+            // If the track that was added is an audio track, add it to our tracks.
             if let audioTrack = track as? HMSAudioTrack {
                 if peer.isLocal {
                     ownTrack = audioTrack
@@ -66,7 +66,7 @@ extension SpacesViewModel: HMSUpdateListener {
                 }
             }
         case .trackRemoved:
-            /// If the track that was removed is an audio track, remove it from our tracks.
+            // If the track that was removed is an audio track, remove it from our tracks.
             if let audioTrack = track as? HMSAudioTrack {
                 if peer.isLocal {
                     ownTrack = nil
@@ -99,9 +99,7 @@ extension SpacesViewModel: HMSUpdateListener {
         // Someone is speaking
         // This can be used to indicate who is speaking and visually show this
         withAnimation {
-            speakerIds = Set(speakers
-                             /// The metadata is equal to the userId
-                .compactMap { $0.peer.metadata })
+            speakerIds = Set(speakers.compactMap { $0.peer.metadata }) // The metadata is equal to the userId
         }
     }
     

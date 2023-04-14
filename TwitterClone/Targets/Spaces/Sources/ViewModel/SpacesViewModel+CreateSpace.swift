@@ -38,7 +38,7 @@ extension SpacesViewModel {
             return
         }
         
-        /// We should probably do more proper error handling here. At least we're showing the error, which is a start.
+        // We should probably do more proper error handling here. At least we're showing the error, which is a start.
         channelController.synchronize { [weak self] error in
             if let error {
                 self?.setInfoMessage(text: "Synchronize error: \(error.localizedDescription)", type: .error)
