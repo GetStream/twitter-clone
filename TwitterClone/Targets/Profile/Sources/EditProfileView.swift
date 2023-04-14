@@ -12,18 +12,13 @@ import Feeds
 
 public struct EditProfileView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var feedsClient: FeedsClient
     @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
     @StateObject var mediaPickerViewModel = MediaPickerViewModel()
     
-    @State var feedUser: FeedUser
-    
-    var feedsClient: FeedsClient
-    @State private var isEditingMyName = "Amos Gyamfi"
-    @State private var isEditingAboutMe = "#Developer #Advocate"
-    @State private var isEditingMyLocation = "Mount Olive DR, Toronto ON"
-    @State private var isEditingMyWebsite = "getstream.io"
-    public init (feedsClient: FeedsClient, currentUser: FeedUser) {
-        self.feedsClient = feedsClient
+    @State private var feedUser: FeedUser
+
+    public init (currentUser: FeedUser) {
         _feedUser = State(initialValue: currentUser)
     }
     
@@ -50,14 +45,14 @@ public struct EditProfileView: View {
                 
                 List {
                     HStack {
-                        Text("Firstname")
-                        TextField("firstname", text: $feedUser.firstname)
+                        Text("First Name")
+                        TextField("First Name", text: $feedUser.firstname)
                             .foregroundColor(.streamBlue)
                             .labelsHidden()
                     }
                     HStack {
-                        Text("Lastname")
-                        TextField("lastname", text: $feedUser.lastname)
+                        Text("Last Name")
+                        TextField("Last Name", text: $feedUser.lastname)
                             .foregroundColor(.streamBlue)
                             .labelsHidden()
                     }

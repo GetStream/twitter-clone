@@ -13,25 +13,20 @@ import Feeds
 public struct ProfileSummaryView: View {
     @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
 
-    @State private var isEditingPresented = false
-    
-    private var contentView: (() -> AnyView)
-    public init (contentView: @escaping (() -> AnyView)) {
-        self.contentView = contentView
-    }
+    public init () {}
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             List {
                 // Link to the full profile page: MyProfile.swift
                 NavigationLink {
-                    MyProfile(contentView: contentView)
+                    MyProfile()
                 } label: {
                     Image(systemName: "person.circle.fill")
                     Text("View full profile")
                 }
 
-                // Link to the full profile page: MyProfile.swift
+                // Link to the settings page
                 NavigationLink {
                     SettingsView()
                 } label: {

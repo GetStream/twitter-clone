@@ -96,9 +96,7 @@ public struct HomeView: View {
                         self.isShowingProfile.toggle()
                     })
                     .sheet(isPresented: $isShowingProfile, content: {
-                        MyProfile(contentView: { AnyView(MyProfileInfoAndTweets(feedsClient: feedsClient))
-                        })
-                        .environmentObject(feedsClient)
+                        MyProfileInfoAndTweets(feedsClient: feedsClient)
                     })
                 }
                 

@@ -14,7 +14,6 @@ struct ProfileInfoAndTweets: View {
     var profilePicture: String?
     
     @EnvironmentObject var feedsClient: FeedsClient
-    @State private var selection = 0
     
     @StateObject var profileInfoViewModel = ProfileInfoViewModel()
 

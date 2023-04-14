@@ -12,14 +12,50 @@ import Feeds
 import TwitterCloneUI
 
 public class ProfileInfoViewModel: ObservableObject {
-    @Published public var feedUser: FeedUser?
-    
-    public init() {}
+
+    @Published
+    public var feedUser: FeedUser?
+
+    var fullname: String {
+        feedUser?.fullname ?? ""
+    }
+
+    var firstname: String {
+        feedUser?.firstname ?? ""
+    }
+
+    var lastname: String {
+        feedUser?.lastname ?? ""
+    }
+
+    var username: String {
+        feedUser?.username ?? ""
+    }
+
+    var aboutMe: String {
+        feedUser?.aboutMe ?? ""
+    }
+
+    var location: String {
+        feedUser?.location ?? ""
+    }
+
+    var joinedDateString: String {
+        formattedDate(date: feedUser?.createdAt)
+    }
+
+    public var profilePictureUrlString: String? {
+        feedUser?.profilePicture
+    }
+
+    public init(feedUser: FeedUser? = nil) {
+        self.feedUser = feedUser
+    }
     
     let following = 10
     let followers = 11
     
-    func formattedDate(date: Date?) -> String {
+    private func formattedDate(date: Date?) -> String {
         guard let date else {
             return "-"
         }
@@ -38,25 +74,25 @@ public struct ProfileInfoView: View {
         
     public var body: some View {
         VStack(alignment: .leading) {
-            Text(viewModel.feedUser?.fullname ?? "")
+            Text(viewModel.fullname)
                 .fontWeight(.bold)
-            Text(viewModel.feedUser?.username ?? "")
+            Text(viewModel.username)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(viewModel.feedUser?.aboutMe ?? "")
+                Text(viewModel.aboutMe)
                     .font(.subheadline)
                 HStack(spacing: 16) {
                     HStack(spacing: 2) {
                         Image(systemName: "mappin.and.ellipse")
-                        Text(viewModel.feedUser?.location ?? "")
+                        Text(viewModel.location)
                     }
                     .font(.caption)
 
                     HStack(spacing: 2) {
                         Image(systemName: "calendar")
-                        Text("Joined \(viewModel.formattedDate(date: viewModel.feedUser?.createdAt))")
+                        Text("Joined \(viewModel.joinedDateString)")
                     }
                     .font(.caption)
                 }
@@ -85,9 +121,11 @@ public struct ProfileInfoView: View {
     }
 }
 
-// struct ProfileInfoView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileInfoView(myProfile: MyProfileData)
-//            .preferredColorScheme(.dark)
-//    }
-// }
+struct ProfileInfoView_Previews: PreviewProvider {
+    static let feedUser = FeedUser.previewUser()
+
+    static var previews: some View {
+        ProfileInfoView(viewModel: ProfileInfoViewModel(feedUser: feedUser))
+            .preferredColorScheme(.dark)
+    }
+}

@@ -1,5 +1,5 @@
 //
-//  MyProfile.swift
+//  ProfileFollower.swift
 //  TwitterClone
 //
 

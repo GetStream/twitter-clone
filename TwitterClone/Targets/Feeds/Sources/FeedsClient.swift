@@ -108,7 +108,7 @@ public class FeedsClient: ObservableObject {
         return FeedsClient(authUser: authUser, urlString: region.rawValue)
     }
 
-    public static func previewClient() throws -> FeedsClient {
+    public static func previewClient() -> FeedsClient {
         return FeedsClient(authUser: AuthUser.previewUser(), urlString: Region.euWest.rawValue, mockEnabled: true)
     }
 

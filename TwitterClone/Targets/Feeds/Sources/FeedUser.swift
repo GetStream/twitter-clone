@@ -84,7 +84,7 @@ public struct FeedUser: Refable, Codable {
                         createdAt: Date(),
                         updatedAt: Date(),
                         aboutMe: "",
-                        profilePicture: nil
+                        profilePicture: "https://picsum.photos/id/64/200"
         )
     }
 

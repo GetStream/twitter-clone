@@ -64,7 +64,7 @@ public struct ReplyTweetView: View {
                 
                 HStack(alignment: .top) {
                     
-                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
+                    ProfileImage(imageUrl: profileInfoViewModel.profilePictureUrlString, action: {})
                     TextField("Tweet your reply", text: $isShowingComposeArea, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .lineLimit(3, reservesSpace: true)
@@ -163,8 +163,10 @@ public struct ReplyTweetView: View {
 }
 
 struct ReplyTweetView_Previews: PreviewProvider {
+    static let feedUser = FeedUser.previewUser()
+
     static var previews: some View {
-        ReplyTweetView(profileInfoViewModel: ProfileInfoViewModel(), parentActivityId: "")
+        ReplyTweetView(profileInfoViewModel: ProfileInfoViewModel(feedUser: feedUser), parentActivityId: "")
             .preferredColorScheme(.dark)
     }
 }
