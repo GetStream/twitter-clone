@@ -25,7 +25,7 @@ public struct RecordAudioView: View {
             VStack {
                 Spacer()
         
-                ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
+                ProfileImage(imageUrl: profileInfoViewModel.profilePictureUrlString, action: {})
                     .overlay(Circle().stroke(lineWidth: 2))
                     .scaleEffect(2)
                 

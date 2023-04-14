@@ -8,53 +8,78 @@ import SwiftUI
 import TwitterCloneUI
 import Feeds
 
-public struct MyProfile: View {
-    @EnvironmentObject var feedsClient: FeedsClient
-    @State private var isShowingSearch = false
-
-    private var contentView: (() -> AnyView)
-    
-    public init (contentView: @escaping (() -> AnyView)) {
-        self.contentView = contentView
-    }
-    
+public struct MyProfile<FooterContent: View>: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var feedsClient: FeedsClient
+    @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
+    @State private var isShowingEditProfile = false
+
+    let footerContent: FooterContent
+
+    public init() where FooterContent == EmptyView {
+        self.footerContent = EmptyView()
+    }
+
+    public init(footerContent: () -> FooterContent) {
+        self.footerContent = footerContent()
+    }
 
     public var body: some View {
-        NavigationStack {
-            VStack {
-                contentView()
-            } // All views
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("")
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    // Link to the full profile page: MyProfile.swift
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Image(systemName: "gearshape.2")
+        PopoverView(title: "My Profile") {
+            myProfileView
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        // Link to the settings page
+                        NavigationLink {
+                            SettingsView()
+                        } label: {
+                            Image(systemName: "gearshape.2")
+                        }
                     }
                 }
-                
-                ToolbarItem(placement: .navigationBarLeading) {
+        }
+    }
+
+    var myProfileView: some View {
+        ScrollView {
+            VStack(alignment: .leading) {
+                HStack {
+                    ProfileImage(imageUrl: profileInfoViewModel.profilePictureUrlString, action: {})
+                            .scaleEffect(1.2)
+
+                    Spacer()
+
                     Button {
-                        // Dismiss sheet
-                        dismiss()
+                        isShowingEditProfile.toggle()
+                        print("Navigate to edit profile page")
                     } label: {
-                        Image(systemName: "xmark")
+                        Text("Edit profile")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                     }
+                    .sheet(isPresented: $isShowingEditProfile, content: {
+                        if let feedUser = profileInfoViewModel.feedUser {
+                            EditProfileView(currentUser: feedUser)
+                        }
+                    })
+                    .buttonStyle(.borderedProminent)
                 }
-            }
-            .font(.title2)
+
+                ProfileInfoView(viewModel: profileInfoViewModel)
+
+                // Optional additional footer content
+                footerContent
+            }.padding()
         }
     }
 }
 
-// struct MyProfile_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MyProfile()
-//            .preferredColorScheme(.dark)
-//    }
-// }
+struct MyProfile_Previews: PreviewProvider {
+    static let feedUser = FeedUser.previewUser()
+    
+    static var previews: some View {
+        MyProfile()
+            .environmentObject(ProfileInfoViewModel(feedUser: feedUser))
+            .preferredColorScheme(.dark)
+    }
+}

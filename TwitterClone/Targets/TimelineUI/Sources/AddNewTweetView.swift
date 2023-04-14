@@ -46,7 +46,7 @@ public struct AddNewTweetView: View {
             VStack {
                 HStack(alignment: .top) {
                     
-                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
+                    ProfileImage(imageUrl: profileInfoViewModel.profilePictureUrlString, action: {})
                     TextField("What's happening?", text: $isShowingComposeArea, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .lineLimit(3, reservesSpace: true)

@@ -10,11 +10,8 @@ import Auth
 import Profile
 
 public struct MyProfileInfoAndTweets: View {
-    private var feedsClient: FeedsClient
-    
-    @State private var isShowingEditProfile = false
-    
     @EnvironmentObject var profileInfoViewModel: ProfileInfoViewModel
+    private var feedsClient: FeedsClient
 
     @State private var selection = 0
 
@@ -23,42 +20,20 @@ public struct MyProfileInfoAndTweets: View {
     }
     
     public var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                HStack {
-                    ProfileImage(imageUrl: profileInfoViewModel.feedUser?.profilePicture, action: {})
-                            .scaleEffect(1.2)
-
-                    Spacer()
-
-                    Button {
-                        isShowingEditProfile.toggle()
-                        print("Navigate to edit profile page")
-                    } label: {
-                        Text("Edit profile")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
-                    .sheet(isPresented: $isShowingEditProfile, content: {
-                        if let feedUser = profileInfoViewModel.feedUser {
-                            EditProfileView(feedsClient: feedsClient, currentUser: feedUser)
-                        }
-                    })
-                    .buttonStyle(.borderedProminent)
-                }
-
-                ProfileInfoView(viewModel: profileInfoViewModel)
-
-                ForYouFeedsView(feedType: .user(userId: feedsClient.authUser.userId))
-                    .frame(height: UIScreen.main.bounds.height)
-            }.padding()
-        }
+        MyProfile(footerContent: {
+             ForYouFeedsView(feedType: .user(userId: feedsClient.authUser.userId))
+                .frame(height: UIScreen.main.bounds.height)
+        })
     }
 }
 
-// struct MyProfileInfoAndTweets_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MyProfileInfoAndTweets()
-//            .preferredColorScheme(.dark)
-//    }
-// }
+struct MyProfileInfoAndTweets_Previews: PreviewProvider {
+    static let feedsClient = FeedsClient.previewClient()
+    static let feedUser = FeedUser.previewUser()
+
+    static var previews: some View {
+        MyProfileInfoAndTweets(feedsClient: feedsClient)
+            .environmentObject(ProfileInfoViewModel(feedUser: feedUser))
+            .preferredColorScheme(.dark)
+    }
+}
