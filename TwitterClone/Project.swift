@@ -20,8 +20,10 @@ let homeUiName = "HomeUI"
 let feedsName = "Feeds"
 let chatName = "Chat"
 
+let destinations: Destinations = [.iPhone, .iPad, .macWithiPadDesign]
+
 let messagesTarget =
-    Project.makeFrameworkTargets(name: messagesName,
+Project.makeFrameworkTargets(name: messagesName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies:
                                     [
@@ -33,7 +35,7 @@ let messagesTarget =
                                         .target(name: uiName)
                                     ])
 let chatTarget =
-    Project.makeFrameworkTargets(name: chatName,
+    Project.makeFrameworkTargets(name: chatName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies:
                                     [
@@ -45,7 +47,7 @@ let chatTarget =
                                     ])
 
 let profileTarget =
-    Project.makeFrameworkTargets(name: profileName,
+    Project.makeFrameworkTargets(name: profileName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
@@ -55,7 +57,7 @@ let profileTarget =
                                     .external(name: "RevenueCat")
                                  ])
 let searchTarget =
-    Project.makeFrameworkTargets(name: searchName,
+    Project.makeFrameworkTargets(name: searchName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: feedsName),
@@ -64,13 +66,13 @@ let searchTarget =
                                     .external(name: "InstantSearchInsights"),
                                  ])
 let settingsTarget =
-    Project.makeFrameworkTargets(name: settingsName,
+    Project.makeFrameworkTargets(name: settingsName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                         .target(name: uiName)
                                  ])
 let homeUiTarget =
-    Project.makeFrameworkTargets(name: homeUiName,
+    Project.makeFrameworkTargets(name: homeUiName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
@@ -85,7 +87,7 @@ let homeUiTarget =
                                  ])
 
 let timelineUiTarget =
-    Project.makeFrameworkTargets(name: timelineUiName,
+    Project.makeFrameworkTargets(name: timelineUiName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
@@ -96,7 +98,7 @@ let timelineUiTarget =
                                     .external(name: "MuxUploadSDK")
                                  ])
 let spacesTarget =
-    Project.makeFrameworkTargets(name: spacesName,
+    Project.makeFrameworkTargets(name: spacesName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .external(name: "StreamChatSwiftUI"),
@@ -107,7 +109,7 @@ let spacesTarget =
                                     .external(name: "HMSSDK")
                                  ])
 let feedsTarget =
-    Project.makeFrameworkTargets(name: feedsName,
+    Project.makeFrameworkTargets(name: feedsName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: uiName),
@@ -115,16 +117,16 @@ let feedsTarget =
                                     .target(name: networkKitName)
                                  ])
 let networkKitTarget =
-    Project.makeFrameworkTargets(name: networkKitName,
+    Project.makeFrameworkTargets(name: networkKitName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [])
 let uiTarget =
-    Project.makeFrameworkTargets(name: uiName,
+    Project.makeFrameworkTargets(name: uiName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [])
 
 let authUiTarget =
-    Project.makeFrameworkTargets(name: authUiName,
+    Project.makeFrameworkTargets(name: authUiName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: authName),
@@ -132,19 +134,20 @@ let authUiTarget =
                                     .target(name: uiName)])
 
 let authorizationTarget =
-    Project.makeFrameworkTargets(name: authName,
+    Project.makeFrameworkTargets(name: authName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [
                                     .target(name: keychainName),
                                     .target(name: networkKitName) ])
 let keychainHelperTarget =
-    Project.makeFrameworkTargets(name: keychainName,
+    Project.makeFrameworkTargets(name: keychainName, destinations: destinations,
                                  platform: .iOS,
                                  dependencies: [])
 
 
 // Creates our project using a helper function defined in ProjectDescriptionHelpers
 let project = Project.app(name: "TwitterClone",
+                          destinations: destinations,
                           versionNumber: projectVersionNumber,
                           platform: .iOS,
                           packages: [],

@@ -7,8 +7,9 @@ import ProjectDescription
 
 extension Project {
     /// Helper function to create the Project for this ExampleApp
-    public static func app(name: String, versionNumber: String, platform: Platform, packages: [Package], dependencies: [TargetDependency], additionalTargets: [Target], additionalFiles: [FileElement]) -> Project {
+    public static func app(name: String, destinations: Destinations, versionNumber: String, platform: Platform, packages: [Package], dependencies: [TargetDependency], additionalTargets: [Target], additionalFiles: [FileElement]) -> Project {
         var targets = makeAppTargets(name: name,
+                                     destinations: destinations,
                                      versionNumber: versionNumber,
                                      platform: platform,
                                      dependencies: dependencies + additionalTargets.compactMap { $0.name.hasSuffix("Tests") ? nil : TargetDependency.target(name: $0.name) })
@@ -32,31 +33,30 @@ extension Project {
     // MARK: - Private
 
     /// Helper function to create a framework target and an associated unit test target
-    public static func makeFrameworkTargets(name: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
-        let sources = Target(name: name,
-                platform: platform,
+    public static func makeFrameworkTargets(name: String, destinations: Destinations, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
+        let sources = Target.target(name: name,
+                destinations: destinations,
                 product: .framework,
                 bundleId: "io.getstream.\(name)",
-                infoPlist: .default,
+                infoPlist: InfoPlist.default,
                 sources: ["Targets/\(name)/Sources/**"],
                 resources: ["Targets/\(name)/Resources/**"],
                 dependencies: dependencies)
-        let tests = Target(name: "\(name)Tests",
-                platform: platform,
+        let tests = Target.target(name: "\(name)Tests",
+                destinations: destinations,
                 product: .unitTests,
                 bundleId: "io.getstream.twitterclone.\(name)Tests",
-                infoPlist: .default,
+                infoPlist: InfoPlist.default,
                 sources: ["Targets/\(name)/Tests/**"],
                 resources: [],
-                dependencies: [.target(name: name)])
+                dependencies: [TargetDependency.target(name: name)])
         return [sources, tests]
     }
 
     /// Helper function to create the application target and the unit test target.
-    private static func makeAppTargets(name: String, versionNumber: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
-        let platform: Platform = platform
-        let infoPlist: [String: InfoPlist.Value] = [
-            "CFBundleShortVersionString": InfoPlist.Value(stringLiteral: versionNumber),
+    private static func makeAppTargets(name: String, destinations: Destinations, versionNumber: String, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
+        let infoPlist: [String: Plist.Value] = [
+            "CFBundleShortVersionString": Plist.Value(stringLiteral: versionNumber),
             "CFBundleVersion": "1",
             "UIMainStoryboardFile": "",
             "UILaunchStoryboardName": "LaunchScreen",
@@ -71,9 +71,9 @@ extension Project {
         let swiftlintTargetAction = TargetScript.pre(path: .relativeToRoot("bin/swiftlint.sh"), name: "Swiftlint.", basedOnDependencyAnalysis: false)
         let buildNumberTargetAction = TargetScript.post(path: .relativeToRoot("bin/set_build_number.sh"), name: "Set build number", basedOnDependencyAnalysis: false)
 
-        let mainTarget = Target(
+        let mainTarget = Target.target(
             name: name,
-            platform: platform,
+            destinations: destinations,
             product: .app,
             bundleId: "io.getstream.\(name)",
             infoPlist: .extendingDefault(with: infoPlist),
@@ -82,12 +82,12 @@ extension Project {
             entitlements: "TwitterClone.entitlements",
             scripts: [swiftlintTargetAction, buildNumberTargetAction],
             dependencies: dependencies,
-            launchArguments: [LaunchArgument(name: "NETWORK_PAYLOAD_LOGGING_ENABLED", isEnabled: false)]
+            launchArguments: [.launchArgument(name: "NETWORK_PAYLOAD_LOGGING_ENABLED", isEnabled: false)]
         )
 
-        let testTarget = Target(
+        let testTarget = Target.target(
             name: "\(name)Tests",
-            platform: platform,
+            destinations: destinations,
             product: .unitTests,
             bundleId: "io.getstream.twitterclone.\(name)Tests",
             infoPlist: .default,
