@@ -1,0 +1,95 @@
+{
+  "pins" : [
+    {
+      "identity" : "100ms-ios-analytics-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/100mslive/100ms-ios-analytics-sdk",
+      "state" : {
+        "revision" : "ffbd36c153603a3309ad9740d287438c4e89bd40",
+        "version" : "0.0.2"
+      }
+    },
+    {
+      "identity" : "100ms-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/100mslive/100ms-ios-sdk.git",
+      "state" : {
+        "revision" : "ff5147466726706e6088b8505edaec20d77a9178",
+        "version" : "0.9.12"
+      }
+    },
+    {
+      "identity" : "algoliasearch-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algolia/algoliasearch-client-swift",
+      "state" : {
+        "revision" : "996d9e171fdf4692ba279ea2f8a29acfe077ab37",
+        "version" : "8.20.1"
+      }
+    },
+    {
+      "identity" : "instantsearch-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algolia/instantsearch-ios",
+      "state" : {
+        "revision" : "f6cdd6da2d7def69d23fec4e73e6a2267a46e0f1",
+        "version" : "7.26.1"
+      }
+    },
+    {
+      "identity" : "instantsearch-telemetry-native",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algolia/instantsearch-telemetry-native",
+      "state" : {
+        "revision" : "d9861ceb2fe25899a31672fb7c648ae8036d3221",
+        "version" : "0.1.3"
+      }
+    },
+    {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios.git",
+      "state" : {
+        "revision" : "966743b0d4353fae28300df677fe303607fd75d0",
+        "version" : "4.41.2"
+      }
+    },
+    {
+      "identity" : "stream-chat-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GetStream/stream-chat-swift.git",
+      "state" : {
+        "revision" : "a834ab04e1006210e2d74ca629815e71564582c1",
+        "version" : "4.56.1"
+      }
+    },
+    {
+      "identity" : "stream-chat-swiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GetStream/stream-chat-swiftui.git",
+      "state" : {
+        "revision" : "9a53019b883947c6fab1e5a7afda5b68ce8003f2",
+        "version" : "4.56.0"
+      }
+    },
+    {
+      "identity" : "swift-protobuf",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-protobuf.git",
+      "state" : {
+        "revision" : "9f0c76544701845ad98716f3f6a774a892152bcb",
+        "version" : "1.26.0"
+      }
+    },
+    {
+      "identity" : "swift-upload-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/muxinc/swift-upload-sdk",
+      "state" : {
+        "revision" : "50d5215aa8ca169f5b16597d571eeda646425929",
+        "version" : "0.7.0"
+      }
+    }
+  ],
+  "version" : 2
+}

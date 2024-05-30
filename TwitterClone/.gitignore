@@ -65,6 +65,7 @@ DerivedData/
 ### Tuist derived files ###
 graph.dot
 Derived/
+Tuist/.build
 
 ### Tuist managed dependencies ###
 Tuist/Dependencies

@@ -96,7 +96,7 @@ let timelineUiTarget =
                                     .target(name: profileName),
                                     .target(name: uiName),
                                     .external(name: "MuxUploadSDK")
-                                 ])
+                                 ], noResources: false)
 let spacesTarget =
     Project.makeFrameworkTargets(name: spacesName, destinations: destinations,
                                  platform: .iOS,
@@ -123,7 +123,7 @@ let networkKitTarget =
 let uiTarget =
     Project.makeFrameworkTargets(name: uiName, destinations: destinations,
                                  platform: .iOS,
-                                 dependencies: [])
+                                 dependencies: [], noResources: false)
 
 let authUiTarget =
     Project.makeFrameworkTargets(name: authUiName, destinations: destinations,

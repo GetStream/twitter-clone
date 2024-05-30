@@ -33,14 +33,14 @@ extension Project {
     // MARK: - Private
 
     /// Helper function to create a framework target and an associated unit test target
-    public static func makeFrameworkTargets(name: String, destinations: Destinations, platform: Platform, dependencies: [TargetDependency]) -> [Target] {
+    public static func makeFrameworkTargets(name: String, destinations: Destinations, platform: Platform, dependencies: [TargetDependency], noResources: Bool = true) -> [Target] {
         let sources = Target.target(name: name,
                 destinations: destinations,
                 product: .framework,
                 bundleId: "io.getstream.\(name)",
                 infoPlist: InfoPlist.default,
                 sources: ["Targets/\(name)/Sources/**"],
-                resources: ["Targets/\(name)/Resources/**"],
+                resources: noResources ? [] : ["Targets/\(name)/Resources/**"],
                 dependencies: dependencies)
         let tests = Target.target(name: "\(name)Tests",
                 destinations: destinations,
