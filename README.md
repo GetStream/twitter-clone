@@ -1,3 +1,5 @@
+> **This repository is archived and no longer maintained.** For a current alternative, see [the Feeds iOS SDK](https://getstream.io/activity-feeds/sdk/ios/).
+
 # Build a Twitter Clone With SwiftUI in a Weekend :sunglasses:
 
 [![Build a Twitter Clone With SwiftUI in a Weekend](https://github.com/GetStream/twitter-clone/blob/main/Preview/byot-github-thumbnail.png)](https://youtu.be/OYwMgbLh2MAE "Build a Twitter Clone With SwiftUI in a Weekend")
